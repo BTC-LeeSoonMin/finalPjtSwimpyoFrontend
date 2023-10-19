@@ -1,7 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
+  const [backendData, setBackendData] = useState("");
+
+  useEffect(() => {
+            console.log("[App] useEffect!!");
+    
+            axios.get("/api/hello"
+            )
+                .then(response => {
+                    console.log(response.data);
+                    setBackendData(response.data);
+
+                }
+                )
+                .catch(error => console.log(error))
+    
+        }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -15,7 +34,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          여기는 백엔드 데이터 : {backendData}
         </a>
       </header>
     </div>
