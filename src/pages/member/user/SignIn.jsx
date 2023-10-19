@@ -15,10 +15,10 @@ function SignIn() {
     console.log('ID:', id);
     console.log('PW:', pw);
     // 로그인 로직을 처리한 후, 사용자를 인증하고 다음 단계로 이동할 수 있습니다.
-  }; 
+  };
 
   const linkStyle = {
-    color: 'black', 
+    color: 'black',
     textDecoration: 'none',
     fontSize: '14px',
     fontWeight: 'normal',
@@ -49,7 +49,7 @@ function SignIn() {
   //         // id, pw 모두 일치 userId = userId1, msg = undefined
   //         console.log("======================", "로그인 성공");
   //         sessionStorage.setID("id", id); // sessionStorage에 id를 user_id라는 key 값으로 저장
-          
+
   //       }
   //       // 작업 완료 되면 페이지 이동(새로고침)
   //       document.location.href = "/home_p";

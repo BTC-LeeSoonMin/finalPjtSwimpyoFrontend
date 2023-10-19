@@ -3,24 +3,24 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
-import Header from './components/header/user/Header';
-import Nav from './components/nav/user/Nav';
-import Footer from './components/footer/user/Footer';
+import Header from './commons/header/user/Header';
+import Nav from './commons/nav/user/Nav';
+import Footer from './commons/footer/user/Footer';
 import SignUp from './pages/member/user/SignUp';
 import SignIn from './pages/member/user/SignIn';
 
 function App() {
     const [backData, setBackData] = useState("");
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log("[App] useEffect!!");
 
         axios.get("/api/home",
         )
             .then(response => {
-                    console.log(response.data)
-                    setBackData(response.data);
-                }
+                console.log(response.data)
+                setBackData(response.data);
+            }
             )
             .catch(error => console.log(error))
 
@@ -50,14 +50,14 @@ function App() {
                 <Header />
                 <Nav />
                 <Routes>
-                  <Route
+                    <Route
                         path="/user/member/signIn"
-                        element={<SignIn/>}
-                  ></Route>
-                  <Route
+                        element={<SignIn />}
+                    ></Route>
+                    <Route
                         path="/user/member/signUp"
-                        element={<SignUp/>}
-                  ></Route>
+                        element={<SignUp />}
+                    ></Route>
                 </Routes>
                 <Footer />
             </BrowserRouter>

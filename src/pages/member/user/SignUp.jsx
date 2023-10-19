@@ -19,12 +19,12 @@ function SignUp() {
 
   const config = {
     headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8'
     }
-};
+  };
 
   const linkStyle = {
-    color: 'black', 
+    color: 'black',
     textDecoration: 'none',
     fontSize: '14px',
     fontWeight: 'normal',
@@ -61,28 +61,28 @@ function SignUp() {
         "phone": phone,
         "nickname": nickname,
       }
-      
-      axios.post("/api/member/signup", JSON.stringify(data), config, )
-      .then((response) => {
-        console.log(response.data)
-        if(response.data === 2 ){
-          console.log('사용중인 아이디입니다.');
-          
-        } else if(response.data === 1) {
-          //성공
-          console.log('성공');
-          document.location.href = "/home_p";
 
-        }else {
-          console.log('fail');
+      axios.post("/api/member/signup", JSON.stringify(data), config,)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data === 2) {
+            console.log('사용중인 아이디입니다.');
 
-        }
-      }).catch((error) => {
-        // 실패
+          } else if (response.data === 1) {
+            //성공
+            console.log('성공');
+            document.location.href = "/home_p";
 
-      });
+          } else {
+            console.log('fail');
+
+          }
+        }).catch((error) => {
+          // 실패
+
+        });
     }
-    
+
   };
 
   return (
@@ -131,7 +131,7 @@ function SignUp() {
             onChange={onChangePwCheck}
           />
           {!pwCheck && (<Typography variant="body2" color="error">
-          비밀번호가 일치하지 않습니다.
+            비밀번호가 일치하지 않습니다.
           </Typography>)}
           <TextField
             variant="outlined"
@@ -143,7 +143,7 @@ function SignUp() {
             name="name"
             // value={name}
             onChange={(e) => setName(e.target.value)}
-          /> 
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -183,7 +183,7 @@ function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
-            // onClick={createAccountForm}
+          // onClick={createAccountForm}
           >
             회원가입
           </Button>
