@@ -46,7 +46,7 @@ function App() {
         //         </a>
         //     </header>
         // </div>
-        <div style={{ backgroundColor: 'lemonchiffon', height: '100vh', overflow: 'auto' }}>
+        <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
                 <Header />
                 <Nav />
