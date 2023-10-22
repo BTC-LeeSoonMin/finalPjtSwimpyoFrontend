@@ -32,7 +32,7 @@ export default function Nav() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'white', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'skyblue', boxShadow: 'none' }}
       >
         {' '}
         <Toolbar>

@@ -93,7 +93,7 @@ function SignIn() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white' }} // 검정색 배경, 흰색 글자색
           >
             로그인
           </Button>

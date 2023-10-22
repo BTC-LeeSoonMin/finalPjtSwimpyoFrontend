@@ -8,6 +8,7 @@ import Nav from './commons/nav/user/Nav';
 import Footer from './commons/footer/user/Footer';
 import SignUp from './pages/member/user/SignUp';
 import SignIn from './pages/member/user/SignIn';
+import Main from './pages/main/user/Main';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -45,11 +46,15 @@ function App() {
         //         </a>
         //     </header>
         // </div>
-        <div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}>
+        <div style={{ backgroundColor: 'lemonchiffon', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
                 <Header />
                 <Nav />
                 <Routes>
+                    <Route
+                        path="/"
+                        element={<Main />}
+                    ></Route>
                     <Route
                         path="/user/member/signIn"
                         element={<SignIn />}

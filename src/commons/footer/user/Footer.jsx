@@ -11,10 +11,10 @@ const Footer = () => {
     return(
         <footer>
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static" sx={{ backgroundColor: 'lightgray', boxShadow: 'none' }}>
+                <AppBar position="static" sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}>
                     <Toolbar>
                        
-                        <Typography variant="body2" component="div" align="center" sx={{ flexGrow: 1 }}>
+                        <Typography variant="body2" component="div" align="center" sx={{ flexGrow: 1, color: 'black' }}>
                             Copyright © ToDoList Corp. All Rights Reserved.
                         </Typography>
                         

@@ -66,7 +66,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'white', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'skyblue', boxShadow: 'none' }}
       >
         {' '}
         <Toolbar>
@@ -81,7 +81,9 @@ export default function Header() {
             }}
             //color 텍스트 색 검정
           >
-            쉼표
+            <a href="/" style={linkStyle}>
+              쉼표
+            </a>
           </Typography>
           <Search sx={{ flexGrow: 1 }}>
             <SearchIconWrapper>
