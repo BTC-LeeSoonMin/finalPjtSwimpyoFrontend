@@ -8,6 +8,7 @@ import Nav from './commons/nav/user/Nav';
 import Footer from './commons/footer/user/Footer';
 import SignUp from './pages/member/user/SignUp';
 import SignIn from './pages/member/user/SignIn';
+import RegistAccm from './pages/accommodation/admin/RegistAccm';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -57,6 +58,10 @@ function App() {
                     <Route
                         path="/user/member/signUp"
                         element={<SignUp />}
+                    ></Route>
+                    <Route
+                        path="/admin/accommodation/registAccm"
+                        element={<RegistAccm />}
                     ></Route>
                 </Routes>
                 <Footer />
