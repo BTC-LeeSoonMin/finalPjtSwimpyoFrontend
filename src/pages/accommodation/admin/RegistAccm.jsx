@@ -111,7 +111,7 @@ const RegistAccm = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8090/admin/accm/regist_confirm", formData, {
+            const response = await axios.post("http://localhost:8090/api/admin/accm/regist_confirm", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
