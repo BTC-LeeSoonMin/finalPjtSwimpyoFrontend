@@ -11,6 +11,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import temp1 from '../../../assets/temp.jpg';
+import temp2 from '../../../assets/temp2.jpg';
+import temp3 from '../../../assets/temp3.png';
 
 const Item = styled(MuiPaper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -33,8 +36,8 @@ function Main() {
     <Container component="main">
       <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
         <Carousel>
-          <Paper sx={{height: '180px'}}><img src='../imgs/temp.jpg'/></Paper>
-          <Paper sx={{height: '180px'}}><img src='../imgs/temp2.jpg'/></Paper>
+          <Paper sx={{height: '180px'}}><img src={temp1} alt="Temp Image" /></Paper>
+          <Paper sx={{height: '180px'}}><img src={temp2}/></Paper>
         </Carousel>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
@@ -76,7 +79,7 @@ function Main() {
               <a href="/" style={linkStyle}>
                 충청
               </a>
-              <img src='../imgs/temp3.png' style={{ width: '418px', height: 'auto', margin: '1rem' }} />
+              <img src={temp3} style={{ width: '418px', height: 'auto', margin: '1rem' }} />
             </Item>
           </Grid>
           <Grid item xs={7}>
@@ -94,7 +97,7 @@ function Main() {
                   <CardMedia
                     component="img"
                     height="100"
-                    image="../imgs/temp.jpg"
+                    image={temp1}
                     alt="green iguana"
                   />
                   <CardContent>
@@ -122,7 +125,7 @@ function Main() {
                   <CardMedia
                     component="img"
                     height="100"
-                    image="../imgs/temp.jpg"
+                    image={temp1}
                     alt="green iguana"
                   />
                   <CardContent>

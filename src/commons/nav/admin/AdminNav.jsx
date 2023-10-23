@@ -4,11 +4,9 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
 
 const linkStyle = {
-  color: 'black',
+  color: 'white',
   textDecoration: 'none',
   fontSize: '14px',
   fontWeight: 'normal',
@@ -16,37 +14,19 @@ const linkStyle = {
 
 const separatorStyle = {
   margin: '0 8px',
-  color: 'black',
+  color: 'white',
   fontWeight: 'normal',
 };
 
-const borderStyles = {
-    bgcolor: 'background.paper',
-    m: 1,
-    borderColor: 'text.primary',
-    width: '5rem',
-  };
-
-export default function Nav() {
+export default function AdminNav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'black', boxShadow: 'none' }}
       >
         {' '}
         <Toolbar>
-        <Typography
-            noWrap
-            component="div"
-            sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
-              display: 'flex', 
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              width: '100%' }}
-          ></Typography>
           <Typography
             noWrap
             component="div"
@@ -57,24 +37,20 @@ export default function Nav() {
               alignItems: 'center',
               width: '100%' }}
           >
-            <a href="/user/member/signUp" style={linkStyle}>
-              호텔/리조트
+            <a href="/" style={linkStyle}>
+              숙박 시설 등록
             </a>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
-              펜션/풀빌라
+            <a href="/" style={linkStyle}>
+              리뷰관리
             </a>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signUp" style={linkStyle}>
-              모텔
+            <a href="/" style={linkStyle}>
+              계정 수정
             </a>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
-              캠핑/글램핑
-            </a>
-            <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
-              게스트하우스
+            <a href="/" style={linkStyle}>
+              나의 업소 관리
             </a>
           </Typography>
           <Typography
@@ -88,8 +64,8 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <a href="/member/user/myPage" style={linkStyle}>
-              마이페이지
+            <a href="/" style={linkStyle}>
+              로그아웃
             </a>
           </Typography>
         </Toolbar>

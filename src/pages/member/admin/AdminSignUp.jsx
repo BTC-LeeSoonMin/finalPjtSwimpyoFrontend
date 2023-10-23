@@ -4,9 +4,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Container } from '@mui/material';
+import { Container, Grid } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
-function SignUp() {
+function AdminSignUp() {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
@@ -85,11 +90,17 @@ function SignUp() {
     
   };
 
+  const [selectedValue, setSelectedValue] = React.useState('a');
+
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value);
+  };
+
   return (
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          회원가입
+          관리자 회원가입 요청
         </Typography>
         <form onSubmit={createAccountConfirm} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
           <TextField
@@ -97,12 +108,12 @@ function SignUp() {
             margin="normal"
             required
             fullWidth
-            id="id"
-            label="ID"
-            name="id"
-            autoComplete="username"
-            // value={id}
-            onChange={(e) => setId(e.target.value)}
+            id="mail"
+            label="이메일"
+            name="mail"
+            autoComplete="email"
+            // value={mail}
+            onChange={(e) => setMail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -149,35 +160,51 @@ function SignUp() {
             margin="normal"
             required
             fullWidth
-            id="nickname"
-            label="닉네임"
-            name="nickname"
-            // value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
             id="phone"
             label="연락처"
             name="phone"
             // value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="mail"
-            label="이메일"
-            name="mail"
-            autoComplete="email"
-            // value={mail}
-            onChange={(e) => setMail(e.target.value)}
-          />
+          <FormControl>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>현재 숙박 운영 여부</FormLabel>
+              </Grid>
+              <Grid item>
+                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+                  <FormControlLabel value="Y" control={<Radio />} label="네" />
+                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                </RadioGroup>
+              </Grid>
+            </Grid>
+          </FormControl>
+          <FormControl>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>사업자 등록증 여부</FormLabel>
+              </Grid>
+              <Grid item>
+                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
+                  <FormControlLabel value="Y" control={<Radio />} label="네" />
+                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                </RadioGroup>
+              </Grid>
+            </Grid>
+          </FormControl>
+          <FormControl>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>숙박업 등록증 여부</FormLabel>
+              </Grid>
+              <Grid item>
+                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
+                  <FormControlLabel value="Y" control={<Radio />} label="네" />
+                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                </RadioGroup>
+              </Grid>
+            </Grid>
+          </FormControl>
           <Button
             type="submit"
             fullWidth
@@ -185,13 +212,13 @@ function SignUp() {
             sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
             // onClick={createAccountForm}
           >
-            회원가입
+            회원가입 요청
           </Button>
         </form>
-        <a href="/user/member/signIn" style={linkStyle}>이미 계정이 없으신가요? 로그인</a>
+        <a href="/member/admin/signIn" style={linkStyle}>이미 계정이 있으신가요? 로그인</a>
       </Paper>
     </Container>
   );
 }
 
-export default SignUp;
+export default AdminSignUp;

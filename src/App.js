@@ -8,7 +8,12 @@ import Nav from './commons/nav/user/Nav';
 import Footer from './commons/footer/user/Footer';
 import SignUp from './pages/member/user/SignUp';
 import SignIn from './pages/member/user/SignIn';
+import AdminSignUp from './pages/member/admin/AdminSignUp';
+import AdminSignIn from './pages/member/admin/AdminSignIn';
 import Main from './pages/main/user/Main';
+import AdminHeader from './commons/header/admin/AdminHeader';
+import AdminNav from './commons/nav/admin/AdminNav';
+import AdminMain from './pages/main/admin/AdminMain';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -48,6 +53,9 @@ function App() {
         // </div>
         <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
+                {/* <AdminHeader />
+                <AdminNav />
+                <AdminMain/> */}
                 <Header />
                 <Nav />
                 <Routes>
@@ -56,12 +64,20 @@ function App() {
                         element={<Main />}
                     ></Route>
                     <Route
-                        path="/user/member/signIn"
+                        path="/member/user/signIn"
                         element={<SignIn />}
                     ></Route>
                     <Route
-                        path="/user/member/signUp"
+                        path="/member/user/signUp"
                         element={<SignUp />}
+                    ></Route>
+                    <Route
+                        path="/member/admin/signIn"
+                        element={<AdminSignIn />}
+                    ></Route>
+                    <Route
+                        path="/member/admin/signUp"
+                        element={<AdminSignUp />}
                     ></Route>
                 </Routes>
                 <Footer />

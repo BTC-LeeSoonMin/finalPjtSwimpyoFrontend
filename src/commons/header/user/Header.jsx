@@ -105,11 +105,11 @@ export default function Header() {
               justifyContent: 'flex-end', // 오른쪽 정렬
               alignItems: 'center' }}
           >
-            <a href="/user/member/signUp" style={linkStyle}>
+            <a href="/member/user/signUp" style={linkStyle}>
               회원가입
             </a>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <a href="/member/user/signIn" style={linkStyle}>
               로그인
             </a>
           </Typography>

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Container, Grid } from '@mui/material';
 
-function SignIn() {
+function AdminSignIn() {
   const [id, setID] = useState('');
   const [pw, setPw] = useState('');
 
@@ -61,7 +61,7 @@ function SignIn() {
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          로그인
+          관리자 로그인
         </Typography>
         <form onSubmit={handleLogin} style={{ width: '100%', marginTop: 1 }}>
           <TextField
@@ -98,10 +98,10 @@ function SignIn() {
             로그인
           </Button>
         </form>
-        <a href="/user/member/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</a>
+        <a href="/member/admin/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</a>
       </Paper>
     </Container>
   );
 }
 
-export default SignIn;
+export default AdminSignIn;
