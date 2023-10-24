@@ -88,7 +88,7 @@ function AdminSignIn() {
             fullWidth
             name="pw"
             label="비밀번호"
-            type="pw"
+            type="password"
             id="pw"
             autoComplete="current-password"
             value={pw}

@@ -80,8 +80,8 @@ function AdminSignUp() {
         } else if(response.data === 1) {
           //성공
           console.log('성공');
-          navigate('/')
-          //admin 메인으로 가도록 경로 변경하기
+          navigate('/member/admin/signin');
+          //로그인 페이지로 가도록 경로 변경하기
 
         }else {
           console.log('fail');
