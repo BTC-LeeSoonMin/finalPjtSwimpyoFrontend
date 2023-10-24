@@ -10,15 +10,17 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useNavigate } from 'react-router-dom';
 
 function AdminSignUp() {
-  const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
-  const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [mail, setMail] = useState('');
+  const [a_m_oper_yn, setA_m_oper_yn] = useState('');
+  const [a_m_br_yn, setA_m_br_yn] = useState('');
+  const [a_m_ar_yn, setA_m_ar_yn] = useState('');
 
   const [pwCheck, setPwCheck] = useState(true);
 
@@ -46,28 +48,30 @@ function AdminSignUp() {
 
   const createAccountConfirm = () => {
     console.log("click SignUp");
-    console.log("ID : ", id);
+    console.log("mail : ", mail);
     console.log("PW : ", pw);
     console.log("pwConfirm : ", pwConfirm);
     console.log("name : ", name);
-    console.log("nickname : ", nickname);
     console.log("phone : ", phone);
-    console.log("mail : ", mail);
+    console.log("a_m_oper_yn : ", a_m_oper_yn);
+    console.log("a_m_br_yn : ", a_m_br_yn);
+    console.log("a_m_ar_yn : ", a_m_ar_yn);
 
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
     if (pwCheck) {
       data = {
-        "id": id,
+        "mail": mail,
         "pw": pw,
         "name": name,
-        "mail": mail,
-        "phone": phone,
-        "nickname": nickname,
+        "phone": phone, 
+        "a_m_oper_yn" : a_m_oper_yn, 
+        "a_m_br_yn" : a_m_br_yn, 
+        "a_m_ar_yn" : a_m_ar_yn, 
       }
       
-      axios.post("/api/member/signup", JSON.stringify(data), config, )
+      axios.post("/api/member/admin/signup", JSON.stringify(data), config, )
       .then((response) => {
         console.log(response.data)
         if(response.data === 2 ){
@@ -76,10 +80,12 @@ function AdminSignUp() {
         } else if(response.data === 1) {
           //성공
           console.log('성공');
-          document.location.href = "/home_p";
+          navigate('/')
+          //admin 메인으로 가도록 경로 변경하기
 
         }else {
           console.log('fail');
+
 
         }
       }).catch((error) => {
@@ -91,6 +97,8 @@ function AdminSignUp() {
   };
 
   const [selectedValue, setSelectedValue] = React.useState('a');
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
@@ -172,9 +180,9 @@ function AdminSignUp() {
                 <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>현재 숙박 운영 여부</FormLabel>
               </Grid>
               <Grid item>
-                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                  <FormControlLabel value="Y" control={<Radio />} label="네" />
-                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                <RadioGroup id='a_m_oper_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="Y" onChange={(e) => setA_m_oper_yn(e.target.value)}/>} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="N" onChange={(e) => setA_m_oper_yn(e.target.value)}/>} label="아니오"/>
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -185,9 +193,9 @@ function AdminSignUp() {
                 <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>사업자 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
-                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
-                  <FormControlLabel value="Y" control={<Radio />} label="네" />
-                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                <RadioGroup id='a_m_br_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
+                  <FormControlLabel control={<Radio name='a_m_br_yn' value="Y" onChange={(e) => setA_m_br_yn(e.target.value)}/>} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_br_yn' value="N" onChange={(e) => setA_m_br_yn(e.target.value)}/>} label="아니오"/>
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -198,9 +206,9 @@ function AdminSignUp() {
                 <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>숙박업 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
-                <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
-                  <FormControlLabel value="Y" control={<Radio />} label="네" />
-                  <FormControlLabel value="N" control={<Radio />} label="아니오"/>
+                <RadioGroup id='a_m_ar_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
+                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="Y" onChange={(e) => setA_m_ar_yn(e.target.value)}/>} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="N" onChange={(e) => setA_m_ar_yn(e.target.value)}/>} label="아니오"/>
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -210,7 +218,6 @@ function AdminSignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
-            // onClick={createAccountForm}
           >
             회원가입 요청
           </Button>
