@@ -40,9 +40,3 @@ const PostcodeComponent = (props) => {
 }
 
 export default PostcodeComponent;
-
-
-
-
-
-
