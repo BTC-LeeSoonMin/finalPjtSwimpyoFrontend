@@ -46,6 +46,9 @@ function AdminSignUp() {
 
   }
 
+  const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+  const regExpEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
   const createAccountConfirm = () => {
     console.log("click SignUp");
     console.log("mail : ", mail);
@@ -60,7 +63,7 @@ function AdminSignUp() {
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (pwCheck) {
+    if (regExpEmail.test(mail) && patternPhone.test(phone)) {
       data = {
         "mail": mail,
         "pw": pw,
@@ -92,6 +95,14 @@ function AdminSignUp() {
         // 실패
 
       });
+    } else if(!regExpEmail.test(mail)) {
+      alert("메일 형식이 틀립니다.");
+      console.log("메일 형식이 틀립니다.")
+
+    } else if(!patternPhone.test(phone)) {
+      alert("연락처 형식이 틀립니다.");
+      console.log("연락처 형식이 틀립니다.")
+
     }
     
   };
