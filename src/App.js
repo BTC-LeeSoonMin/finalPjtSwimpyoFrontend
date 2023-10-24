@@ -15,6 +15,7 @@ import Main from './pages/main/user/Main';
 import AdminHeader from './commons/header/admin/AdminHeader';
 import AdminNav from './commons/nav/admin/AdminNav';
 import AdminMain from './pages/main/admin/AdminMain';
+import AdminFooter from './commons/footer/admin/AdminFooter';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -86,6 +87,7 @@ function App() {
                     ></Route>
                 </Routes>
                 <Footer />
+                {/* <AdminFooter /> */}
             </BrowserRouter>
         </div>
     );
