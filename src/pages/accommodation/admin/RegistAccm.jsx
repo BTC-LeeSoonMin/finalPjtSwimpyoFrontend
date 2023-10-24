@@ -16,6 +16,7 @@ const RegistAccm = () => {
         a_acc_kind: '',
         a_acc_bn: '',
         a_m_no: '',
+        a_m_email: '',
         a_acc_address: {
             areaAddress: '',
             detailAddress: ''
@@ -71,8 +72,10 @@ const RegistAccm = () => {
     };
 
 
-    const handleRemoveImage = (indexToRemove) => {
+    const handleRemoveImage = (keyToRemove) => {
         // 선택된 이미지를 제거합니다.
+        const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
+
         const updatedImages = formData.a_acc_image.filter((_, index) => index !== indexToRemove);
         setFormData(prevState => ({
             ...prevState,
@@ -80,8 +83,12 @@ const RegistAccm = () => {
         }));
 
         // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
-        const updatedFileNames = selectedFileNames.filter((_, index) => index !== indexToRemove);
+        const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
         setSelectedFileNames(updatedFileNames);
+
+        // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
+        const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
+        setSelectedFileURLs(updatedFileURLs);
     };
 
 
@@ -102,16 +109,31 @@ const RegistAccm = () => {
 
         for (const key in formData) {
             if (key === "a_acc_image") {
-                formData[key].forEach((file, index) => {
-                    data.append(key + index, file);
+                formData[key].forEach((file) => {
+                    data.append("a_acc_image", file);
                 });
+            } else if (key === "a_acc_address") { // a_acc_address 객체를 처리하는 부분
+                data.append("a_acc_address", formData[key].areaAddress + formData[key].detailAddress);
             } else {
                 data.append(key, formData[key]);
             }
         }
 
+        // adminAccmDto 객체에 모든 데이터를 담아서 보내기
+        data.append("adminAccmDto", JSON.stringify({
+            a_acc_name: formData.a_acc_name,
+            a_acc_intro: formData.a_acc_intro,
+            a_acc_kind: formData.a_acc_kind,
+            a_acc_bn: formData.a_acc_bn,
+            a_m_no: formData.a_m_no,
+            a_m_email: formData.a_m_email,
+            a_acc_address: formData.a_acc_address.areaAddress + " " + formData.a_acc_address.detailAddress,
+            a_acc_phone: formData.a_acc_phone
+        }));
+
         try {
-            const response = await axios.post("http://localhost:8090/admin/accm/regist_confirm", formData, {
+            const response = await axios.post("/api/admin/accm/regist_confirm",
+                data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -179,7 +201,7 @@ const RegistAccm = () => {
                                 <ListItem key={fileName.key}>
                                     <ListItemText primary={fileName.props.children.props.primary} />
                                     <img src={selectedFileURLs[index]} alt={fileName.props.children.props.primary} style={{ width: '50px', height: '50px', marginLeft: '10px' }} /> {/* 이미지 미리보기 추가 */}
-                                    <Button onClick={() => handleRemoveImage(index)} style={{ marginLeft: '10px' }}>X</Button>
+                                    <Button onClick={() => handleRemoveImage(fileName.key)} style={{ marginLeft: '10px' }}>X</Button>
                                 </ListItem>
                             ))}
                         </List>
@@ -196,7 +218,11 @@ const RegistAccm = () => {
                             }}
                             onChange={(event, editor) => {
                                 const data = editor.getData();
-                                setEditorData(data);
+                                // setEditorData(data);
+                                setFormData(prevState => ({
+                                    ...prevState,
+                                    a_acc_intro: data
+                                }));
                                 console.log({ event, editor, data });
                             }}
                             onBlur={(event, editor) => {
@@ -248,6 +274,20 @@ const RegistAccm = () => {
                             autoComplete="a_m_no"
                             autoFocus
                             value={formData.a_m_no}
+                            onChange={handleChange}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="a_m_email"
+                            label="이메일"
+                            name="a_m_email"
+                            autoComplete="a_m_email"
+                            autoFocus
+                            value={formData.a_m_email}
                             onChange={handleChange}
                         />
 

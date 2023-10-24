@@ -16,7 +16,7 @@ function App() {
     useEffect(() => {
         console.log("[App] useEffect!!");
 
-        axios.get("/api/home",
+        axios.get("/api/hello",
         )
             .then(response => {
                 console.log(response.data)
