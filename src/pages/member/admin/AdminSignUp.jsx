@@ -26,12 +26,12 @@ function AdminSignUp() {
 
   const config = {
     headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8'
     }
-};
+  };
 
   const linkStyle = {
-    color: 'black', 
+    color: 'black',
     textDecoration: 'none',
     fontSize: '14px',
     fontWeight: 'normal',
@@ -68,43 +68,43 @@ function AdminSignUp() {
         "mail": mail,
         "pw": pw,
         "name": name,
-        "phone": phone, 
-        "a_m_oper_yn" : a_m_oper_yn, 
-        "a_m_br_yn" : a_m_br_yn, 
-        "a_m_ar_yn" : a_m_ar_yn, 
+        "phone": phone,
+        "a_m_oper_yn": a_m_oper_yn,
+        "a_m_br_yn": a_m_br_yn,
+        "a_m_ar_yn": a_m_ar_yn,
       }
-      
-      axios.post("/api/member/admin/signup", JSON.stringify(data), config, )
-      .then((response) => {
-        console.log(response.data)
-        if(response.data === 2 ){
-          console.log('사용중인 아이디입니다.');
-          
-        } else if(response.data === 1) {
-          //성공
-          console.log('성공');
-          navigate('/member/admin/signin');
-          //로그인 페이지로 가도록 경로 변경하기
 
-        }else {
-          console.log('fail');
+      axios.post("/api/member/admin/signup", JSON.stringify(data), config,)
+        .then((response) => {
+          console.log(response.data)
+          if (response.data === 2) {
+            console.log('사용중인 아이디입니다.');
+
+          } else if (response.data === 1) {
+            //성공
+            console.log('성공');
+            navigate('/member/admin/signin');
+            //로그인 페이지로 가도록 경로 변경하기
+
+          } else {
+            console.log('fail');
 
 
-        }
-      }).catch((error) => {
-        // 실패
+          }
+        }).catch((error) => {
+          // 실패
 
-      });
-    } else if(!regExpEmail.test(mail)) {
+        });
+    } else if (!regExpEmail.test(mail)) {
       alert("메일 형식이 틀립니다.");
       console.log("메일 형식이 틀립니다.")
 
-    } else if(!patternPhone.test(phone)) {
+    } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
       console.log("연락처 형식이 틀립니다.")
 
     }
-    
+
   };
 
   const [selectedValue, setSelectedValue] = React.useState('a');
@@ -161,7 +161,7 @@ function AdminSignUp() {
             onChange={onChangePwCheck}
           />
           {!pwCheck && (<Typography variant="body2" color="error">
-          비밀번호가 일치하지 않습니다.
+            비밀번호가 일치하지 않습니다.
           </Typography>)}
           <TextField
             variant="outlined"
@@ -173,7 +173,7 @@ function AdminSignUp() {
             name="name"
             // value={name}
             onChange={(e) => setName(e.target.value)}
-          /> 
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -188,12 +188,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>현재 숙박 운영 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>현재 숙박 운영 여부</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup id='a_m_oper_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="Y" onChange={(e) => setA_m_oper_yn(e.target.value)}/>} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="N" onChange={(e) => setA_m_oper_yn(e.target.value)}/>} label="아니오"/>
+                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="Y" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="N" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -201,12 +201,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>사업자 등록증 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>사업자 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
-                <RadioGroup id='a_m_br_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
-                  <FormControlLabel control={<Radio name='a_m_br_yn' value="Y" onChange={(e) => setA_m_br_yn(e.target.value)}/>} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_br_yn' value="N" onChange={(e) => setA_m_br_yn(e.target.value)}/>} label="아니오"/>
+                <RadioGroup id='a_m_br_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ ml: '4px' }}>
+                  <FormControlLabel control={<Radio name='a_m_br_yn' value="Y" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_br_yn' value="N" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -214,12 +214,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ml: '2rem'}}>숙박업 등록증 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>숙박업 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
-                <RadioGroup id='a_m_ar_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ml: '4px'}}>
-                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="Y" onChange={(e) => setA_m_ar_yn(e.target.value)}/>} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="N" onChange={(e) => setA_m_ar_yn(e.target.value)}/>} label="아니오"/>
+                <RadioGroup id='a_m_ar_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ ml: '4px' }}>
+                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="Y" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="N" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>

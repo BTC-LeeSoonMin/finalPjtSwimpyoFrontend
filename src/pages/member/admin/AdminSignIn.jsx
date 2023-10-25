@@ -13,7 +13,7 @@ function AdminSignIn() {
   const [pw, setPw] = useState('');
 
   const linkStyle = {
-    color: 'black', 
+    color: 'black',
     textDecoration: 'none',
     fontSize: '14px',
     fontWeight: 'normal',
@@ -21,7 +21,7 @@ function AdminSignIn() {
 
   const config = {
     headers: {
-        'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8'
     }
   };
 
@@ -34,10 +34,10 @@ function AdminSignIn() {
 
     data = {
       "email": email,
-      "pw": pw, 
+      "pw": pw,
     }
 
-    axios.post("/api/member/admin/signin", JSON.stringify(data), config, )
+    axios.post("/api/member/admin/signin", JSON.stringify(data), config,)
       .then((response) => {
         console.log(response.email);
         if (response.email === 0) {
@@ -55,7 +55,7 @@ function AdminSignIn() {
           // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
           navigate('/');
         }
-        
+
       })
       .catch();
   };
