@@ -15,6 +15,8 @@ import Main from './pages/main/user/Main';
 import AdminHeader from './commons/header/admin/AdminHeader';
 import AdminNav from './commons/nav/admin/AdminNav';
 import AdminMain from './pages/main/admin/AdminMain';
+import AdminDetailAccm from './pages/accommodation/admin/AdminDetailAccm';
+import ModifyAccm from './pages/accommodation/admin/ModifyAccm';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -75,6 +77,14 @@ function App() {
                     <Route
                         path="/admin/accommodation/registAccm"
                         element={<RegistAccm />}
+                    ></Route>
+                    <Route
+                        path="/admin/accommodation/detailAccm"
+                        element={<AdminDetailAccm />}
+                    ></Route>
+                    <Route
+                        path="/admin/accommodation/modifyAccm/:name"
+                        element={<ModifyAccm />}
                     ></Route>
                     <Route
                         path="/member/admin/signIn"
