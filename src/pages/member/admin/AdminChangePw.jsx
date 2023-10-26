@@ -5,19 +5,12 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from 'react-router-dom';
 
-function AdminModify() {
-  const [pw, setPw] = useState('');
+function AdminChangePw() {
+  const [pw, setPw] = useState(''); // 현재 비밀번호
+  const [newPw, setNewPw] = useState(''); // 새로운 비밀번호
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [mail, setMail] = useState('');
 
   const [pwCheck, setPwCheck] = useState(true);
 
@@ -27,46 +20,32 @@ function AdminModify() {
     }
   };
 
-  const linkStyle = {
-    color: 'black',
-    textDecoration: 'none',
-    fontSize: '14px',
-    fontWeight: 'normal',
-  };
-
   const onChangePwCheck = (e) => {
     const confirmPassword = e.target.value;
     setPwConfirm(confirmPassword);
 
-    // 비밀번호와 비밀번호 확인이 일치하는지 여부를 확인하고 상태 설정
-    setPwCheck(pw === confirmPassword);
+    // 새비밀번호와 비밀번호 확인이 일치하는지 여부를 확인하고 상태 설정
+    setPwCheck(newPw === confirmPassword);
 
   }
 
-  const temp = {
-    "name" : '순민94',
-    "phone" : '010-1230-4560',
-    "pw" : 'tnsals94',
-    "email" : '순민94@네이버닷컴',
-  };
-
-  const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
-
-  const createAccountConfirm = () => {
+  const changePw = () => {
     console.log("click SignUp");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
+    console.log("PW : ", pw);
+    console.log("newPw : ", newPw);
+    console.log("pwConfirm : ", pwConfirm);
 
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (patternPhone.test(phone)) {
+    if (pwCheck) {
       data = {
-        "name": name,
-        "phone": phone,
+        "pw": pw,
+        "newPw": newPw,
+        "pwConfirm": pwConfirm,
       }
 
-      axios.post("/api/member/admin/modify", JSON.stringify(data), config,)
+      axios.post("/api/member/admin/changePw", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === 2) {
@@ -81,18 +60,12 @@ function AdminModify() {
           } else {
             console.log('fail');
 
-
           }
         }).catch((error) => {
           // 실패
 
         });
-    } else if (!patternPhone.test(phone)) {
-      alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
-
-    }
-
+    } 
   };
 
   const [selectedValue, setSelectedValue] = React.useState('a');
@@ -107,63 +80,58 @@ function AdminModify() {
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          관리자 정보 수정
+          비밀번호 변경 
         </Typography>
-        <form onSubmit={createAccountConfirm} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={changePw} name='changePw' style={{ width: '100%', marginTop: 1 }}>
           <TextField
-            label="Filled" variant="filled"
+            variant="outlined"
             margin="normal"
+            required
             fullWidth
-            id="mail"
-            name="mail"
-            autoComplete="email"
-            value={temp.email}
-            disabled
-          />
-          <TextField
-            label="Filled" variant="filled"
-            margin="normal"
             name="pw"
+            label="현재 비밀번호"
             type="password"
             id="password"
             autoComplete="new-password"
-            value={temp.pw}
-            disabled
-          /><Button
-          variant="contained"
-          href='/member/admin/changePassword'
-          sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
-        >
-          비밀번호 수정
-        </Button>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            name="name"
-            value={temp.name}
-            onChange={(e) => setName(e.target.value)}
+            // value={pw}
+            onChange={(e) => setPw(e.target.value)}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="phone"
-            name="phone"
-            value={temp.phone}
-            autoFocus
-            onChange={(e) => setPhone(e.target.value)}
+            name="newPw"
+            label="새 비밀번호"
+            type="password"
+            id="password"
+            autoComplete="new-password"
+            // value={pw}
+            onChange={(e) => setNewPw(e.target.value)}
           />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="pwConfirm"
+            label="새 비밀번호 확인"
+            type="password"
+            id="pwConfirm"
+            autoComplete="new-password"
+            // value={pwConfirm}
+            onChange={onChangePwCheck}
+          />
+          {!pwCheck && (<Typography variant="body2" color="error">
+            비밀번호가 일치하지 않습니다.
+          </Typography>)}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
           >
-            회원 정보 수정
+            비밀번호 변경
           </Button>
         </form>
       </Paper>
@@ -171,4 +139,4 @@ function AdminModify() {
   );
 }
 
-export default AdminModify;
+export default AdminChangePw;

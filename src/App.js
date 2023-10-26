@@ -19,6 +19,7 @@ import AdminDetailAccm from './pages/accommodation/admin/AdminDetailAccm';
 import ModifyAccm from './pages/accommodation/admin/ModifyAccm';
 import AdminFooter from './commons/footer/admin/AdminFooter';
 import AdminModify from './pages/member/admin/AdminModify';
+import AdminChangePw from './pages/member/admin/AdminChangePw';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -103,6 +104,10 @@ function App() {
                     <Route
                         path="/member/admin/modify"
                         element={<AdminModify />}
+                    ></Route>
+                    <Route
+                        path="/member/admin/changePassword"
+                        element={<AdminChangePw />}
                     ></Route>
                 </Routes>
                 <Footer />

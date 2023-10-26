@@ -37,7 +37,7 @@ function AdminSignIn() {
       "pw": pw,
     }
 
-    axios.post("/api/member/admin/signin", JSON.stringify(data), config,)
+    axios.post("/api/member/admin/signIn", JSON.stringify(data), config,)
       .then((response) => {
         console.log(response.email);
         if (response.email === 0) {

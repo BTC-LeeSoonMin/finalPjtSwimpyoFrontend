@@ -49,7 +49,8 @@ function AdminSignUp() {
   const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
   const regExpEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-  const createAccountConfirm = () => {
+  const createAccountConfirm = (e) => {
+    e.preventDefault();
     console.log("click SignUp");
     console.log("mail : ", mail);
     console.log("PW : ", pw);
@@ -74,7 +75,7 @@ function AdminSignUp() {
         "a_m_ar_yn": a_m_ar_yn,
       }
 
-      axios.post("/api/member/admin/signup", JSON.stringify(data), config,)
+      axios.post("/api/member/admin/signUp", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === 2) {
