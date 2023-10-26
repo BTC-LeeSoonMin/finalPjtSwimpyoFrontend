@@ -10,6 +10,10 @@ const ModifyAccm = () => {
 
     const { no } = useParams();
 
+
+    // 다시 넘어온 json data받기 위한 state
+    // const [formData, setFormData] = useState([]);
+
     const [formData, setFormData] = useState({
         a_acc_name: '',
         a_acc_intro: '',
@@ -37,13 +41,6 @@ const ModifyAccm = () => {
 
     const fileInputRef = useRef();
 
-
-    // const [selectedAddress, setSelectedAddress] = useState({
-    //     areaAddress: '',
-    //     detailAddress: ''
-
-    // });
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,48 +48,25 @@ const ModifyAccm = () => {
     }, [formData.a_acc_image]);
 
     useEffect(() => {
-        // name 파라미터를 이용하여 데이터를 불러오고 formData를 업데이트
-        async function fetchData(no) {
+        const fetchData = async () => {
             try {
-                // 서버에서 데이터를 가져올 엔드포인트 URL을 설정
-                const apiUrl = `/api/admin/accm/show_accm_detail?a_m_no=${formData.a_m_no}`;
+                const response = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${no}`);
 
-                // Axios를 사용하여 데이터 가져오기
-                const response = await axios.get(apiUrl);
+                console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
 
                 if (response.status === 200) {
-                    return response.data; // 서버에서 반환한 데이터를 반환
+                    console.log("detail data success");
+                    setFormData(response.data);
+                    console.log(response.data);
                 } else {
-                    throw new Error('데이터를 가져오는 중 에러 발생');
+                    console.error("Server responded with status:", response.status);
                 }
             } catch (error) {
-                throw error;
+                console.error("An error occurred:", error);
             }
-        }
+        };
 
-        // 예를 들어, `fetchData` 함수로 데이터를 가져온다고 가정
-        fetchData(no)
-            .then((data) => {
-                setFormData({
-                    a_acc_name: data.a_acc_name,
-                    a_acc_intro: data.a_acc_intro,
-                    a_acc_kind: data.a_acc_kind,
-                    a_acc_bn: data.a_acc_bn,
-                    a_m_no: data.a_m_no,
-                    a_m_email: data.a_m_email,
-                    a_acc_address: {
-                        areaAddress: data.a_acc_address,
-                        detailAddress: '', // 상세 주소 초기화
-                    },
-                    a_acc_phone: data.a_acc_phone,
-                    a_acc_image: data.a_acc_image,
-                });
-
-                // 이 외의 필드 데이터도 필요에 따라 설정
-            })
-            .catch((error) => {
-                console.error('데이터를 불러오는 중 에러 발생', error);
-            });
+        fetchData(); // 비동기 함수 호출
     }, [no]);
 
     const uploadProfile = (e) => {

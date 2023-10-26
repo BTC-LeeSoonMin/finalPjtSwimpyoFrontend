@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -29,20 +28,13 @@ const RegistAccm = () => {
     const [selectedFileNames, setSelectedFileNames] = useState([]);
     const [selectedFileURLs, setSelectedFileURLs] = useState([]); // 이미지 URL을 저장할 상태 추가
 
+
     const [editorData, setEditorData] = useState("");
 
     const editorConfiguration = {
 
     }
-
     const fileInputRef = useRef();
-
-
-    // const [selectedAddress, setSelectedAddress] = useState({
-    //     areaAddress: '',
-    //     detailAddress: ''
-
-    // });
 
     const navigate = useNavigate();
 
@@ -120,7 +112,7 @@ const RegistAccm = () => {
         }
 
         // adminAccmDto 객체에 모든 데이터를 담아서 보내기
-        data.append("adminAccmDto", JSON.stringify({
+        const jsonBlob = new Blob([JSON.stringify({
             a_acc_name: formData.a_acc_name,
             a_acc_intro: formData.a_acc_intro,
             a_acc_kind: formData.a_acc_kind,
@@ -129,7 +121,19 @@ const RegistAccm = () => {
             a_m_email: formData.a_m_email,
             a_acc_address: formData.a_acc_address.areaAddress + " " + formData.a_acc_address.detailAddress,
             a_acc_phone: formData.a_acc_phone
-        }));
+        })], { type: "application/json" });
+
+        data.append("adminAccmDto", jsonBlob);
+        // data.append("adminAccmDto", JSON.stringify({
+        //     a_acc_name: formData.a_acc_name,
+        //     a_acc_intro: formData.a_acc_intro,
+        //     a_acc_kind: formData.a_acc_kind,
+        //     a_acc_bn: formData.a_acc_bn,
+        //     a_m_no: formData.a_m_no,
+        //     a_m_email: formData.a_m_email,
+        //     a_acc_address: formData.a_acc_address.areaAddress + " " + formData.a_acc_address.detailAddress,
+        //     a_acc_phone: formData.a_acc_phone
+        // }));
 
         try {
             const response = await axios.post("/api/admin/accm/regist_confirm",
@@ -158,6 +162,8 @@ const RegistAccm = () => {
                 detailAddress: data.detailAddress
             }
         }));
+
+
     };
 
 

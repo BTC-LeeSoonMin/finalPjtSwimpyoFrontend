@@ -67,7 +67,7 @@ const AdminDetailAccm = () => {
     const handleEditConfirmation = () => {
         // 이곳에서 수정 페이지로 이동 또는 관련 작업 수행
         // handleClose(); // 작업을 수행한 후 모달 닫기
-        navigate(`/admin/accommodation/modifyAccm/${data.a_m_no}`)
+        navigate(`/admin/accommodation/modifyAccm/${requestData.a_m_no}`)
 
     };
 
@@ -76,7 +76,6 @@ const AdminDetailAccm = () => {
     }
 
     /* 수정과 삭제를 위한 함수 끝 */
-
 
     const handleAddRoom = () => {
         setIsAddingRoom(true);
@@ -112,17 +111,17 @@ const AdminDetailAccm = () => {
             const receivedImages = res.data.a_acc_image; // 이미지 데이터 추출을 한다.
 
             // images가 배열인지 확인
-            if (Array.isArray(receivedImages)) { // 이미지 데이터가 배열 형식으로 제공되는 경우에만 가능하다.
-                // 이미지 URL을 추출하여 이미지 슬라이더에 표시
-                const imageUrls = receivedImages.map(item => item.imageUrl);
-                setImages(imageUrls);
-            } else {
-                console.error("이미지 데이터를 찾을 수 없습니다.");
-            }
+            //     if (Array.isArray(receivedImages)) { // 이미지 데이터가 배열 형식으로 제공되는 경우에만 가능하다.
+            //         // 이미지 URL을 추출하여 이미지 슬라이더에 표시
+            //         const imageUrls = receivedImages.map(item => item.imageUrl);
+            //         setImages(imageUrls);
+            //     } else {
+            //         console.error("이미지 데이터를 찾을 수 없습니다.");
+            //     }
+            // })
+            //     .catch((error) => {
+            //         console.error("에러 발생.", error);
         })
-            .catch((error) => {
-                console.error("에러 발생.", error);
-            })
     };
 
 
