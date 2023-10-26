@@ -84,7 +84,7 @@ function App() {
                         element={<AdminDetailAccm />}
                     ></Route>
                     <Route
-                        path="/admin/accommodation/modifyAccm/:name"
+                        path="/admin/accommodation/modifyAccm/:no"
                         element={<ModifyAccm />}
                     ></Route>
                     <Route
