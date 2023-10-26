@@ -68,6 +68,10 @@ function App() {
                         element={<Main />}
                     ></Route>
                     <Route
+                        path="/admin"
+                        element={<AdminMain />}
+                    ></Route>
+                    <Route
                         path="/member/user/signIn"
                         element={<SignIn />}
                     ></Route>
