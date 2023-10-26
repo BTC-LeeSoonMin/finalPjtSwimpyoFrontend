@@ -18,6 +18,7 @@ import AdminMain from './pages/main/admin/AdminMain';
 import AdminDetailAccm from './pages/accommodation/admin/AdminDetailAccm';
 import ModifyAccm from './pages/accommodation/admin/ModifyAccm';
 import AdminFooter from './commons/footer/admin/AdminFooter';
+import AdminModify from './pages/member/admin/AdminModify';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -98,6 +99,10 @@ function App() {
                     <Route
                         path="/member/admin/signUp"
                         element={<AdminSignUp />}
+                    ></Route>
+                    <Route
+                        path="/member/admin/modify"
+                        element={<AdminModify />}
                     ></Route>
                 </Routes>
                 <Footer />
