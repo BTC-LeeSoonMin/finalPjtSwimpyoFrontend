@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
+import { Backdrop, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -17,6 +17,8 @@ import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ConfirmOrClose from '../../../components/ConfirmOrClose';
+import { Modal } from '@mui/base';
+import AdminRoomList from './AdminRoomList';
 
 
 const AdminDetailAccm = () => {
@@ -39,6 +41,8 @@ const AdminDetailAccm = () => {
     const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
+    const [openImg, setOpenImg] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // 방 등록, 목록을 위한 state
     const [rooms, setRooms] = useState([]); // 방 목록을 저장하는 상태
@@ -77,6 +81,7 @@ const AdminDetailAccm = () => {
 
     /* 수정과 삭제를 위한 함수 끝 */
 
+
     const handleAddRoom = () => {
         setIsAddingRoom(true);
     };
@@ -97,33 +102,45 @@ const AdminDetailAccm = () => {
         // React Router 등을 통해 페이지로 이동할 수 있습니다.
     };
 
-    useEffect(() => {
-        getSpringData();
+    // useEffect(() => {
+    //     getSpringData();
 
+    // }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
+                //  res -> 서버에서 받아온 데이터
+                console.log("detail data success");
+                setData(res.data); // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+                console.log(res.data.a_acc_image);
+
+                setImages([res.data.a_acc_image]);
+                // console.log(images)
+                // if (Array.isArray(images)) {
+                //     console.log(images)
+                //     const imageUrls = images.map(item => item.imageUrl);
+                //     setImages(imageUrls);
+                // } else {
+                //     console.error("images 상태가 배열 형식이 아닙니다:", images);
+                // }
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        };
+
+        fetchData(); // 비동기 함수 호출
     }, []);
 
-    function getSpringData() {
-        axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`).then((res) => { // 이 요청에 a_m_no파라미터를 함께 보내어 특정 데이터를 요청하고 응답
-            //  res -> 서버에서 받아온 데이터
-            console.log("detail data success");
-            setData(res.data); // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-            console.log(res.data);
-            const receivedImages = res.data.a_acc_image; // 이미지 데이터 추출을 한다.
-
-            // images가 배열인지 확인
-            //     if (Array.isArray(receivedImages)) { // 이미지 데이터가 배열 형식으로 제공되는 경우에만 가능하다.
-            //         // 이미지 URL을 추출하여 이미지 슬라이더에 표시
-            //         const imageUrls = receivedImages.map(item => item.imageUrl);
-            //         setImages(imageUrls);
-            //     } else {
-            //         console.error("이미지 데이터를 찾을 수 없습니다.");
-            //     }
-            // })
-            //     .catch((error) => {
-            //         console.error("에러 발생.", error);
-        })
-    };
-
+    useEffect(() => {
+        if (Array.isArray(images)) {
+            console.log(images);
+            setImages(images);
+        } else {
+            console.error("images 상태가 배열 형식이 아닙니다:", images);
+        }
+    }, [images]);
 
     return (
 
@@ -146,13 +163,13 @@ const AdminDetailAccm = () => {
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
                     <Carousel>
                         {images.map((imageUrl, index) => (
-                            <Paper key={index} sx={{ height: '180px' }}>
-                                <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%' }} />
+                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
+                                <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </Paper>
                         ))}
-
                     </Carousel>
                 </Box>
+
 
                 <Item sx={{ marginTop: '1rem' }}>
 
@@ -210,6 +227,7 @@ const AdminDetailAccm = () => {
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         객실
                     </Grid>
+                    <AdminRoomList />
                     <Grid container spacing={2}>
                         {rooms.map((room, index) => (
                             <Grid item key={index} xs={12}>
