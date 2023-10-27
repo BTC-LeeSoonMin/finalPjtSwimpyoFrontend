@@ -7,10 +7,16 @@ import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { SignInSlice, setAccessToken, tokenAction } from '../../../commons/rtk/slice/SignInSlice';
+import { useSelector,useDispatch } from 'react-redux';
 
 function AdminSignIn() {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
+  
+  const dispatch = useDispatch();
+  const token = useSelector((store)=> store.accessToken.value);
+  console.log(useSelector((store)=> store.accessToken.value));
 
   const linkStyle = {
     color: 'black',
@@ -25,7 +31,10 @@ function AdminSignIn() {
     }
   };
 
-  const signInForm = () => {
+  const signInForm = (e) => {
+    e.preventDefault();
+
+
     console.log("click SignIn");
     console.log("email : ", email);
     console.log("pw : ", pw);
@@ -39,22 +48,25 @@ function AdminSignIn() {
 
     axios.post("/api/member/admin/signIn", JSON.stringify(data), config,)
       .then((response) => {
-        console.log(response.email);
-        if (response.email === 0) {
-          console.log("================존재하지 않는 정보입니다.");
-          alert("존재하지 않는 정보입니다.");
-        } else if (response.email === 2) {
-          console.log(
-            "======================이메일 또는 비밀번호가 일치하지 않습니다."
-          );
-          alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-        } else if (response.email === 1) {
-          // email, pw 모두 일치 useremail = useremail1, msg = undefined
-          console.log("======================", "로그인 성공");
-          sessionStorage.setEmail("email", email); // sessionStorage에 email key 값으로 저장
-          // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
-          navigate('/');
-        }
+        console.log(response.data);
+        dispatch(setAccessToken.setAccessToken(response.data));
+        // if (response.email === 0) {
+        //   console.log("================존재하지 않는 정보입니다.");
+        //   alert("존재하지 않는 정보입니다.");
+        // } else if (response.email === 2) {
+        //   console.log(
+        //     "======================이메일 또는 비밀번호가 일치하지 않습니다."
+        //   );
+        //   alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+        // } else if (response.email === 1) {
+        //   // email, pw 모두 일치 useremail = useremail1, msg = undefined
+        //   console.log("======================", "로그인 성공");
+        //   sessionStorage.setEmail("email", email); // sessionStorage에 email key 값으로 저장
+        //   // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
+        //   navigate('/');
+        // }
+        // navigate('/');
+        
 
       })
       .catch();
@@ -63,12 +75,14 @@ function AdminSignIn() {
   const navigate = useNavigate();
 
   return (
+    <>
+    <p>token~ : {token}</p>
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
           관리자 로그인
         </Typography>
-        <form onSubmit={signInForm} style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={(e) => signInForm(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -104,8 +118,10 @@ function AdminSignIn() {
           </Button>
         </form>
         <a href="/member/admin/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</a>
+        
       </Paper>
     </Container>
+    </>
   );
 }
 

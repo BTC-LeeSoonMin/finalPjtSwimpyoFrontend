@@ -25,7 +25,7 @@ function AdminChangePw() {
     setPwConfirm(confirmPassword);
 
     // 새비밀번호와 비밀번호 확인이 일치하는지 여부를 확인하고 상태 설정
-    setPwCheck(newPw === confirmPassword);
+    setPwCheck(newPw === confirmPassword); 
 
   }
 

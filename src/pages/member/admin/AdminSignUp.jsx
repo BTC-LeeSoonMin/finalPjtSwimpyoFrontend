@@ -84,7 +84,7 @@ function AdminSignUp() {
           } else if (response.data === 1) {
             //성공
             console.log('성공');
-            navigate('/member/admin/signin');
+            navigate('/member/admin/signIn');
             //로그인 페이지로 가도록 경로 변경하기
 
           } else {
@@ -122,7 +122,7 @@ function AdminSignUp() {
         <Typography variant="h5" component="h1">
           관리자 회원가입 요청
         </Typography>
-        <form onSubmit={createAccountConfirm} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={(e) => createAccountConfirm(e)} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"

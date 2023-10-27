@@ -22,41 +22,9 @@ import AdminModify from './pages/member/admin/AdminModify';
 import AdminChangePw from './pages/member/admin/AdminChangePw';
 
 function App() {
-    const [backData, setBackData] = useState("");
-
-    useEffect(() => {
-        console.log("[App] useEffect!!");
-
-        axios.get("/api/hello",
-        )
-            .then(response => {
-                console.log(response.data)
-                setBackData(response.data);
-            }
-            )
-            .catch(error => console.log(error))
-
-    }, []);
-
-
 
     return (
-        // <div className="App">
-        //     <header className="App-header">
-        //         <img src={logo} className="App-logo" alt="logo" />
-        //         <p>
-        //             Edit <code>src/App.js</code> and save to reload.
-        //         </p>
-        //         <a
-        //             className="App-link"
-        //             href="https://reactjs.org"
-        //             target="_blank"
-        //             rel="noopener noreferrer"
-        //         >
-        //             백엔드에서 온 데이터~ : {backData}
-        //         </a>
-        //     </header>
-        // </div>
+
         <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
                 {/* <AdminHeader />
