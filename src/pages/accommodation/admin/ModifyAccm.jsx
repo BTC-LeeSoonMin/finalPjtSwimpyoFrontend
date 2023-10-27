@@ -3,7 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import PostcodeComponent from '../../../components/PostCodeComponent';
 
 const ModifyAccm = () => {
@@ -22,16 +22,32 @@ const ModifyAccm = () => {
         a_m_no: '',
         a_m_email: '',
         a_acc_address: {
-            areaAddress: '',
-            detailAddress: ''
+            combinedAddress: ''
         },
         a_acc_phone: '',
         a_acc_image: []
 
     });
 
+
+    const [fieldErrors, setFieldErrors] = useState({
+        a_acc_name: false,
+        a_acc_intro: false,
+        a_acc_kind: false,
+        // 필요한 나머지 필드들도 여기에 추가
+    });
+
+    // 파일 업로드를 위한 상태
     const [selectedFileNames, setSelectedFileNames] = useState([]);
+    // 이미지 미리보기를 위해 초기값을 백엔드에서 넘어온 이미지를 준다.
     const [selectedFileURLs, setSelectedFileURLs] = useState([]); // 이미지 URL을 저장할 상태 추가
+    const fileInputRef = useRef(null);
+    const errorMessageRef = useRef(null);
+
+    // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 시작
+    const [imageError, setImageError] = useState(false);
+    // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 끝
+
 
     const [editorData, setEditorData] = useState("");
 
@@ -39,7 +55,7 @@ const ModifyAccm = () => {
 
     }
 
-    const fileInputRef = useRef();
+
 
     const navigate = useNavigate();
 
@@ -58,6 +74,26 @@ const ModifyAccm = () => {
                     console.log("detail data success");
                     setFormData(response.data);
                     console.log(response.data);
+
+                    // FormData안에 데이터가 combinedAddress가 없기 때문에 FormData내에 response.data의 주소를 넣어준다.
+                    setFormData({
+                        ...response.data, a_acc_address: {
+                            combinedAddress: response.data.a_acc_address
+                        },
+                        a_acc_image: [response.data.a_acc_image]
+
+                    });
+
+                    // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
+                    const initialImageURL = response.data.a_acc_image;
+                    setSelectedFileURLs([initialImageURL]);
+
+                    const initialFileName = <ListItem key={initialImageURL}>
+                        <ListItemText primary={initialImageURL.split('/').pop()} />
+                    </ListItem>;
+                    setSelectedFileNames([initialFileName]);
+                    //
+
                 } else {
                     console.error("Server responded with status:", response.status);
                 }
@@ -68,6 +104,7 @@ const ModifyAccm = () => {
 
         fetchData(); // 비동기 함수 호출
     }, [no]);
+
 
     const uploadProfile = (e) => {
         const files = Array.from(e.target.files);
@@ -87,18 +124,36 @@ const ModifyAccm = () => {
         setSelectedFileURLs(prevURLs => [...prevURLs, ...fileURLs]); // 이미지 URL 상태에 저장
 
         e.target.value = null;
+
+        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
+        if (e.target.files.length >= 0) {
+            setImageError(false);
+        }
+        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
     };
 
 
     const handleRemoveImage = (keyToRemove) => {
         // 선택된 이미지를 제거합니다.
+        // const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
+
+        // const updatedImages = formData.a_acc_image.filter((_, index) => index !== indexToRemove);
+        // setFormData(prevState => ({
+        //     ...prevState,
+        //     a_acc_image: updatedImages
+        // }));
+
+        // 수정한 코드
+        // 선택된 이미지를 제거합니다.
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        const updatedImages = formData.a_acc_image.filter((_, index) => index !== indexToRemove);
+        // 백엔드에서 받아온 이미지 또한 제거
+        const updatedImages = formData.a_acc_image.filter((image, index) => index !== indexToRemove);
         setFormData(prevState => ({
             ...prevState,
             a_acc_image: updatedImages
         }));
+        //
 
         // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
         const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
@@ -117,13 +172,32 @@ const ModifyAccm = () => {
             ...formData,
             [name]: value
         });
+
+        // 에러 필드를 나타내기 위한 코드 //
+        if (value === '') {
+            setFieldErrors({
+                ...fieldErrors,
+                [name]: true
+            });
+        } else {
+            setFieldErrors({
+                ...fieldErrors,
+                [name]: false
+            });
+        }
+        // 에러 필드를 나타내기 위한 코드 //
     };
 
-    const handleSubmit = async (e) => {
+    const modifyAccmConfirm = async (e) => {
         e.preventDefault();
 
         // 이미지 때문에 formData를 백엔드로 전송해야 한다.
         const data = new FormData();
+
+        // 에러 메시지 띄우기 위한 변수 시작 //
+        let allFieldsValid = true;
+        const newErrors = {};
+        // 에러 메시지 띄우기 위한 변수 끝 //
 
         for (const key in formData) {
             if (key === "a_acc_image") {
@@ -131,23 +205,59 @@ const ModifyAccm = () => {
                     data.append("a_acc_image", file);
                 });
             } else if (key === "a_acc_address") { // a_acc_address 객체를 처리하는 부분
-                data.append("a_acc_address", formData[key].areaAddress + formData[key].detailAddress);
+                data.append("a_acc_address", formData[key].combinedAddress);
             } else {
                 data.append(key, formData[key]);
             }
         }
 
+
+        // 이미지 업로드 에러 메시지 시작
+        if (!selectedFileNames.length) {
+            setImageError(true);
+            console.log("이미지 업로드 필요");
+            errorMessageRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            return;
+        }
+        else {
+            setImageError(false);
+        }
+        // 이미지 업로드 에러 메시지 끝
+
+        // 에러 메시지 띄우기 위한 로직 시작
+        for (const field in fieldErrors) {
+            if (formData[field] === '') {
+                newErrors[field] = true;
+                allFieldsValid = false;
+                errorMessageRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        }
+
+        setFieldErrors(newErrors);
+
+        if (!allFieldsValid) return;
+        // 에러 메시지 띄우기 위한 로직 끝
+
+
         // adminAccmDto 객체에 모든 데이터를 담아서 보내기
-        data.append("adminAccmDto", JSON.stringify({
+        const jsonBlob = new Blob([JSON.stringify({
             a_acc_name: formData.a_acc_name,
             a_acc_intro: formData.a_acc_intro,
             a_acc_kind: formData.a_acc_kind,
             a_acc_bn: formData.a_acc_bn,
             a_m_no: formData.a_m_no,
             a_m_email: formData.a_m_email,
-            a_acc_address: formData.a_acc_address.areaAddress + " " + formData.a_acc_address.detailAddress,
+            a_acc_address: formData.a_acc_address.combinedAddress,
             a_acc_phone: formData.a_acc_phone
-        }));
+        })], { type: "application/json" });
+
+        data.append("adminAccmDto", jsonBlob);
 
         try {
             const response = await axios.post("/api/admin/accm/modify_confirm",
@@ -157,11 +267,9 @@ const ModifyAccm = () => {
                 }
             });
             console.log(response.data);  // "success" 출력
+            alert("숙박업소가 수정되었습니다 수정된 숙박업소의 상세페이지로 이동됩니다");
+            navigate('/admin/accommodation/detailAccm');
 
-            if (response.data === "success") {
-                navigate('/Create_account_success');
-                navigate('/miniBoard/Create_account_success');
-            }
 
         } catch (error) {
             console.error("등록실패:", error);
@@ -172,8 +280,7 @@ const ModifyAccm = () => {
         setFormData(prevState => ({
             ...prevState,
             a_acc_address: {
-                areaAddress: data.areaAddress,
-                detailAddress: data.detailAddress
+                combinedAddress: data.combinedAddress
             }
         }));
     };
@@ -192,8 +299,8 @@ const ModifyAccm = () => {
                     <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
                         숙박 업소 수정
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-
+                    {/* <Box component="form" onSubmit={modifyAccmConfirm} noValidate sx={{ mt: 1 }}> */}
+                    <form onSubmit={modifyAccmConfirm} name='regist_accm_confirm' style={{ width: '100%', marginTop: 1 }}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -214,6 +321,9 @@ const ModifyAccm = () => {
                                 이미지 업로드
                             </Button>
                         </label>
+                        <p style={{ color: imageError ? 'red' : 'transparent' }} ref={errorMessageRef}>
+                            {imageError ? "이미지를 업로드해주세요." : ""}
+                        </p>
                         <List>
                             {selectedFileNames.map((fileName, index) => (
                                 <ListItem key={fileName.key}>
@@ -223,6 +333,7 @@ const ModifyAccm = () => {
                                 </ListItem>
                             ))}
                         </List>
+
 
 
                         <CKEditor
@@ -241,6 +352,18 @@ const ModifyAccm = () => {
                                     ...prevState,
                                     a_acc_intro: data
                                 }));
+                                // CKeditor에 글을 적으면 에러메시지 제거
+                                if (data === '') {
+                                    setFieldErrors(prevErrors => ({
+                                        ...prevErrors,
+                                        a_acc_intro: true
+                                    }));
+                                } else {
+                                    setFieldErrors(prevErrors => ({
+                                        ...prevErrors,
+                                        a_acc_intro: false
+                                    }));
+                                }
                                 console.log({ event, editor, data });
                             }}
                             onBlur={(event, editor) => {
@@ -250,6 +373,7 @@ const ModifyAccm = () => {
                                 console.log('Focus.', editor);
                             }}
                         />
+                        {fieldErrors.a_acc_intro && <p style={{ color: 'red' }}>숙박업소 정보를 입력하세요.</p>}
 
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <InputLabel htmlFor="a_acc_kind">숙박업소 종류</InputLabel>
@@ -257,7 +381,20 @@ const ModifyAccm = () => {
                                 label="숙박업소 종류"
                                 id="a_acc_kind"
                                 value={formData.a_acc_kind}
-                                onChange={(e) => setFormData({ ...formData, a_acc_kind: e.target.value })}
+                                onChange={(e) => {
+                                    setFormData({ ...formData, a_acc_kind: e.target.value });
+                                    if (e.target.value === '') {
+                                        setFieldErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            a_acc_kind: true
+                                        }));
+                                    } else {
+                                        setFieldErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            a_acc_kind: false
+                                        }));
+                                    }
+                                }}
                             >
                                 <MenuItem value={"호텔/리조트"}>호텔/리조트</MenuItem>
                                 <MenuItem value={"펜션/풀빌라"}>펜션/풀빌라</MenuItem>
@@ -265,6 +402,7 @@ const ModifyAccm = () => {
                                 <MenuItem value={"캠핑/글램핑"}>캠핑/글램핑</MenuItem>
                                 <MenuItem value={"게스트하우스"}>게스트하우스</MenuItem>
                             </Select>
+                            {fieldErrors.a_acc_kind && <FormHelperText error>숙박업소 종류를 선택하세요.</FormHelperText>}
                         </FormControl>
 
                         <TextField
@@ -330,12 +468,12 @@ const ModifyAccm = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="selected_address"
+                            id="a_acc_address.combinedAddress"
                             label="일반 주소"
-                            name="selected_address"
-                            autoComplete="selected_address"
+                            name="a_acc_address.combinedAddress."
+                            autoComplete="a_acc_address.combinedAddress"
                             autoFocus
-                            value={formData.a_acc_address.areaAddress + formData.a_acc_address.detailAddress}
+                            value={formData.a_acc_address.combinedAddress}
                             onChange={handleChange}
                             InputLabelProps={{ shrink: true }}
                         />
@@ -377,7 +515,7 @@ const ModifyAccm = () => {
                                 color="primary"
                                 sx={{ mt: 3, mb: 2, mr: 2 }}
                             >
-                                등록
+                                수정
                             </Button>
                             <Button
                                 type="submit"
@@ -389,10 +527,11 @@ const ModifyAccm = () => {
                                 취소
                             </Button>
                         </Box>
-                    </Box>
+                    </form>
                 </Box>
+                {/* </Box> */}
             </Paper>
-        </Container>
+        </Container >
     );
 
 }

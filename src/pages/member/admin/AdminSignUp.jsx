@@ -64,7 +64,7 @@ function AdminSignUp() {
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (regExpEmail.test(mail) && patternPhone.test(phone)) {
+    if (pwCheck) {
       data = {
         "mail": mail,
         "pw": pw,
@@ -84,8 +84,8 @@ function AdminSignUp() {
           } else if (response.data === 1) {
             //성공
             console.log('성공');
-            navigate('/member/admin/signin');
-            //로그인 페이지로 가도록 경로 변경하기
+            navigate('/')
+            //admin 메인으로 가도록 경로 변경하기
 
           } else {
             console.log('fail');
@@ -96,14 +96,6 @@ function AdminSignUp() {
           // 실패
 
         });
-    } else if (!regExpEmail.test(mail)) {
-      alert("메일 형식이 틀립니다.");
-      console.log("메일 형식이 틀립니다.")
-
-    } else if (!patternPhone.test(phone)) {
-      alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
-
     }
 
   };
