@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { value: 'asd' };
+const initialState = { value: '' };
 
 const SignInSlice = createSlice({
     name: 'accessToken',
     initialState,
   reducers: {
     setAccessToken: (state, action)=>{
+
       state.value = action.payload;
     },
   },

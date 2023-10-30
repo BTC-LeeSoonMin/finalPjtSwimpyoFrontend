@@ -11,6 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 function AdminSignUp() {
   const [pw, setPw] = useState('');
@@ -75,21 +76,31 @@ function AdminSignUp() {
         "a_m_ar_yn": a_m_ar_yn,
       }
 
+      
+
       axios.post("/api/member/admin/signUp", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === 2) {
-            console.log('사용중인 아이디입니다.');
+          if (response.data === "MemberAdminDup") {
+            //이메일 중복 실패 
+            console.log('사용중인 이메일입니다.');
+            alert("사용중인 이메일입니다.");
 
-          } else if (response.data === 1) {
-            //성공
+          } else if (response.data === "MemberAdminSignUpSuccess") { 
+            //성공 
             console.log('성공');
-            navigate('/member/admin/signIn');
             //로그인 페이지로 가도록 경로 변경하기
+            navigate('/member/admin/signIn');
+
+          } else if (response.data === "MemberAdminSignUpFail") {
+            //DB 에러
+            console.log('DB 통신 에러');
+            alert("통신 에러 다시 시도해주세요.");
 
           } else {
+            //실패 
             console.log('fail');
-
+            alert("통신 에러 다시 시도해주세요.");
 
           }
         }).catch((error) => {
@@ -134,7 +145,7 @@ function AdminSignUp() {
             autoComplete="email"
             // value={mail}
             onChange={(e) => setMail(e.target.value)}
-          />
+          /> 
           <TextField
             variant="outlined"
             margin="normal"
@@ -161,9 +172,7 @@ function AdminSignUp() {
             // value={pwConfirm}
             onChange={onChangePwCheck}
           />
-          {!pwCheck && (<Typography variant="body2" color="error">
-            비밀번호가 일치하지 않습니다.
-          </Typography>)}
+          {!pwCheck && <Alert severity="error">비밀번호가 일치하지 않습니다.</Alert>} 
           <TextField
             variant="outlined"
             margin="normal"
@@ -189,12 +198,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>현재 숙박 운영 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '1rem' }}>현재 숙박 운영 여부</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup id='a_m_oper_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
-                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="Y" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_oper_yn' value="N" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="아니오" />
+                  <FormControlLabel required control={<Radio name='a_m_oper_yn' value="Y" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel required control={<Radio name='a_m_oper_yn' value="N" onChange={(e) => setA_m_oper_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -202,12 +211,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>사업자 등록증 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '1rem' }}>사업자 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup id='a_m_br_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ ml: '4px' }}>
-                  <FormControlLabel control={<Radio name='a_m_br_yn' value="Y" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_br_yn' value="N" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="아니오" />
+                  <FormControlLabel required control={<Radio name='a_m_br_yn' value="Y" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel required control={<Radio name='a_m_br_yn' value="N" onChange={(e) => setA_m_br_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>
@@ -215,12 +224,12 @@ function AdminSignUp() {
           <FormControl>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '2rem' }}>숙박업 등록증 여부</FormLabel>
+                <FormLabel id="demo-row-radio-buttons-group-label" sx={{ ml: '1rem' }}>숙박업 등록증 여부</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup id='a_m_ar_yn' row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" sx={{ ml: '4px' }}>
-                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="Y" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="네" />
-                  <FormControlLabel control={<Radio name='a_m_ar_yn' value="N" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="아니오" />
+                  <FormControlLabel required control={<Radio name='a_m_ar_yn' value="Y" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="네" />
+                  <FormControlLabel required control={<Radio name='a_m_ar_yn' value="N" onChange={(e) => setA_m_ar_yn(e.target.value)} />} label="아니오" />
                 </RadioGroup>
               </Grid>
             </Grid>
