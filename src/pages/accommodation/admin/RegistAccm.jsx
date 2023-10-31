@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import PostcodeComponent from '../../../components/PostCodeComponent';
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 const RegistAccm = () => {
@@ -21,7 +21,7 @@ const RegistAccm = () => {
             combinedAddress: ''
         },
         a_acc_phone: '',
-        a_acc_image: []
+        a_i_image: []
     });
 
     const [fieldErrors, setFieldErrors] = useState({
@@ -51,15 +51,15 @@ const RegistAccm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(formData.a_acc_image);
-    }, [formData.a_acc_image]);
+        console.log(formData.a_i_image);
+    }, [formData.a_i_image]);
 
 
     const uploadProfile = (e) => {
         const files = Array.from(e.target.files);
         setFormData(prevState => ({
             ...prevState,
-            a_acc_image: [...prevState.a_acc_image, ...files]
+            a_i_image: [...prevState.a_i_image, ...files]
         }));
         // 선택된 파일의 이름들을 보여주는 코드 추가
         const fileNames = files.map(file => (
@@ -86,10 +86,10 @@ const RegistAccm = () => {
         // 선택된 이미지를 제거합니다.
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        const updatedImages = formData.a_acc_image.filter((_, index) => index !== indexToRemove);
+        const updatedImages = formData.a_i_image.filter((_, index) => index !== indexToRemove);
         setFormData(prevState => ({
             ...prevState,
-            a_acc_image: updatedImages
+            a_i_image: updatedImages
         }));
 
         // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
@@ -139,9 +139,9 @@ const RegistAccm = () => {
         // 에러 메시지 띄우기 위한 변수 끝 //
 
         for (const key in formData) {
-            if (key === "a_acc_image") {
+            if (key === "a_i_image") {
                 formData[key].forEach((file) => {
-                    data.append("a_acc_image", file);
+                    data.append("a_i_image", file);
                 });
             } else if (key === "a_acc_address") { // a_acc_address 객체를 처리하는 부분
                 data.append("a_acc_address", formData[key].combinedAddress);
@@ -212,7 +212,6 @@ const RegistAccm = () => {
             console.log(response.data);  // "success" 출력
             alert("숙박업소가 등록되었습니다 등록된 숙박업소의 상세페이지로 이동됩니다");
             navigate('/admin/accommodation/detailAccm');
-
         } catch (error) {
             console.error("등록실패:", error);
         }
@@ -265,7 +264,7 @@ const RegistAccm = () => {
 
                         <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
                         <label htmlFor="fileInput">
-                            <Button variant="contained" color="primary" component="span">
+                            <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
                                 이미지 업로드
                             </Button>
                         </label>
@@ -366,7 +365,7 @@ const RegistAccm = () => {
                             onChange={handleChange}
                         />
 
-                        {/* <TextField
+                        <TextField
                             variant="outlined"
                             margin="normal"
                             required
@@ -378,7 +377,7 @@ const RegistAccm = () => {
                             autoFocus
                             value={formData.a_m_no}
                             onChange={handleChange}
-                        /> */}
+                        />
 
                         <TextField
                             variant="outlined"
@@ -468,11 +467,12 @@ const RegistAccm = () => {
                             </Button>
 
                             <Button
-                                type="submit"
+                                type="button"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 sx={{ mt: 3, mb: 2 }}
+                                onClick={() => navigate(-1)}
                             >
                                 취소
                             </Button>

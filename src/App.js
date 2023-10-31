@@ -20,6 +20,7 @@ import ModifyAccm from './pages/accommodation/admin/ModifyAccm';
 import AdminFooter from './commons/footer/admin/AdminFooter';
 import AdminModify from './pages/member/admin/AdminModify';
 import AdminChangePw from './pages/member/admin/AdminChangePw';
+import RegistRoom from './pages/accommodation/admin/RegistRoom';
 
 function App() {
     const [backData, setBackData] = useState("");
@@ -93,6 +94,12 @@ function App() {
                         path="/admin/accommodation/modifyAccm/:no"
                         element={<ModifyAccm />}
                     ></Route>
+
+                    <Route
+                        path="/admin/accommodation/registRoom"
+                        element={<RegistRoom />}>
+                    </Route>
+
                     <Route
                         path="/member/admin/signIn"
                         element={<AdminSignIn />}

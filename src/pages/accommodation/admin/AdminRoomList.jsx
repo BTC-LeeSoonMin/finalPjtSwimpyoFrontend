@@ -7,12 +7,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { useNavigate } from "react-router";
+import ConfirmOrClose from "../../../components/ConfirmOrClose";
 
 const AdminRoomList = () => {
 
+    // 모달창 열기 //
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('');
     const [items, setItems] = useState([]);
+
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -21,6 +26,10 @@ const AdminRoomList = () => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleRegistConfirmation = () => {
+        navigate("/admin/accommodation/registRoom");
+    }
 
 
     const handleAdd = () => {
@@ -36,41 +45,12 @@ const AdminRoomList = () => {
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 +
             </Button>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>방 등록</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="이름"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="이름"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        취소
-                    </Button>
-                    <Button onClick={handleAdd} color="primary">
-                        등록
-                    </Button>
-                </DialogActions>
-            </Dialog>
             <List>
                 {items.map((item, index) => (
                     <ListItem key={index}>{item}</ListItem>
                 ))}
             </List>
+            <ConfirmOrClose open={open} close={handleClose} confirmation={handleRegistConfirmation} words="등록" />
         </div>
     );
 

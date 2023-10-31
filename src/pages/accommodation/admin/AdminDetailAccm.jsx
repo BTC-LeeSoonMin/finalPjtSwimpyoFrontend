@@ -32,7 +32,7 @@ const AdminDetailAccm = () => {
     }));
 
 
-    const [data, setData] = useState([]);
+    const [accmData, setAccmData] = useState({});
     const [images, setImages] = useState([]);
     const requestData = { a_m_no: 1 };
     const navigate = useNavigate();
@@ -58,7 +58,7 @@ const AdminDetailAccm = () => {
         } else if (type === 'delete') {
             setOpenDelete(true); // 삭제 버튼 클릭 시 삭제 모달을 열도록
         }
-    };
+    }
 
     const close = (type) => {
         if (type === 'edit') {
@@ -82,19 +82,7 @@ const AdminDetailAccm = () => {
     /* 수정과 삭제를 위한 함수 끝 */
 
 
-    const handleAddRoom = () => {
-        setIsAddingRoom(true);
-    };
 
-    const handleSaveRoom = () => {
-        // 여기에서 방을 등록하고 서버에 저장하는 작업을 수행합니다.
-        const newRoom = {
-            // 새 방의 정보를 생성
-        };
-
-        setRooms([...rooms, newRoom]);
-        setIsAddingRoom(false);
-    };
 
     const handleRoomDetails = (roomId) => {
         // 방 상세 정보 페이지로 이동
@@ -102,10 +90,6 @@ const AdminDetailAccm = () => {
         // React Router 등을 통해 페이지로 이동할 수 있습니다.
     };
 
-    // useEffect(() => {
-    //     getSpringData();
-
-    // }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,18 +97,15 @@ const AdminDetailAccm = () => {
                 const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
                 //  res -> 서버에서 받아온 데이터
                 console.log("detail data success");
-                setData(res.data); // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-                console.log(res.data.a_acc_image);
+                // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+                console.log("확인 : ", res.data);
+                setAccmData(res.data.adminAccmDto);
+                console.log("accmData", accmData);
+                setImages(res.data.a_i_images);
+                // const imageUrls = images.a_i_images;
+                // setImages(imageUrls);
 
-                setImages([res.data.a_acc_image]);
-                // console.log(images)
-                // if (Array.isArray(images)) {
-                //     console.log(images)
-                //     const imageUrls = images.map(item => item.imageUrl);
-                //     setImages(imageUrls);
-                // } else {
-                //     console.error("images 상태가 배열 형식이 아닙니다:", images);
-                // }
+
             } catch (error) {
                 console.error("An error occurred:", error);
             }
@@ -132,15 +113,19 @@ const AdminDetailAccm = () => {
 
         fetchData(); // 비동기 함수 호출
     }, []);
+    console.log("accmData", accmData);
+    console.log("image", images);
 
-    useEffect(() => {
-        if (Array.isArray(images)) {
-            console.log(images);
-            setImages(images);
-        } else {
-            console.error("images 상태가 배열 형식이 아닙니다:", images);
-        }
-    }, [images]);
+    // useEffect(() => {
+    //     if (Array.isArray(images)) {
+    // console.log(images)
+    // // const imageUrls = images.map(item => item.imageUrl);
+    // const imageUrls = res.data.a_i_images
+    // setImages(imageUrls);
+    //     } else {
+    //         console.error("images 상태가 배열 형식이 아닙니다:", images);
+    //     }
+    // }, [images]);
 
     return (
 
@@ -151,7 +136,7 @@ const AdminDetailAccm = () => {
                     <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
                         <EditIcon />
                     </IconButton>
-                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(data.a_acc_name)} words="수정" />
+                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(accmData.a_acc_name)} words="수정" />
 
                     <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
                         <DeleteIcon />
@@ -175,7 +160,7 @@ const AdminDetailAccm = () => {
 
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
-                        {data.a_acc_name}
+                        {accmData.a_acc_name}
                         <Grid item xs={10} sx={{ mt: '10px' }}>
                             <Divider variant="left" sx={{ width: '100%' }} />
                         </Grid>
@@ -185,19 +170,19 @@ const AdminDetailAccm = () => {
 
                 <Item sx={{ marginTop: '1rem' }}>
                     <Grid container xs={10} sx={{ alignSelf: 'flex-start', fontSize: '15px', marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        주소 : {data.a_acc_address}
+                        주소 : {accmData.a_acc_address}
                     </Grid>
                     <Grid container xs={10} sx={{ alignSelf: 'flex-start', fontSize: '15px', marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        연락처 : {data.a_acc_phone}
+                        연락처 : {accmData.a_acc_phone}
                     </Grid>
                     <Grid container xs={10} sx={{ alignSelf: 'flex-start', fontSize: '15px', marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        이메일 : {data.a_m_email}
+                        이메일 : {accmData.a_m_email}
                     </Grid>
                     <Grid container xs={10} sx={{ alignSelf: 'flex-start', fontSize: '15px', marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        사업자 번호 : {data.a_acc_bn}
+                        사업자 번호 : {accmData.a_acc_bn}
                     </Grid>
                     <Grid container xs={10} sx={{ alignSelf: 'flex-start', fontSize: '15px', marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        대표자 명 : {data.a_m_name}
+                        대표자 명 : {accmData.a_m_name}
                     </Grid>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
                         <Grid item xs={10} sx={{ mt: '10px' }}>
@@ -212,7 +197,7 @@ const AdminDetailAccm = () => {
                         업소 정보
                     </Grid>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <span dangerouslySetInnerHTML={{ __html: data.a_acc_intro }}></span>
+                        <span dangerouslySetInnerHTML={{ __html: accmData.a_acc_intro }}></span>
                     </Grid>
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -228,52 +213,7 @@ const AdminDetailAccm = () => {
                         객실
                     </Grid>
                     <AdminRoomList />
-                    <Grid container spacing={2}>
-                        {rooms.map((room, index) => (
-                            <Grid item key={index} xs={12}>
-                                <Card>
-                                    <CardContent>
-                                        <h2>방 이름: {room.roomName}</h2>
-                                        {/* 다른 방 정보 표시 */}
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() => handleRoomDetails(room.id)}
-                                        >
-                                            방 상세 보기
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                        {isAddingRoom && (
-                            <Grid item xs={12}>
-                                <Card>
-                                    <CardContent>
-                                        {/* 방 등록 양식 입력 */}
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={handleSaveRoom}
-                                        >
-                                            저장
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        )}
-                    </Grid>
-                    <Grid item xs={12}>
-                        {isAddingRoom ? (
-                            <IconButton aria-label="방 등록" onClick={handleSaveRoom}>
-                                <AddIcon />
-                            </IconButton>
-                        ) : (
-                            <IconButton aria-label="방 추가" onClick={handleAddRoom}>
-                                <AddIcon />
-                            </IconButton>
-                        )}
-                    </Grid>
+
                 </Item>
 
             </Paper>
@@ -281,8 +221,9 @@ const AdminDetailAccm = () => {
 
 
     );
-
-
 }
+
+
+
 
 export default AdminDetailAccm;
