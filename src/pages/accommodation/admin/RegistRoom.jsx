@@ -2,6 +2,15 @@ import React, { useState, useRef } from 'react';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 
 const RegistRoom = () => {
 
@@ -29,6 +38,19 @@ const RegistRoom = () => {
 
 
     const navigate = useNavigate();
+
+    const [checkInTime, setCheckInTime] = React.useState(new Date().setHours(14, 0));
+    const [checkOutTime, setCheckOutTime] = React.useState(new Date().setHours(11, 0));
+
+    const handleCheckInTimeChange = (time) => {
+        setCheckInTime(time);
+
+    };
+
+    const handleCheckOutTimeChange = (time) => {
+
+        setCheckOutTime(time);
+    };
 
     // const uploadProfile = (e) => {
     //     const files = Array.from(e.target.files);
@@ -253,11 +275,99 @@ const RegistRoom = () => {
                             autoFocus
                             value={a_r_name}
                             onChange={handleChange}
-                            // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                            error={a_r_name}
+                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
+                        // error={a_r_name}
                         />
 
+                        <FormControl sx={{ mt: 3 }}>
+                            <FormLabel id="demo-row-radio-buttons-group-label">숙박/대실</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                            >
+                                <FormControlLabel value="숙박" control={<Radio />} label="숙박" />
+                                <FormControlLabel value="대실" control={<Radio />} label="대실" />
 
+                            </RadioGroup>
+                        </FormControl>
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="a_r_count"
+                            label="룸 개수"
+                            name="a_r_count"
+                            type="number"
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">개</InputAdornment>,
+                                inputProps: {
+                                    min: 0 // 가격은 0 이상이어야 함
+                                }
+                            }}
+                            autoComplete="off"
+                            value={a_r_count}
+                            onChange={handleChange}
+                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
+                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="a_r_price"
+                            label="가격"
+                            name="a_r_price"
+                            type="number"
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">₩</InputAdornment>,
+                                inputProps: {
+                                    min: 0 // 가격은 0 이상이어야 함
+                                }
+                            }}
+                            autoComplete="off"
+                            value={a_r_price}
+                            onChange={handleChange}
+                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
+                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="안내 내용 / 설명"
+                            multiline
+                        // rows={4} // 기본적으로 보여줄 행의 수
+                        />
+
+                        <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: 3, width: '100%' }}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <TimePicker
+                                    label="체크인 시간"
+                                    value={checkInTime}
+                                    onChange={handleCheckInTimeChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    minutesStep={60} // 1시간 단위로 변경
+                                />
+                                <h2>~</h2>
+
+                                <TimePicker
+                                    label="체크아웃 시간"
+                                    value={checkOutTime}
+                                    onChange={handleCheckOutTimeChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    minutesStep={60} // 1시간 단위로 변경
+                                />
+                            </LocalizationProvider>
+
+                        </Box>
 
 
 

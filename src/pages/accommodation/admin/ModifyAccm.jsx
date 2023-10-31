@@ -187,11 +187,12 @@ const ModifyAccm = () => {
         // 이미지의 a_i_no 값을 찾습니다.
         const imageNoToRemove = selectedFileNames[indexToRemove]?.key;  // key = a_i_no
         console.log("키 번호", imageNoToRemove);
+        console.log("키 번호 타입", typeof (imageNoToRemove));
 
         // 이미지 고유 번호(a_i_no)를 deleteImage 배열에 추가합니다.
-        setDeleteImage(prevDeleteImage => [...prevDeleteImage, imageNoToRemove]);
-
-
+        if (!imageNoToRemove.includes('.')) {
+            setDeleteImage(prevDeleteImage => [...prevDeleteImage, imageNoToRemove]);
+        }
         // 백엔드에서 받아온 이미지 또한 제거
         const updatedImages = formData.a_i_image.filter((image, index) => index !== indexToRemove);
         setFormData(prevState => ({
@@ -325,7 +326,6 @@ const ModifyAccm = () => {
 
         // adminAccmDto 객체에 모든 데이터를 담아서 보내기
         const jsonBlob = new Blob([JSON.stringify({
-            // a_i_no: formData.a_i_no,
             a_acc_no: formData.a_acc_no,
             a_acc_name: formData.a_acc_name,
             a_acc_intro: formData.a_acc_intro,
