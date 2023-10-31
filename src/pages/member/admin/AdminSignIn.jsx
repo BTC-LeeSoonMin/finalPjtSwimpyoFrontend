@@ -10,8 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import { SignInSlice, setAccessToken, tokenAction } from '../../../commons/rtk/slice/SignInSlice';
 import { useSelector,useDispatch } from 'react-redux';
 import api from '../../../hooks/RefreshTokenAuto';
-import Cookies from "js-cookie";
-import Alert from '@mui/material/Alert';
 
 function AdminSignIn() {
   const [email, setEmail] = useState('');
@@ -32,18 +30,6 @@ function AdminSignIn() {
     headers: {
       'Content-Type': 'application/json; charset=utf-8'
     }
-  };
-
-  const test = (e) => {
-
-    console.log("test");
-
-    api.get("/api/test", config,)
-      .then((response) => {
-        console.log('test', response.data); 
-        
-      })
-      .catch();
   };
 
   const signInForm = (e) => {
@@ -132,15 +118,6 @@ function AdminSignIn() {
           </Button>
         </form>
         <a href="/member/admin/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</a>
-        {/* <Button
-            type="submit"
-            onClick={(e) => test(e)}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
-          >
-            test
-          </Button> */}
       </Paper>
     </Container>
     </>

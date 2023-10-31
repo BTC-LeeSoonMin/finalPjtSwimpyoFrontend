@@ -27,8 +27,8 @@ function App() {
 
         <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
-                {/* <AdminHeader />
-                <AdminNav />
+                {/* <AdminHeader /> */}
+                {/* <AdminNav />
                 <AdminMain/> */}
                 <Header />
                 <Nav />
