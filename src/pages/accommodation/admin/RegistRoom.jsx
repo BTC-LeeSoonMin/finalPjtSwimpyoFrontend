@@ -10,6 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 const RegistRoom = () => {
@@ -19,11 +20,18 @@ const RegistRoom = () => {
     const [a_r_name, setA_r_name] = useState(''); // 방이름
     const [a_r_state, setA_r_state] = useState(''); // 숙박 대실
     const [a_r_price, setA_r_price] = useState(''); // 방 가격
-    const [a_r_check_in, setA_r_check_in] = useState(''); // 체크인 시간
-    const [a_r_check_out, setA_r_check_out] = useState(''); // 체크아웃 시간
+    const [a_r_check_in, setA_r_check_in] = React.useState(new Date().setHours(14, 0)); // 체크인 시간 상태
+    const [a_r_check_out, setA_r_check_out] = React.useState(new Date().setHours(11, 0)); // 체크아웃 시간 상태
     const [a_r_count, setA_r_count] = useState(''); // 방 개수
     const [a_r_content, setA_r_content] = useState(''); // 방 안내 설명
     const [a_r_image, setA_r_image] = useState([]); // 방 이미지
+
+    const [fieldErrors, setFieldErrors] = useState({
+        a_r_state: false,
+        a_r_check_in: false,
+        a_r_check_out: false
+        // 필요한 나머지 필드들도 여기에 추가
+    });
 
     // 파일 업로드를 위한 상태
     const [selectedFileNames, setSelectedFileNames] = useState([]);
@@ -39,62 +47,54 @@ const RegistRoom = () => {
 
     const navigate = useNavigate();
 
-    const [checkInTime, setCheckInTime] = React.useState(new Date().setHours(14, 0));
-    const [checkOutTime, setCheckOutTime] = React.useState(new Date().setHours(11, 0));
 
+    // 체크인 시간 상태 변화
     const handleCheckInTimeChange = (time) => {
-        setCheckInTime(time);
-
+        setA_r_check_in(time);
     };
 
+    // 체크아웃 시간 상태 변화
     const handleCheckOutTimeChange = (time) => {
-
-        setCheckOutTime(time);
+        setA_r_check_out(time);
     };
 
-    // const uploadProfile = (e) => {
-    //     const files = Array.from(e.target.files);
-    //     setA_r_image(prevImages => ({
-    //         [...prevState.prevImages, ...files]
-    //     );
-    //     // 선택된 파일의 이름들을 보여주는 코드 추가
-    //     const fileNames = files.map(file => (
-    //         <ListItem key={file.name + Date.now()}>
-    //             <ListItemText primary={file.name} />
-    //         </ListItem>
-    //     ));
-    //     setSelectedFileNames(prevFileNames => [...prevFileNames, ...fileNames]); // React의 state를 사용하여 파일 이름을 저장
+    const uploadProfile = (e) => {
+        const files = Array.from(e.target.files);
+        setA_r_image(prevImages => [...prevImages, ...files]);
+        // 선택된 파일의 이름들을 보여주는 코드 추가
+        const fileNames = files.map(file => (
+            <ListItem key={file.name + Date.now()}>
+                <ListItemText primary={file.name} />
+            </ListItem>
+        ));
+        setSelectedFileNames(prevFileNames => [...prevFileNames, ...fileNames]); // React의 state를 사용하여 파일 이름을 저장
 
-    //     const fileURLs = files.map(file => URL.createObjectURL(file)); // 이미지 URL 생성
-    //     setSelectedFileURLs(prevURLs => [...prevURLs, ...fileURLs]); // 이미지 URL 상태에 저장
+        const fileURLs = files.map(file => URL.createObjectURL(file)); // 이미지 URL 생성
+        setSelectedFileURLs(prevURLs => [...prevURLs, ...fileURLs]); // 이미지 URL 상태에 저장
 
-    //     e.target.value = null;
+        e.target.value = null;
 
-    //     // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
-    //     if (e.target.files.length >= 0) {
-    //         setImageError(false);
-    //     }
-    //     // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
-    // };
+        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
+        if (e.target.files.length >= 0) {
+            setImageError(false);
+        }
+        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
+    };
 
-    // const handleRemoveImage = (keyToRemove) => {
-    //     // 선택된 이미지를 제거합니다.
-    //     const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
+    const handleRemoveImage = (keyToRemove) => {
+        // 선택된 이미지를 제거합니다.
+        const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-    //     const updatedImages = formData.a_r_image.filter((_, index) => index !== indexToRemove);
-    //     setFormData(prevState => ({
-    //         ...prevState,
-    //         a_r_image: updatedImages
-    //     }));
+        setA_r_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
 
-    //     // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
-    //     const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
-    //     setSelectedFileNames(updatedFileNames);
+        // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
+        const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
+        setSelectedFileNames(updatedFileNames);
 
-    //     // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
-    //     const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
-    //     setSelectedFileURLs(updatedFileURLs);
-    // };
+        // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
+        const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
+        setSelectedFileURLs(updatedFileURLs);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -127,21 +127,24 @@ const RegistRoom = () => {
             default:
                 break;
         }
+
+        // 에러 필드를 나타내기 위한 코드 //
+        if (value === '') {
+            setFieldErrors({
+                ...fieldErrors,
+                [name]: true
+            });
+        } else {
+            setFieldErrors({
+                ...fieldErrors,
+                [name]: false
+            });
+        }
+        // 에러 필드를 나타내기 위한 코드 //
+
     };
 
-    // 에러 필드를 나타내기 위한 코드 //
-    // if (value === '') {
-    //     setFieldErrors({
-    //         ...fieldErrors,
-    //         [name]: true
-    //     });
-    // } else {
-    //     setFieldErrors({
-    //         ...fieldErrors,
-    //         [name]: false
-    //     });
-    // }
-    // 에러 필드를 나타내기 위한 코드 //
+
 
 
 
@@ -184,18 +187,18 @@ const RegistRoom = () => {
         // 이미지 업로드 에러 메시지 끝
 
         // 에러 메시지 띄우기 위한 로직 시작
-        // for (const field in fieldErrors) {
-        //     if (formData[field] === '') {
-        //         newErrors[field] = true;
-        //         allFieldsValid = false;
-        //         errorMessageRef.current.scrollIntoView({
-        //             behavior: 'smooth',
-        //             block: 'center'
-        //         });
-        //     }
-        // }
+        for (const field in fieldErrors) {
+            if (formData[field] === '') {
+                newErrors[field] = true;
+                allFieldsValid = false;
+                errorMessageRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        }
 
-        // setFieldErrors(newErrors);
+        setFieldErrors(newErrors);
 
         if (!allFieldsValid) return;
         // 에러 메시지 띄우기 위한 로직 끝
@@ -279,18 +282,41 @@ const RegistRoom = () => {
                         // error={a_r_name}
                         />
 
+
+                        <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
+                        <label htmlFor="fileInput">
+                            <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                                이미지 업로드
+                            </Button>
+                        </label>
+                        <p style={{ color: imageError ? 'red' : 'transparent' }} ref={errorMessageRef}>
+                            {imageError ? "이미지를 업로드해주세요." : ""}
+                        </p>
+                        <List>
+                            {selectedFileNames.map((fileName, index) => (
+                                <ListItem key={fileName.key}>
+                                    <ListItemText primary={fileName.props.children.props.primary} />
+                                    <img src={selectedFileURLs[index]} alt={fileName.props.children.props.primary} style={{ width: '50px', height: '50px', marginLeft: '10px' }} /> {/* 이미지 미리보기 추가 */}
+                                    <Button onClick={() => handleRemoveImage(fileName.key)} style={{ marginLeft: '10px' }}>X</Button>
+                                </ListItem>
+                            ))}
+                        </List>
+
+
                         <FormControl sx={{ mt: 3 }}>
                             <FormLabel id="demo-row-radio-buttons-group-label">숙박/대실</FormLabel>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
+                                name="a_r_state"
+                                value={a_r_state}
+                                onChange={handleChange}
                             >
                                 <FormControlLabel value="숙박" control={<Radio />} label="숙박" />
                                 <FormControlLabel value="대실" control={<Radio />} label="대실" />
-
                             </RadioGroup>
                         </FormControl>
+
 
                         <TextField
                             variant="outlined"
@@ -338,20 +364,23 @@ const RegistRoom = () => {
 
                         <TextField
                             variant="outlined"
+                            name="a_r_content"
                             margin="normal"
                             required
                             fullWidth
                             id="outlined-multiline-static"
                             label="안내 내용 / 설명"
                             multiline
-                        // rows={4} // 기본적으로 보여줄 행의 수
+                            value={a_r_content}
+                            onChange={handleChange}
+                            rows={5} // 기본적으로 보여줄 행의 수
                         />
 
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: 3, width: '100%' }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <TimePicker
                                     label="체크인 시간"
-                                    value={checkInTime}
+                                    value={a_r_check_in}
                                     onChange={handleCheckInTimeChange}
                                     renderInput={(params) => <TextField {...params} />}
                                     minutesStep={60} // 1시간 단위로 변경
@@ -360,7 +389,7 @@ const RegistRoom = () => {
 
                                 <TimePicker
                                     label="체크아웃 시간"
-                                    value={checkOutTime}
+                                    value={a_r_check_out}
                                     onChange={handleCheckOutTimeChange}
                                     renderInput={(params) => <TextField {...params} />}
                                     minutesStep={60} // 1시간 단위로 변경
