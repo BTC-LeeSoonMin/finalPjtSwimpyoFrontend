@@ -230,6 +230,22 @@ const RegistRoom = () => {
                             margin="normal"
                             required
                             fullWidth
+                            id="a_acc_no"
+                            label="숙박시설 번호"
+                            name="a_acc_no"
+                            autoComplete="a_acc_no"
+                            autoFocus
+                            value={a_acc_no}
+                            onChange={handleChange}
+                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
+                        // error={a_r_name}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
                             id="a_r_name"
                             label="방 이름"
                             name="a_r_name"
@@ -241,21 +257,7 @@ const RegistRoom = () => {
                             error={a_r_name}
                         />
 
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="a_acc_no"
-                            label="숙박시설 번호"
-                            name="a_acc_no"
-                            autoComplete="a_acc_no"
-                            autoFocus
-                            value={a_acc_no}
-                            onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
-                        />
+
 
 
 
