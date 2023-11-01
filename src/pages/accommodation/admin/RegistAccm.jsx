@@ -211,7 +211,7 @@ const RegistAccm = () => {
             });
             console.log(response.data);  // "success" 출력
             alert("숙박업소가 등록되었습니다 등록된 숙박업소의 상세페이지로 이동됩니다");
-            navigate('/admin/accommodation/detailAccm');
+            navigate(`/admin/accommodation/detailAccm/${formData.a_m_no}`);
         } catch (error) {
             console.error("등록실패:", error);
         }

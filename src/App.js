@@ -33,24 +33,24 @@ function App() {
                 <Routes>
                     <Route
                         path="/admin/*"
-                        element={<AdminHeader />}/>
+                        element={<AdminHeader />} />
                     <Route
                         path="/user/*"
-                        element={<Header />}/>
+                        element={<Header />} />
                     <Route
                         path="/"
-                        element={<Header />}/>
+                        element={<Header />} />
                 </Routes>
                 <Routes>
                     <Route
                         path="/admin/*"
-                        element={<AdminNav />}/>
+                        element={<AdminNav />} />
                     <Route
                         path="/user/*"
-                        element={<Nav />}/>
+                        element={<Nav />} />
                     <Route
                         path="/"
-                        element={<Nav />}/>
+                        element={<Nav />} />
                 </Routes>
                 <Routes>
                     <Route
@@ -82,17 +82,17 @@ function App() {
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <RegistAccm /> </div>}
                     ></Route>
                     <Route
-                        path="/admin/accommodation/detailAccm"
+                        path="/admin/accommodation/detailAccm/:a_m_no"
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminDetailAccm /> </div>}
                     ></Route>
                     <Route
-                        path="/admin/accommodation/modifyAccm/:no"
+                        path="/admin/accommodation/modifyAccm/:a_m_no"
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <ModifyAccm /> </div>}
                     ></Route>
 
                     <Route
-                        path="/admin/accommodation/registRoom"
-                        element={<RegistRoom />}>
+                        path="/admin/accommodation/registRoom/:a_acc_no"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <RegistRoom /></div>}>
                     </Route>
 
                     <Route
@@ -113,15 +113,15 @@ function App() {
                     ></Route>
                 </Routes>
                 <Routes>
-                    <Route 
+                    <Route
                         path="/"
-                        element={<Footer />}/>
-                    <Route 
+                        element={<Footer />} />
+                    <Route
                         path="/user/*"
-                        element={<Footer />}/>
-                    <Route 
+                        element={<Footer />} />
+                    <Route
                         path="/admin/*"
-                        element={<AdminFooter />}/>
+                        element={<AdminFooter />} />
                 </Routes>
             </BrowserRouter>
         </div>
