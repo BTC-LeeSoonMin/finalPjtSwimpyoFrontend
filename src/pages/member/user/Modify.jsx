@@ -5,15 +5,28 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
+import api from '../../../hooks/RefreshTokenAuto';
+
+const linkStyle = {
+  color: 'white',
+  textDecoration: 'none',
+  fontSize: '14px',
+  fontWeight: 'normal',
+};
 
 function Modify() {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
+  const [birth, setBirth] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+
+  const dispatch = useDispatch();
 
   const config = {
     headers: {
@@ -24,7 +37,7 @@ function Modify() {
   useEffect(() => {
     console.log('userModify start');
 
-    axios.post("/api/user/member/userInfo",
+    api.post("/api/user/member/userInfo",
       config,
     )
       .then(response => {
@@ -33,6 +46,7 @@ function Modify() {
         setPw(response.data.u_m_pw);
         setNickname(response.data.u_m_nickname);
         setName(response.data.u_m_name);
+        setBirth(response.data.u_m_birth);
         setPhone(response.data.u_m_phone);
         setEmail(response.data.u_m_email);
       }
@@ -42,6 +56,7 @@ function Modify() {
   }, []);
 
   const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+  const regExpEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const modify = (e) => {
     e.preventDefault();
@@ -53,15 +68,16 @@ function Modify() {
 
     let data = {};
 
-    // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (patternPhone.test(phone)) {
+    // 이메일, 연락처 유효성 검사 확인 후
+    if (regExpEmail.test(email) && patternPhone.test(phone)) {
       data = {
         "name": name,
         "phone": phone,
+        "nickname": nickname,
         "email": email,
       }
 
-      axios.post("/api/user/member/modify", JSON.stringify(data), config,)
+      api.post("/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberUserModifySuccess") {
@@ -87,16 +103,54 @@ function Modify() {
       alert("연락처 형식이 틀립니다.");
       console.log("연락처 형식이 틀립니다.")
 
-    }
+    }else if (!regExpEmail.test(email)) {
+      alert("메일 형식이 틀립니다.");
+      console.log("메일 형식이 틀립니다.")
+
+    } 
 
   };
 
   const navigate = useNavigate();
 
+  const signOut = (e) => {
+    e.preventDefault();
+    console.log("click SignOut");
+
+    if(window.confirm("정말 탈퇴하시겠습니까?")) {
+      api.post("/api/admin/member/signout", config,)
+        .then((response) => {
+          console.log('response.data ===', response.data);
+          if(response.data === "signOutSuccess") {
+            //탈퇴 성공
+            dispatch(setAccessToken.setAccessToken(''));
+            alert('탈퇴되었습니다.');
+            navigate('/user/member/signIn');
+          } else if(response.data === "signOutFail") {
+            //실패 
+            alert('탈퇴 실패. 다시 시도해주세요.');
+          } else if(response.data === "signOutFail") {
+            //실패 
+            alert('탈퇴 실패. 다시 시도해주세요.');
+          } else {
+            //실패 
+            alert('탈퇴 실패. 다시 시도해주세요.');
+          }
+
+        }).catch((error) => {
+
+        });
+
+    } else {
+      alert('탈퇴 취소');
+    }
+
+  };
+
   return (
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography variant="h5" component="h1">
+        <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold'}}>
           정보 수정
         </Typography>
         <form onSubmit={(e) => modify(e)} style={{ width: '100%', marginTop: 1 }}>
@@ -119,13 +173,15 @@ function Modify() {
             autoComplete="new-password"
             value={pw}
             disabled
-          /><Button
-          variant="contained"
-          href='/user/member/changePassword'
-          sx={{ ml: 2, mt: 3, backgroundColor: 'skyblue', color: 'white' }} 
-        >
-          비밀번호 수정
-        </Button>
+          />
+          <Link to="/user/member/changePw" style={linkStyle}>
+            <Button
+              variant="contained"
+              sx={{ ml: 2, mt: 3, backgroundColor: 'skyblue', color: 'white' }} // 검정색 배경, 흰색 글자색
+            >
+              비밀번호 변경
+            </Button>
+          </Link>
           <TextField
             label="이름"
             variant="filled"
@@ -149,6 +205,29 @@ function Modify() {
             autoFocus
             onChange={(e) => setPhone(e.target.value)}
           />
+          <TextField
+            label="닉네임"
+            variant="filled"
+            margin="normal"
+            required
+            fullWidth
+            id="nickname"
+            name="nickname"
+            value={nickname || ''}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          <TextField
+            label="이메일"
+            variant="filled"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            name="email"
+            value={email || ''}
+            autoFocus
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Button
             type="submit"
             fullWidth
@@ -159,6 +238,13 @@ function Modify() {
           </Button>
         </form>
       </Paper>
+      <Button
+        variant="contained"
+        sx={{ mt: 3, backgroundColor: 'skyblue' }}
+        onClick={(e) => signOut(e)}
+      >
+        회원탈퇴
+      </Button>
     </Container>
   );
 }

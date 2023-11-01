@@ -64,7 +64,7 @@ function AdminSignUp() {
 
     let data = {};
 
-    // 비밀번호가 일치하는 경우에만 요청을 보냄 
+    // 이메일, 연락처 유효성 검사 확인 후
     if (regExpEmail.test(mail) && patternPhone.test(phone)) {
       data = {
         "mail": mail,

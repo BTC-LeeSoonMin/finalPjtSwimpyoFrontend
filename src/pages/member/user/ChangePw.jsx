@@ -45,15 +45,15 @@ function ChangePw() {
         "afterPw": newPw,
       }
 
-      axios.post("/api/admin/member/changePw", JSON.stringify(data), config,)
+      axios.post("/api/user/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === "AdminChangePwSuccess") {
+          if (response.data === "UserChangePwSuccess") {
             //성공
             console.log('성공');
-            navigate('/admin');
+            navigate('/');
 
-          } else if (response.data === "AdminChangePwFail") {
+          } else if (response.data === "UserChangePwFail") {
             // 기존 비밀번호 틀렸을 경우
             alert('다시 시도해주세요.');
 

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
 import { useSelector,useDispatch } from 'react-redux';
 import api from '../../../hooks/RefreshTokenAuto';
@@ -49,7 +49,7 @@ function SignIn() {
     api.post("/api/user/member/signIn", JSON.stringify(data), config,)
       .then((response) => {
 
-        if (response.data === "MemberAdminLoginFail") {
+        if (response.data === "MemberUserLoginFail") {
           console.log("================존재하지 않는 정보입니다.", response.data);
           alert("존재하지 않는 정보입니다.");
 
@@ -57,17 +57,14 @@ function SignIn() {
           console.log("======================아이디 또는 비밀번호가 일치하지 않습니다.", response.data);
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 
-        } else if (response.data !== null) {
+        } else {
           console.log("======================로그인 성공");
           // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
           console.log('로그인 성공', response.data); 
           dispatch(setAccessToken.setAccessToken(response.data));
           navigate('/');
 
-        } else {
-          console.log("로그인 실패");
-          alert("통신 에러 다시 시도해주세요.");
-        }
+        } 
 
       })
       .catch();
@@ -114,7 +111,7 @@ function SignIn() {
             로그인
           </Button>
         </form>
-        <a href="/user/member/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</a>
+        <Link href="/user/member/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</Link>
       </Paper>
     </Container>
   );

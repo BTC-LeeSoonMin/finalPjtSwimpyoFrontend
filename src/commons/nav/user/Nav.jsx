@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 const linkStyle = {
   color: 'black',
   textDecoration: 'none',
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 'normal',
 };
 

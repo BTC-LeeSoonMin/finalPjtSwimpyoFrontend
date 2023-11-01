@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const linkStyle = {
   color: 'black',
   textDecoration: 'none',
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 'normal',
 };
 

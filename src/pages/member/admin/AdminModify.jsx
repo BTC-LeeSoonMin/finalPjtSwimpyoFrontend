@@ -60,7 +60,7 @@ function AdminModify() {
 
     let data = {};
 
-    // 비밀번호가 일치하는 경우에만 요청을 보냄 
+    // 연락처 유효성 검사 후
     if (patternPhone.test(phone)) {
       data = {
         "name": name,
@@ -72,7 +72,7 @@ function AdminModify() {
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberAdminModifySuccess") {
-            console.log('성0');
+            console.log('성공');
             navigate('/admin');
 
           } else if (response.data === "MemberAdminModifyFail") {
@@ -101,11 +101,9 @@ function AdminModify() {
   const signOut = (e) => {
     e.preventDefault();
     console.log("click SignOut");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
 
     if(window.confirm("정말 탈퇴하시겠습니까?")) {
-      axios.post("/api/admin/member/signout", config,)
+      api.post("/api/admin/member/signout", config,)
         .then((response) => {
           console.log('response.data ===', response.data);
           if(response.data === "signOutSuccess") {
@@ -166,9 +164,9 @@ function AdminModify() {
           <Link to="/admin/member/changePw" style={linkStyle}>
             <Button
               variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }}
             >
-              비밀번호 수정
+              비밀번호 변경
             </Button>
           </Link>
           <TextField
@@ -198,7 +196,7 @@ function AdminModify() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} 
           >
             회원 정보 수정
           </Button>
@@ -206,7 +204,7 @@ function AdminModify() {
       </Paper>
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: 'black', color: 'dangerous' }} // 검정색 배경, 흰색 글자 
+        sx={{ mt: 3, backgroundColor: 'black' }} 
         onClick={(e) => signOut(e)}
       >
         회원탈퇴

@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const today = dayjs();
 
@@ -20,8 +21,9 @@ function SignUp() {
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
   const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
+  const [birth, setBirth] = useState('');
   const [phone, setPhone] = useState('');
-  const [mail, setMail] = useState('');
+  const [email, setEmail] = useState('');
 
   const [pwCheck, setPwCheck] = useState(true);
 
@@ -57,21 +59,22 @@ function SignUp() {
     console.log("click SignUp");
     console.log("ID : ", id);
     console.log("PW : ", pw);
-    console.log("pwConfirm : ", pwConfirm);
     console.log("name : ", name);
+    console.log("birth : ", birth);
     console.log("nickname : ", nickname);
     console.log("phone : ", phone);
-    console.log("mail : ", mail);
+    console.log("email : ", email);
 
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (regExpEmail.test(mail) && patternPhone.test(phone)) {
+    if (regExpEmail.test(email) && patternPhone.test(phone)) {
       data = {
         "id": id,
         "pw": pw,
         "name": name,
-        "mail": mail,
+        "birth": birth,
+        "email": email,
         "phone": phone,
         "nickname": nickname,
       }
@@ -79,31 +82,39 @@ function SignUp() {
       axios.post("/api/user/member/signup", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === 2) {
+          if (response.data === "MemberUserDup") {
             console.log('사용중인 아이디입니다.');
 
-          } else if (response.data === 1) {
-            //성공
+          } else if (response.data === "MemberUserSignUpSuccess") { 
+            //성공 
             console.log('성공');
-            navigate("/user/member/signIn");
+            //로그인 페이지로 가도록 경로 변경하기
+            navigate('/user/member/signIn');
+
+          } else if (response.data === "MemberUserSignUpFail") {
+            //DB 에러
+            console.log('DB 통신 에러');
+            alert("통신 에러 다시 시도해주세요.");
 
           } else {
+            //실패 
             console.log('fail');
+            alert("통신 에러 다시 시도해주세요.");
 
           }
         }).catch((error) => {
           // 실패
 
         });
-    } else if (!regExpEmail.test(mail)) {
-      alert("메일 형식이 틀립니다.");
-      console.log("메일 형식이 틀립니다.")
-
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
       console.log("연락처 형식이 틀립니다.")
 
-    }
+    } else if (!regExpEmail.test(email)) {
+      alert("메일 형식이 틀립니다.");
+      console.log("메일 형식이 틀립니다.")
+
+    } 
 
   };
 
@@ -167,11 +178,12 @@ function SignUp() {
             onChange={(e) => setName(e.target.value)}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoItem label="생년월일">
+            <DemoItem>
               <DatePicker
-                defaultValue={today}
+                label={'생년월일'}
                 disableFuture
                 views={['year', 'month', 'day']}
+                onChange={(newValue) => setBirth(newValue)}
               />
             </DemoItem>
           </LocalizationProvider>
@@ -202,12 +214,12 @@ function SignUp() {
             margin="normal"
             required
             fullWidth
-            id="mail"
+            id="email"
             label="이메일"
-            name="mail"
+            name="email"
             autoComplete="email"
             // value={mail}
-            onChange={(e) => setMail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Button
             type="submit"
@@ -219,7 +231,7 @@ function SignUp() {
             회원가입
           </Button>
         </form>
-        <a href="/user/member/signIn" style={linkStyle}>이미 계정이 없으신가요? 로그인</a>
+        <Link to="/user/member/signIn" style={linkStyle}>이미 계정이 있으신가요? 로그인</Link>
       </Paper>
     </Container>
   );

@@ -12,7 +12,7 @@ import logo from '../../../assets/logo.png';
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 'normal',
 };
 

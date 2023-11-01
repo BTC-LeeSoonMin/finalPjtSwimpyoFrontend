@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontSize: '14px',
+  fontSize: '16px',
   fontWeight: 'normal',
 };
 
