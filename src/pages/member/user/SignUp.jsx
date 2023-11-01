@@ -5,6 +5,13 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container } from '@mui/material';
+import dayjs from 'dayjs';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+const today = dayjs();
 
 function SignUp() {
   const [id, setId] = useState('');
@@ -39,7 +46,8 @@ function SignUp() {
 
   }
 
-  const createAccountConfirm = () => {
+  const createAccountConfirm = (e) => {
+    e.preventDefault();
     console.log("click SignUp");
     console.log("ID : ", id);
     console.log("PW : ", pw);
@@ -62,7 +70,7 @@ function SignUp() {
         "nickname": nickname,
       }
 
-      axios.post("/api/member/signup", JSON.stringify(data), config,)
+      axios.post("/api/user/member/signup", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === 2) {
@@ -71,7 +79,7 @@ function SignUp() {
           } else if (response.data === 1) {
             //성공
             console.log('성공');
-            document.location.href = "/home_p";
+            document.location.href = "/user/member/signIn";
 
           } else {
             console.log('fail');
@@ -91,7 +99,7 @@ function SignUp() {
         <Typography variant="h5" component="h1">
           회원가입
         </Typography>
-        <form onSubmit={createAccountConfirm} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={(e) => createAccountConfirm(e)} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -144,6 +152,15 @@ function SignUp() {
             // value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoItem label="생년월일">
+              <DatePicker
+                defaultValue={today}
+                disableFuture
+                views={['year', 'month', 'day']}
+              />
+            </DemoItem>
+          </LocalizationProvider>
           <TextField
             variant="outlined"
             margin="normal"

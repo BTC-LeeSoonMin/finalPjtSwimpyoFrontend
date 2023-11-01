@@ -5,8 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
 import { useSelector,useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../hooks/RefreshTokenAuto';
+import logo from '../../../assets/logo.png';
 
 const linkStyle = {
   color: 'white',
@@ -23,6 +24,7 @@ const separatorStyle = {
 
 export default function AdminHeader() {
 
+  // const token = useSelector((store)=> store.persistor);
   const token = useSelector((store)=> store.accessToken.value);
   console.log('토큰 값', token);
 
@@ -39,12 +41,11 @@ export default function AdminHeader() {
 
     console.log("logout");
 
-    api.post("/api/member/admin/logout", config,)
+    api.post("/api/admin/member/logout", config,)
       .then((response) => {
         if(response.data !== null) {
           dispatch(setAccessToken.setAccessToken(''));
-          console.log('로그아웃 후 토큰', token);
-          navigate('/member/admin/signIn');
+          navigate('/admin/member/signIn');
 
         } 
         
@@ -69,9 +70,9 @@ export default function AdminHeader() {
               width: '100%',
             }}
           >
-            <a href="/admin" style={linkStyle}>
-              쉼표 관리자
-            </a>
+            <Link to="/admin" style={linkStyle}>
+              <img style={{maxHeight: '60px'}} src={logo} alt="logo Image" />
+            </Link>
           </Typography>
           {!token && <Typography
             noWrap
@@ -84,13 +85,13 @@ export default function AdminHeader() {
               justifyContent: 'flex-end', // 오른쪽 정렬
               alignItems: 'center' }}
           >
-            <a href="/member/admin/signUp" style={linkStyle}>
+            <Link to="/admin/member/signUp" style={linkStyle}>
               회원가입
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/member/admin/signIn" style={linkStyle}>
+            <Link to="/admin/member/signIn" style={linkStyle}>
               로그인
-            </a>
+            </Link>
           </Typography>}
           {token && <Typography
             noWrap
@@ -102,9 +103,10 @@ export default function AdminHeader() {
               display: 'flex', 
               justifyContent: 'flex-end', // 오른쪽 정렬
               alignItems: 'center' }}
-              onClick={(e) => logout(e)}
           >
-            로그아웃
+            <Link onClick={(e) => logout(e)} style={linkStyle}>
+              로그아웃 
+            </Link>
           </Typography>}
         </Toolbar>
       </AppBar>

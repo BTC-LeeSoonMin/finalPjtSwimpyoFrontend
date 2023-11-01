@@ -10,7 +10,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 
 function AdminSignUp() {
@@ -78,7 +78,7 @@ function AdminSignUp() {
 
       
 
-      axios.post("/api/member/admin/signUp", JSON.stringify(data), config,)
+      axios.post("/api/admin/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberAdminDup") {
@@ -90,7 +90,7 @@ function AdminSignUp() {
             //성공 
             console.log('성공');
             //로그인 페이지로 가도록 경로 변경하기
-            navigate('/member/admin/signIn');
+            navigate('/admin/member/signIn');
 
           } else if (response.data === "MemberAdminSignUpFail") {
             //DB 에러
@@ -243,7 +243,7 @@ function AdminSignUp() {
             회원가입 요청
           </Button>
         </form>
-        <a href="/member/admin/signIn" style={linkStyle}>이미 계정이 있으신가요? 로그인</a>
+        <Link to="/admin/member/signIn" style={linkStyle}>이미 계정이 있으신가요? 로그인</Link>
       </Paper>
     </Container>
   );
