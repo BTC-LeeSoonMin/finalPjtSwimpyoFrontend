@@ -144,32 +144,11 @@ const RegistRoom = () => {
 
     };
 
-
-
-
-
-
-    const registRoomConfirm = async (e) => {
-        e.preventDefault();
-
-        // 이미지 때문에 formData를 백엔드로 전송해야 한다.
-        const data = new FormData();
-
+    const scrollToError = () => {
         // 에러 메시지 띄우기 위한 변수 시작 //
         let allFieldsValid = true;
         const newErrors = {};
         // 에러 메시지 띄우기 위한 변수 끝 //
-
-        // for (const key in formData) {
-        //     if (key === "a_r_image") {
-        //         formData[key].forEach((file) => {
-        //             data.append("a_r_image", file);
-        //         });
-        //     }
-
-        for (let i = 0; i < a_r_image.length; i++) {
-            data.append('a_r_image', a_r_image[i]);
-        }
 
         // 이미지 업로드 에러 메시지 시작
         if (!selectedFileNames.length) {
@@ -186,22 +165,79 @@ const RegistRoom = () => {
         }
         // 이미지 업로드 에러 메시지 끝
 
+
         // 에러 메시지 띄우기 위한 로직 시작
-        for (const field in fieldErrors) {
-            if (formData[field] === '') {
-                newErrors[field] = true;
-                allFieldsValid = false;
-                errorMessageRef.current.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
+        // for (const field in fieldErrors) {
+        //     if (a_r_state === '' && a_r_check_in === '' && a_r_check_out == '') {
+        //         newErrors[field] = true;
+        //         allFieldsValid = false;
+        //         errorMessageRef.current.scrollIntoView({
+        //             behavior: 'smooth',
+        //             block: 'center'
+        //         });
+        //     }
+        // }
+        if (a_r_state === '') {
+            newErrors['a_r_state'] = 'State is required';
+            allFieldsValid = false;
+        }
+        if (!a_r_check_in) {
+            newErrors['a_r_check_in'] = 'Check-in time is required';
+            allFieldsValid = false;
+        }
+        if (!a_r_check_out) {
+            newErrors['a_r_check_out'] = 'Check-out time is required';
+            allFieldsValid = false;
         }
 
         setFieldErrors(newErrors);
 
-        if (!allFieldsValid) return;
-        // 에러 메시지 띄우기 위한 로직 끝
+
+        if (!allFieldsValid) {
+            // 에러가 있는 첫 번째 요소로 스크롤 이동
+            const firstErrorField = Object.keys(newErrors)[0];
+            const errorElement = document.getElementsByName(firstErrorField)[0];
+            if (errorElement) {
+                errorElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
+
+            if (!allFieldsValid) return;
+            // 에러 메시지 띄우기 위한 로직 끝
+        }
+
+        return allFieldsValid;
+
+    };
+
+
+
+
+
+    const registRoomConfirm = async (e) => {
+        e.preventDefault();
+
+        // 이미지 때문에 formData를 백엔드로 전송해야 한다.
+        const data = new FormData();
+
+
+
+        // for (const key in formData) {
+        //     if (key === "a_r_image") {
+        //         formData[key].forEach((file) => {
+        //             data.append("a_r_image", file);
+        //         });
+        //     }
+
+        for (let i = 0; i < a_r_image.length; i++) {
+            data.append('a_r_image', a_r_image[i]);
+        }
+
+        scrollToError();
+
 
 
         // if (selectedFileNames.length === 0) {
@@ -310,7 +346,21 @@ const RegistRoom = () => {
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="a_r_state"
                                 value={a_r_state}
-                                onChange={handleChange}
+                                // onChange={handleChange}
+                                onChange={(e) => {
+                                    setA_r_state({ a_r_state: e.target.value });
+                                    if (e.target.value === '') {
+                                        setFieldErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            a_r_state: true
+                                        }));
+                                    } else {
+                                        setFieldErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            a_r_state: false
+                                        }));
+                                    }
+                                }}
                             >
                                 <FormControlLabel value="숙박" control={<Radio />} label="숙박" />
                                 <FormControlLabel value="대실" control={<Radio />} label="대실" />
