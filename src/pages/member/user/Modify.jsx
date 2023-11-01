@@ -8,7 +8,9 @@ import { Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 function Modify() {
+  const [id, setId] = useState('');
   const [pw, setPw] = useState('');
+  const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -20,17 +22,19 @@ function Modify() {
   };
 
   useEffect(() => {
-    console.log('adminModify start');
+    console.log('userModify start');
 
-    axios.post("/api/admin/member/adminInfo",
+    axios.post("/api/user/member/userInfo",
       config,
     )
       .then(response => {
         console.log(response.data);
-        setEmail(response.data.a_m_email);
-        setPw(response.data.a_m_pw);
-        setName(response.data.a_m_name);
-        setPhone(response.data.a_m_phone);
+        setId(response.data.u_m_id);
+        setPw(response.data.u_m_pw);
+        setNickname(response.data.u_m_nickname);
+        setName(response.data.u_m_name);
+        setPhone(response.data.u_m_phone);
+        setEmail(response.data.u_m_email);
       }
       )
       .catch(error => console.log(error))
@@ -42,8 +46,10 @@ function Modify() {
   const modify = (e) => {
     e.preventDefault();
     console.log("click SignUp");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
+    console.log("u_m_nickname : ", nickname);
+    console.log("u_m_name : ", name);
+    console.log("u_m_phone : ", phone);
+    console.log("u_m_email : ", email);
 
     let data = {};
 
@@ -55,14 +61,14 @@ function Modify() {
         "email": email,
       }
 
-      axios.post("/api/admin/member/modify", JSON.stringify(data), config,)
+      axios.post("/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === "MemberAdminModifySuccess") {
+          if (response.data === "MemberUserModifySuccess") {
             console.log('성공');
-            navigate('/admin');
+            navigate('/');
 
-          } else if (response.data === "MemberAdminModifyFail") {
+          } else if (response.data === "MemberUserModifyFail") {
             console.log('실패');
 
           } else if (response.data === -1) {
@@ -91,17 +97,17 @@ function Modify() {
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          관리자 정보 수정
+          정보 수정
         </Typography>
         <form onSubmit={(e) => modify(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
             label="Filled" variant="filled"
             margin="normal"
             fullWidth
-            id="mail"
-            name="mail"
-            autoComplete="email"
-            value={email}
+            id="id"
+            name="id"
+            autoComplete="id"
+            value={id}
             disabled
           />
           <TextField
@@ -115,8 +121,8 @@ function Modify() {
             disabled
           /><Button
           variant="contained"
-          href='/admin/member/changePassword'
-          sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+          href='/user/member/changePassword'
+          sx={{ ml: 2, mt: 3, backgroundColor: 'skyblue', color: 'white' }} 
         >
           비밀번호 수정
         </Button>
@@ -147,7 +153,7 @@ function Modify() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white' }} 
           >
             회원 정보 수정
           </Button>

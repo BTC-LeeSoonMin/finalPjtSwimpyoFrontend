@@ -45,6 +45,7 @@ api.interceptors.request.use(
 
 // Add a response interceptor
 api.interceptors.response.use(
+  
     //응답 인터셉터의 첫 번째 매개변수인 response는 서버로부터 받은 응답 데이터 
   function (response) {
     // 받은 응답 
@@ -53,6 +54,7 @@ api.interceptors.response.use(
   },
   //응답 중 오류가 발생한 경우 실행되는 비동기 함수. 오류를 처리하고 처리된 오류를 반환. 
   async (error) => {
+    // const navigate = useNavigate();
     //에러 객체에서 요청 구성 정보와 응답 상태 코드 추출
     const {
       config,
@@ -73,27 +75,25 @@ api.interceptors.response.use(
         // 새로운 액세스토큰을 전역 변수로 저장하기 위해 선언
         let newToken ="";
 
-        const navigate = useNavigate();
-
         await axios.post("/api/admin/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 
           if(response.data === "RefTokenNullInCookie") {
             alert("로그인해주세요.");
-            navigate('/admin/member/signIn'); 
+            window.location.href ="/admin/member/signIn";
             
           } else if(response.data === "RefTokenNullInDB") {
             alert("정보가 없습니다. 로그인해주세요.");
-            navigate('/admin/member/signIn'); 
+            window.location.href ="/admin/member/signIn";
             
           } else if(response.data === "RefTokenExpired") {
             alert("로그인 시간 만료. 다시 로그인해주세요.");
-            navigate('/admin/member/signIn'); 
+            window.location.href ="/admin/member/signIn";
 
           } else {
             // 새로운 토큰 저장 
-            newToken = store.dispatch({type: "accessToken", payload : response.data});
+            newToken = store.dispatch({type: "accessToken/setAccessToken", payload : response.data});
             console.log('새로 저장된 토큰', newToken);
 
           }

@@ -10,6 +10,7 @@ import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useNavigate } from 'react-router';
 
 const today = dayjs();
 
@@ -46,6 +47,11 @@ function SignUp() {
 
   }
 
+  const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+  const regExpEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  const navigate = useNavigate();
+
   const createAccountConfirm = (e) => {
     e.preventDefault();
     console.log("click SignUp");
@@ -60,7 +66,7 @@ function SignUp() {
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
-    if (pwCheck) {
+    if (regExpEmail.test(mail) && patternPhone.test(phone)) {
       data = {
         "id": id,
         "pw": pw,
@@ -79,7 +85,7 @@ function SignUp() {
           } else if (response.data === 1) {
             //성공
             console.log('성공');
-            document.location.href = "/user/member/signIn";
+            navigate("/user/member/signIn");
 
           } else {
             console.log('fail');
@@ -89,6 +95,14 @@ function SignUp() {
           // 실패
 
         });
+    } else if (!regExpEmail.test(mail)) {
+      alert("메일 형식이 틀립니다.");
+      console.log("메일 형식이 틀립니다.")
+
+    } else if (!patternPhone.test(phone)) {
+      alert("연락처 형식이 틀립니다.");
+      console.log("연락처 형식이 틀립니다.")
+
     }
 
   };

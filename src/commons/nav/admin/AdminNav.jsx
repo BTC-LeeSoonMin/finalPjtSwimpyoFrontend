@@ -4,7 +4,8 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const linkStyle = {
   color: 'white',
@@ -20,6 +21,10 @@ const separatorStyle = {
 };
 
 export default function AdminNav() {
+
+  const token = useSelector((store)=> store.accessToken.value);
+  console.log('토큰 값', token); 
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -28,7 +33,7 @@ export default function AdminNav() {
       >
         {' '}
         <Toolbar>
-          <Typography
+          {token && <Typography
             noWrap
             component="div"
             sx={{ 
@@ -53,7 +58,7 @@ export default function AdminNav() {
             <Link to="/" style={linkStyle}>
               나의 업소 관리
             </Link>
-          </Typography>
+          </Typography>}
         </Toolbar>
       </AppBar>
     </Box>
