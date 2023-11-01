@@ -5,26 +5,13 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import api from '../../../hooks/RefreshTokenAuto';
+import { useNavigate } from 'react-router-dom';
 
-const linkStyle = {
-  color: 'white',
-  textDecoration: 'none',
-  fontSize: '14px',
-  fontWeight: 'normal',
-};
-
-function AdminModify() {
+function Modify() {
   const [pw, setPw] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-
-  const dispatch = useDispatch();
-  const token = useSelector((store)=> store.accessToken.value);
 
   const config = {
     headers: {
@@ -35,7 +22,7 @@ function AdminModify() {
   useEffect(() => {
     console.log('adminModify start');
 
-    api.post("/api/admin/member/adminInfo",
+    axios.post("/api/admin/member/adminInfo",
       config,
     )
       .then(response => {
@@ -54,7 +41,7 @@ function AdminModify() {
 
   const modify = (e) => {
     e.preventDefault();
-    console.log("click Modify");
+    console.log("click SignUp");
     console.log("name : ", name);
     console.log("phone : ", phone);
 
@@ -68,11 +55,11 @@ function AdminModify() {
         "email": email,
       }
 
-      api.post("/api/admin/member/modify", JSON.stringify(data), config,)
+      axios.post("/api/admin/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberAdminModifySuccess") {
-            console.log('성0');
+            console.log('성공');
             navigate('/admin');
 
           } else if (response.data === "MemberAdminModifyFail") {
@@ -87,49 +74,13 @@ function AdminModify() {
 
           }
         }).catch((error) => {
-          // 실패 힝힝 속상하다리 ㅠ
+          // 실패
 
         });
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
       console.log("연락처 형식이 틀립니다.")
 
-    }
-
-  };
-
-  const signOut = (e) => {
-    e.preventDefault();
-    console.log("click SignOut");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
-
-    if(window.confirm("정말 탈퇴하시겠습니까?")) {
-      axios.post("/api/admin/member/signout", config,)
-        .then((response) => {
-          console.log('response.data ===', response.data);
-          if(response.data === "signOutSuccess") {
-            //탈퇴 성공
-            dispatch(setAccessToken.setAccessToken(''));
-            alert('탈퇴되었습니다.');
-            navigate('/admin/member/signIn');
-          } else if(response.data === "signOutFail") {
-            //실패 
-            alert('탈퇴 실패. 다시 시도해주세요.');
-          } else if(response.data === "signOutFail") {
-            //실패 
-            alert('탈퇴 실패. 다시 시도해주세요.');
-          } else {
-            //실패 
-            alert('탈퇴 실패. 다시 시도해주세요.');
-          }
-
-        }).catch((error) => {
-
-        });
-
-    } else {
-      alert('탈퇴 취소');
     }
 
   };
@@ -162,15 +113,13 @@ function AdminModify() {
             autoComplete="new-password"
             value={pw}
             disabled
-          />
-          <Link to="/admin/member/changePw" style={linkStyle}>
-            <Button
-              variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
-            >
-              비밀번호 수정
-            </Button>
-          </Link>
+          /><Button
+          variant="contained"
+          href='/admin/member/changePassword'
+          sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+        >
+          비밀번호 수정
+        </Button>
           <TextField
             label="이름"
             variant="filled"
@@ -204,15 +153,8 @@ function AdminModify() {
           </Button>
         </form>
       </Paper>
-      <Button
-        variant="contained"
-        sx={{ mt: 3, backgroundColor: 'black', color: 'dangerous' }} // 검정색 배경, 흰색 글자 
-        onClick={(e) => signOut(e)}
-      >
-        회원탈퇴
-      </Button>
     </Container>
   );
 }
 
-export default AdminModify;
+export default Modify;

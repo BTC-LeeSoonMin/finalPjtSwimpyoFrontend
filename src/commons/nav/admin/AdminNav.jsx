@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
 const linkStyle = {
   color: 'white',
@@ -37,36 +38,21 @@ export default function AdminNav() {
               alignItems: 'center',
               width: '100%' }}
           >
-            <a href="/" style={linkStyle}>
+            <Link to="/admin/accommodation/registAccm" style={linkStyle}>
               숙박 시설 등록
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/" style={linkStyle}>
+            <Link to="/" style={linkStyle}>
               리뷰관리
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/" style={linkStyle}>
+            <Link to="/admin/member/modify" style={linkStyle}>
               계정 수정
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/" style={linkStyle}>
+            <Link to="/" style={linkStyle}>
               나의 업소 관리
-            </a>
-          </Typography>
-          <Typography
-            noWrap
-            component="div"
-            sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
-              display: 'flex', 
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              width: '100%' }}
-          >
-            <a href="/" style={linkStyle}>
-              로그아웃
-            </a>
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>

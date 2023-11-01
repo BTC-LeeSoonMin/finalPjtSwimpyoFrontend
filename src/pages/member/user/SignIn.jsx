@@ -3,19 +3,19 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Container, Grid } from '@mui/material';
+import { Container } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
+import { useSelector,useDispatch } from 'react-redux';
+import api from '../../../hooks/RefreshTokenAuto';
 
 function SignIn() {
   const [id, setID] = useState('');
   const [pw, setPw] = useState('');
 
-  const handleLogin = () => {
-    // 로그인 로직을 이곳에 추가하세요
-    console.log('ID:', id);
-    console.log('PW:', pw);
-    // 로그인 로직을 처리한 후, 사용자를 인증하고 다음 단계로 이동할 수 있습니다.
-  };
+  const dispatch = useDispatch();
+  const token = useSelector((store)=> store.accessToken.value);
+  console.log('토큰!', token);
 
   const linkStyle = {
     color: 'black',
@@ -24,38 +24,54 @@ function SignIn() {
     fontWeight: 'normal',
   };
 
-  // const signInForm = () => {
-  //   console.log("click SignIn");
-  //   console.log("ID : ", id);
-  //   console.log("PW : ", pw);
-  //   axios
-  //     .post("http://localhost:8090/api/member/signin", {
-  //       id: id,
-  //       pw: pw,
-  //     })
-  //     .then((member) => {
-  //       console.log(member);
-  //       if (member.id === undefined) {
-  //         // id 일치하지 않는 경우 userId = undefined,'입력하신 id 가 일치하지 않습니다.'
-  //         console.log("======================존재하지 않는 ID입니다.");
-  //         alert("존재하지 않는 ID입니다.");
-  //       } else if (member.id === null) {
-  //         // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
-  //         console.log(
-  //           "======================입력하신 비밀번호 가 일치하지 않습니다."
-  //         );
-  //         alert("입력하신 비밀번호 가 일치하지 않습니다.");
-  //       } else if (member.id === id) {
-  //         // id, pw 모두 일치 userId = userId1, msg = undefined
-  //         console.log("======================", "로그인 성공");
-  //         sessionStorage.setID("id", id); // sessionStorage에 id를 user_id라는 key 값으로 저장
+  const config = {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  };
 
-  //       }
-  //       // 작업 완료 되면 페이지 이동(새로고침)
-  //       document.location.href = "/home_p";
-  //     })
-  //     .catch();
-  // };
+  const navigate = useNavigate();
+
+  const signInForm = (e) => {
+    e.preventDefault();
+
+    console.log("click SignIn");
+    console.log("id : ", id);
+    console.log("pw : ", pw);
+
+    let data = {};
+
+    data = {
+      "id": id,
+      "pw": pw,
+    }
+
+    api.post("/api/user/member/signIn", JSON.stringify(data), config,)
+      .then((response) => {
+
+        if (response.data === "MemberAdminLoginFail") {
+          console.log("================존재하지 않는 정보입니다.", response.data);
+          alert("존재하지 않는 정보입니다.");
+
+        } else if (response.data === "IncorrectIdOrPw") {
+          console.log("======================아이디 또는 비밀번호가 일치하지 않습니다.", response.data);
+          alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+
+        } else if (response.data !== null) {
+          console.log("======================로그인 성공");
+          // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
+          console.log('로그인 성공', response.data); 
+          dispatch(setAccessToken.setAccessToken(response.data));
+          navigate('/');
+
+        } else {
+          console.log("로그인 실패");
+          alert("통신 에러 다시 시도해주세요.");
+        }
+
+      })
+      .catch();
+  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
@@ -63,7 +79,7 @@ function SignIn() {
         <Typography variant="h5" component="h1">
           로그인
         </Typography>
-        <form onSubmit={handleLogin} style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={(e) => signInForm(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"

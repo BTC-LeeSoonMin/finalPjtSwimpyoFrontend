@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
 
 const linkStyle = {
   color: 'black',
@@ -57,25 +58,25 @@ export default function Nav() {
               alignItems: 'center',
               width: '100%' }}
           >
-            <a href="/user/member/signUp" style={linkStyle}>
+            <Link to="/user/member/signUp" style={linkStyle}>
               호텔/리조트
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/member/signIn" style={linkStyle}>
               펜션/풀빌라
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signUp" style={linkStyle}>
+            <Link to="/user/member/signUp" style={linkStyle}>
               모텔
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/member/signIn" style={linkStyle}>
               캠핑/글램핑
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/member/signIn" style={linkStyle}>
               게스트하우스
-            </a>
+            </Link>
           </Typography>
           <Typography
             noWrap
@@ -88,9 +89,9 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <a href="/member/user/myPage" style={linkStyle}>
+            <Link href="/member/user/myPage" style={linkStyle}>
               마이페이지
-            </a>
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>

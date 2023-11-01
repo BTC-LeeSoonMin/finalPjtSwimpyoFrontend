@@ -20,79 +20,69 @@ import ModifyAccm from './pages/accommodation/admin/ModifyAccm';
 import AdminFooter from './commons/footer/admin/AdminFooter';
 import AdminModify from './pages/member/admin/AdminModify';
 import AdminChangePw from './pages/member/admin/AdminChangePw';
+import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 
 function App() {
-    const [backData, setBackData] = useState("");
-
-    useEffect(() => {
-        console.log("[App] useEffect!!");
-
-        axios.get("/api/hello",
-        )
-            .then(response => {
-                console.log(response.data)
-                setBackData(response.data);
-            }
-            )
-            .catch(error => console.log(error))
-
-    }, []);
-
-
 
     return (
-        // <div className="App">
-        //     <header className="App-header">
-        //         <img src={logo} className="App-logo" alt="logo" />
-        //         <p>
-        //             Edit <code>src/App.js</code> and save to reload.
-        //         </p>
-        //         <a
-        //             className="App-link"
-        //             href="https://reactjs.org"
-        //             target="_blank"
-        //             rel="noopener noreferrer"
-        //         >
-        //             백엔드에서 온 데이터~ : {backData}
-        //         </a>
-        //     </header>
-        // </div>
+
         <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
-                {/* <AdminHeader />
-                <AdminNav />
-                <AdminMain/> */}
-                <Header />
-                <Nav />
+                <Routes>
+                    <Route
+                        path="/admin/*"
+                        element={<AdminHeader />}/>
+                    <Route
+                        path="/user/*"
+                        element={<Header />}/>
+                    <Route
+                        path="/"
+                        element={<Header />}/>
+                </Routes>
+                <Routes>
+                    <Route
+                        path="/admin/*"
+                        element={<AdminNav />}/>
+                    <Route
+                        path="/user/*"
+                        element={<Nav />}/>
+                    <Route
+                        path="/"
+                        element={<Nav />}/>
+                </Routes>
                 <Routes>
                     <Route
                         path="/"
                         element={<Main />}
                     ></Route>
                     <Route
-                        path="/admin"
-                        element={<AdminMain />}
-                    ></Route>
-                    <Route
-                        path="/member/user/signIn"
+                        path="/user/member/signIn"
                         element={<SignIn />}
                     ></Route>
                     <Route
-                        path="/member/user/signUp"
+                        path="/user/member/signUp"
                         element={<SignUp />}
                     ></Route>
                     <Route
+                        path="/user/member/modify"
+                        element={<Modify />}
+                    ></Route>
+                    <Route
+                        path="/admin"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminMain /> </div>}
+                    ></Route>
+                    <Route
                         path="/admin/accommodation/registAccm"
-                        element={<RegistAccm />}
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <RegistAccm /> </div>}
                     ></Route>
                     <Route
                         path="/admin/accommodation/detailAccm"
-                        element={<AdminDetailAccm />}
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminDetailAccm /> </div>}
                     ></Route>
                     <Route
                         path="/admin/accommodation/modifyAccm/:no"
-                        element={<ModifyAccm />}
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <ModifyAccm /> </div>}
                     ></Route>
 
                     <Route
@@ -101,24 +91,33 @@ function App() {
                     </Route>
 
                     <Route
-                        path="/member/admin/signIn"
-                        element={<AdminSignIn />}
+                        path="/admin/member/signIn"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminSignIn /> </div>}
                     ></Route>
                     <Route
-                        path="/member/admin/signUp"
-                        element={<AdminSignUp />}
+                        path="/admin/member/signUp"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminSignUp /> </div>}
                     ></Route>
                     <Route
-                        path="/member/admin/modify"
-                        element={<AdminModify />}
+                        path="/admin/member/modify"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminModify /> </div>}
                     ></Route>
                     <Route
-                        path="/member/admin/changePassword"
-                        element={<AdminChangePw />}
+                        path="/admin/member/changePw"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminChangePw /> </div>}
                     ></Route>
                 </Routes>
-                <Footer />
-                {/* <AdminFooter /> */}
+                <Routes>
+                    <Route 
+                        path="/"
+                        element={<Footer />}/>
+                    <Route 
+                        path="/user/*"
+                        element={<Footer />}/>
+                    <Route 
+                        path="/admin/*"
+                        element={<AdminFooter />}/>
+                </Routes>
             </BrowserRouter>
         </div>
     );
