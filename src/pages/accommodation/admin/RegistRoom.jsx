@@ -24,7 +24,7 @@ const RegistRoom = () => {
     const [a_r_check_out, setA_r_check_out] = React.useState(new Date().setHours(11, 0)); // 체크아웃 시간 상태
     const [a_r_count, setA_r_count] = useState(''); // 방 개수
     const [a_r_content, setA_r_content] = useState(''); // 방 안내 설명
-    const [a_r_image, setA_r_image] = useState([]); // 방 이미지
+    const [r_i_image, setR_i_image] = useState([]); // 방 이미지
 
     const [fieldErrors, setFieldErrors] = useState({
         a_r_state: false,
@@ -60,7 +60,7 @@ const RegistRoom = () => {
 
     const uploadProfile = (e) => {
         const files = Array.from(e.target.files);
-        setA_r_image(prevImages => [...prevImages, ...files]);
+        setR_i_image(prevImages => [...prevImages, ...files]);
         // 선택된 파일의 이름들을 보여주는 코드 추가
         const fileNames = files.map(file => (
             <ListItem key={file.name + Date.now()}>
@@ -85,7 +85,7 @@ const RegistRoom = () => {
         // 선택된 이미지를 제거합니다.
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        setA_r_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
+        setR_i_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
 
         // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
         const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
@@ -109,7 +109,10 @@ const RegistRoom = () => {
                 setA_r_state(value);
                 break;
             case 'a_r_price':
-                setA_r_price(value);
+                const onlyNumber = value.replace(/[^0-9]/g, '');
+                // 숫자를 포맷하여 상태를 업데이트합니다.
+                const pricePerThousand = onlyNumber ? parseInt(onlyNumber, 10).toLocaleString() : '';
+                setA_r_price(pricePerThousand);
                 break;
             case 'a_r_check_in':
                 setA_r_check_in(value);
@@ -177,7 +180,7 @@ const RegistRoom = () => {
         //         });
         //     }
         // }
-        if (a_r_state === '') {
+        if (!a_r_state) {
             newErrors['a_r_state'] = 'State is required';
             allFieldsValid = false;
         }
@@ -232,29 +235,27 @@ const RegistRoom = () => {
         //         });
         //     }
 
-        for (let i = 0; i < a_r_image.length; i++) {
-            data.append('a_r_image', a_r_image[i]);
+        for (let i = 0; i < r_i_image.length; i++) {
+            data.append('r_i_image', r_i_image[i]);
         }
 
         scrollToError();
 
-
-
-        // if (selectedFileNames.length === 0) {
-        //     alert("이미지를 업로드 해주세요");
-        //     return;
-        // }
-
-        // adminAccmDto 객체에 모든 데이터를 담아서 보내기
         const jsonBlob = new Blob([JSON.stringify({
             a_acc_no: a_acc_no,
             a_r_name: a_r_name,
+            a_r_state: a_r_state,
+            a_r_price: a_r_price,
+            a_r_check_in: a_r_check_in,
+            a_r_check_out: a_r_check_out,
+            a_r_count: a_r_count,
+            a_r_content: a_r_content,
         })], { type: "application/json" });
 
-        data.append("adminAccmDto", jsonBlob);
+        data.append("adminRoomDto", jsonBlob);
 
         try {
-            const response = await axios.post("/api/admin/accm/regist_confirm",
+            const response = await axios.post("/api/admin/room/registConfirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -343,12 +344,13 @@ const RegistRoom = () => {
                             <FormLabel id="demo-row-radio-buttons-group-label">숙박/대실</FormLabel>
                             <RadioGroup
                                 row
+
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="a_r_state"
                                 value={a_r_state}
                                 // onChange={handleChange}
                                 onChange={(e) => {
-                                    setA_r_state({ a_r_state: e.target.value });
+                                    setA_r_state(e.target.value);
                                     if (e.target.value === '') {
                                         setFieldErrors(prevErrors => ({
                                             ...prevErrors,
@@ -364,8 +366,11 @@ const RegistRoom = () => {
                             >
                                 <FormControlLabel value="숙박" control={<Radio />} label="숙박" />
                                 <FormControlLabel value="대실" control={<Radio />} label="대실" />
+                                {fieldErrors.a_r_state && <FormHelperText error>숙박/대실 종류를 선택하세요.</FormHelperText>}
                             </RadioGroup>
+
                         </FormControl>
+
 
 
                         <TextField
@@ -398,12 +403,9 @@ const RegistRoom = () => {
                             id="a_r_price"
                             label="가격"
                             name="a_r_price"
-                            type="number"
+                            type="text"
                             InputProps={{
-                                startAdornment: <InputAdornment position="start">₩</InputAdornment>,
-                                inputProps: {
-                                    min: 0 // 가격은 0 이상이어야 함
-                                }
+                                endAdornment: <InputAdornment position="start">원</InputAdornment>,
                             }}
                             autoComplete="off"
                             value={a_r_price}
@@ -426,29 +428,50 @@ const RegistRoom = () => {
                             rows={5} // 기본적으로 보여줄 행의 수
                         />
 
+
+
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: 3, width: '100%' }}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <TimePicker
                                     label="체크인 시간"
                                     value={a_r_check_in}
                                     onChange={handleCheckInTimeChange}
-                                    renderInput={(params) => <TextField {...params} />}
-                                    minutesStep={60} // 1시간 단위로 변경
-                                />
+
+                                    minutesStep={30} // 1시간 단위로 변경
+                                >
+                                    {({ inputRef, inputProps, InputProps }) => (
+                                        <TextField
+                                            ref={inputRef}
+                                            {...inputProps}
+                                            InputProps={{ ...InputProps }} // 아이콘 같은 끝 장식을 위한 속성
+                                            label="체크인 시간"
+                                        />
+                                    )}
+                                </TimePicker>
+
                                 <h2>~</h2>
 
                                 <TimePicker
                                     label="체크아웃 시간"
                                     value={a_r_check_out}
                                     onChange={handleCheckOutTimeChange}
-                                    renderInput={(params) => <TextField {...params} />}
-                                    minutesStep={60} // 1시간 단위로 변경
-                                />
+
+                                    minutesStep={30} // 1시간 단위로 변경
+                                >
+                                    {({ inputRef, inputProps, InputProps }) => (
+                                        <TextField
+                                            ref={inputRef}
+                                            {...inputProps}
+                                            InputProps={{ ...InputProps }}
+                                            label="체크아웃 시간"
+                                        />
+                                    )}
+                                </TimePicker>
                             </LocalizationProvider>
-
                         </Box>
-
-
+                        <Typography variant="caption" sx={{ alignSelf: 'flex-start', mt: 1, ml: 7 }}>
+                            * 시간 단위로만 설정 가능
+                        </Typography>
 
 
                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mt: 3 }}>
