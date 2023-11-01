@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import { useNavigate } from "react-router";
 import ConfirmOrClose from "../../../components/ConfirmOrClose";
 
-const AdminRoomList = () => {
+const AdminRoomList = ({ accomNum }) => {
 
     // 모달창 열기 //
     const [open, setOpen] = useState(false);
@@ -27,8 +27,10 @@ const AdminRoomList = () => {
         setOpen(false);
     };
 
+    console.log("accomNum", accomNum.a_acc_no);
+
     const handleRegistConfirmation = () => {
-        navigate("/admin/accommodation/registRoom");
+        navigate(`/admin/accommodation/registRoom/${accomNum.a_acc_no}`);
     }
 
 

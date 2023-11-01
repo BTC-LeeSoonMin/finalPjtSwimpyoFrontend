@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -15,8 +15,12 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const RegistRoom = () => {
 
+    const paramsData = useParams(); // 넘어온 데이터
+
+    const [backEndData, setBackEndData] = useState({}); // 백엔드에서 넘어온 데이터
 
     const [a_acc_no, setA_acc_no] = useState(''); // 숙박시설 번호
+    const [a_m_no, setA_m_no] = useState(''); // 관리자 번호
     const [a_r_name, setA_r_name] = useState(''); // 방이름
     const [a_r_state, setA_r_state] = useState(''); // 숙박 대실
     const [a_r_price, setA_r_price] = useState(''); // 방 가격
@@ -44,7 +48,6 @@ const RegistRoom = () => {
     const [imageError, setImageError] = useState(false);
     // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 끝
 
-
     const navigate = useNavigate();
 
 
@@ -57,6 +60,35 @@ const RegistRoom = () => {
     const handleCheckOutTimeChange = (time) => {
         setA_r_check_out(time);
     };
+
+    console.log("paramsData", paramsData);
+
+
+    const fetchData = async () => {
+        try {
+            const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${paramsData.a_acc_no}`);
+            //  res -> 서버에서 받아온 데이터
+            console.log("detail data success");
+            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+            console.log("확인 : ", res.data);
+            setBackEndData(res.data.adminAccmDto);
+            console.log("accmData", backEndData);
+            // const imageUrls = images.a_i_images;
+            // setImages(imageUrls);
+
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+
+
+    useEffect(() => {
+
+
+        fetchData(); // 비동기 함수 호출
+    }, [paramsData]);
+
+
 
     const uploadProfile = (e) => {
         const files = Array.from(e.target.files);
@@ -80,6 +112,7 @@ const RegistRoom = () => {
         }
         // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
     };
+
 
     const handleRemoveImage = (keyToRemove) => {
         // 선택된 이미지를 제거합니다.
@@ -242,7 +275,8 @@ const RegistRoom = () => {
         scrollToError();
 
         const jsonBlob = new Blob([JSON.stringify({
-            a_acc_no: a_acc_no,
+            a_acc_no: backEndData.a_acc_no,
+            a_m_no: backEndData.a_m_no,
             a_r_name: a_r_name,
             a_r_state: a_r_state,
             a_r_price: a_r_price,
@@ -263,7 +297,7 @@ const RegistRoom = () => {
             });
             console.log(response.data);  // "success" 출력
             alert("해당 객실이 등록되었습니다 숙박업소 상세 페이지로 이동됩니다");
-            navigate('/admin/accommodation/detailAccm');
+            navigate(`/admin/accommodation/detailAccm/${backEndData.a_m_no}`);
 
         } catch (error) {
             console.error("등록실패:", error);
@@ -297,7 +331,31 @@ const RegistRoom = () => {
                             name="a_acc_no"
                             autoComplete="a_acc_no"
                             autoFocus
-                            value={a_acc_no}
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
+                            value={backEndData.a_acc_no || ''}
+                            onChange={handleChange}
+                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
+                        // error={a_r_name}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="a_m_no"
+                            label="관리자 번호"
+                            name="a_m_no"
+                            autoComplete="a_m_no"
+                            autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
+                            value={backEndData.a_m_no || ''}
                             onChange={handleChange}
                         // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
                         // error={a_r_name}

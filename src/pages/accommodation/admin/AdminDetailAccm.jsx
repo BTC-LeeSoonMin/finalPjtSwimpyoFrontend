@@ -15,13 +15,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ConfirmOrClose from '../../../components/ConfirmOrClose';
 import { Modal } from '@mui/base';
 import AdminRoomList from './AdminRoomList';
 
 
 const AdminDetailAccm = () => {
+
 
 
     const Item = styled(MuiPaper)(({ theme }) => ({
@@ -32,9 +33,9 @@ const AdminDetailAccm = () => {
     }));
 
 
-    const [accmData, setAccmData] = useState({});
+    const [accmData, setAccmData] = useState({}); // 백엔드에서 넘어온 데이터 넣는곳
     const [images, setImages] = useState([]);
-    const requestData = { a_m_no: 1 };
+    const requestData = useParams(); // 넘어온 데이터
     const navigate = useNavigate();
 
     // 수정과 삭제 버튼 클릭 시 모달 창 열기 위한 state
@@ -47,6 +48,9 @@ const AdminDetailAccm = () => {
     // 방 등록, 목록을 위한 state
     const [rooms, setRooms] = useState([]); // 방 목록을 저장하는 상태
     const [isAddingRoom, setIsAddingRoom] = useState(false);
+
+    // 등록에 보내기 위한 Props
+    const accomNum = accmData;
 
 
     /* 수정과 삭제를 위한 함수 시작 */
@@ -91,28 +95,31 @@ const AdminDetailAccm = () => {
     };
 
 
+    const fetchData = async () => {
+        try {
+            const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
+            //  res -> 서버에서 받아온 데이터
+            console.log("detail data success");
+            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+            console.log("확인 : ", res.data);
+            setAccmData(res.data.adminAccmDto);
+            console.log("accmData", accmData);
+            setImages(res.data.a_i_images);
+            // const imageUrls = images.a_i_images;
+            // setImages(imageUrls);
+
+
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
-                //  res -> 서버에서 받아온 데이터
-                console.log("detail data success");
-                // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-                console.log("확인 : ", res.data);
-                setAccmData(res.data.adminAccmDto);
-                console.log("accmData", accmData);
-                setImages(res.data.a_i_images);
-                // const imageUrls = images.a_i_images;
-                // setImages(imageUrls);
-
-
-            } catch (error) {
-                console.error("An error occurred:", error);
-            }
-        };
-
         fetchData(); // 비동기 함수 호출
-    }, []);
+    }, [requestData]);
+
+
     console.log("accmData", accmData);
     console.log("image", images);
 
@@ -212,8 +219,7 @@ const AdminDetailAccm = () => {
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         객실
                     </Grid>
-                    <AdminRoomList />
-
+                    <AdminRoomList accomNum={accomNum} />
                 </Item>
 
             </Paper>
