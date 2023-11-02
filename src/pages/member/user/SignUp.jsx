@@ -15,8 +15,7 @@ import { Link } from 'react-router-dom';
 
 const today = dayjs();
 
-function SignUp() {
-  const [id, setId] = useState('');
+function SignUp() {;
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
   const [nickname, setNickname] = useState('');
@@ -57,29 +56,27 @@ function SignUp() {
   const createAccountConfirm = (e) => {
     e.preventDefault();
     console.log("click SignUp");
-    console.log("ID : ", id);
+    console.log("email : ", email);
     console.log("PW : ", pw);
     console.log("name : ", name);
     console.log("birth : ", birth);
     console.log("nickname : ", nickname);
     console.log("phone : ", phone);
-    console.log("email : ", email);
 
     let data = {};
 
     // 비밀번호가 일치하는 경우에만 요청을 보냄 
     if (regExpEmail.test(email) && patternPhone.test(phone)) {
       data = {
-        "id": id,
+        "email": email,
         "pw": pw,
         "name": name,
         "birth": birth,
-        "email": email,
         "phone": phone,
         "nickname": nickname,
       }
 
-      axios.post("/api/user/member/signup", JSON.stringify(data), config,)
+      axios.post("/api/user/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberUserDup") {
@@ -124,18 +121,18 @@ function SignUp() {
         <Typography variant="h5" component="h1">
           회원가입
         </Typography>
-        <form onSubmit={(e) => createAccountConfirm(e)} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
+        <form onSubmit={(e) => createAccountConfirm(e)} name='create_account_form' style={{ width: '100%', marginTop: 1 }}> 
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="id"
-            label="ID"
-            name="id"
-            autoComplete="username"
-            // value={id}
-            onChange={(e) => setId(e.target.value)}
+            id="email"
+            label="이메일"
+            name="email"
+            autoComplete="email"
+            // value={mail}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -149,7 +146,7 @@ function SignUp() {
             autoComplete="new-password"
             // value={pw}
             onChange={(e) => setPw(e.target.value)}
-          />
+          /> 
           <TextField
             variant="outlined"
             margin="normal"
@@ -162,7 +159,7 @@ function SignUp() {
             autoComplete="new-password"
             // value={pwConfirm}
             onChange={onChangePwCheck}
-          />
+          /> 
           {!pwCheck && (<Typography variant="body2" color="error">
             비밀번호가 일치하지 않습니다.
           </Typography>)}
@@ -176,7 +173,7 @@ function SignUp() {
             name="name"
             // value={name}
             onChange={(e) => setName(e.target.value)}
-          />
+          /> 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoItem>
               <DatePicker
@@ -208,18 +205,6 @@ function SignUp() {
             name="phone"
             // value={phone}
             onChange={(e) => setPhone(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="이메일"
-            name="email"
-            autoComplete="email"
-            // value={mail}
-            onChange={(e) => setEmail(e.target.value)}
           />
           <Button
             type="submit"

@@ -18,13 +18,12 @@ const linkStyle = {
 };
 
 function Modify() {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
   const [birth, setBirth] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
 
   const dispatch = useDispatch();
 
@@ -42,13 +41,12 @@ function Modify() {
     )
       .then(response => {
         console.log(response.data);
-        setId(response.data.u_m_id);
+        setEmail(response.data.u_m_email);
         setPw(response.data.u_m_pw);
         setNickname(response.data.u_m_nickname);
         setName(response.data.u_m_name);
         setBirth(response.data.u_m_birth);
         setPhone(response.data.u_m_phone);
-        setEmail(response.data.u_m_email);
       }
       )
       .catch(error => console.log(error))
@@ -56,25 +54,22 @@ function Modify() {
   }, []);
 
   const patternPhone = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
-  const regExpEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const modify = (e) => {
     e.preventDefault();
-    console.log("click SignUp");
+    console.log("click Modify");
     console.log("u_m_nickname : ", nickname);
     console.log("u_m_name : ", name);
     console.log("u_m_phone : ", phone);
-    console.log("u_m_email : ", email);
 
     let data = {};
 
     // 이메일, 연락처 유효성 검사 확인 후
-    if (regExpEmail.test(email) && patternPhone.test(phone)) {
+    if (patternPhone.test(phone)) {
       data = {
         "name": name,
         "phone": phone,
         "nickname": nickname,
-        "email": email,
       }
 
       api.post("/api/user/member/modify", JSON.stringify(data), config,)
@@ -93,7 +88,6 @@ function Modify() {
           } else {
             console.log('fail');
 
-
           }
         }).catch((error) => {
           // 실패
@@ -103,11 +97,7 @@ function Modify() {
       alert("연락처 형식이 틀립니다.");
       console.log("연락처 형식이 틀립니다.")
 
-    }else if (!regExpEmail.test(email)) {
-      alert("메일 형식이 틀립니다.");
-      console.log("메일 형식이 틀립니다.")
-
-    } 
+    }
 
   };
 
@@ -155,13 +145,13 @@ function Modify() {
         </Typography>
         <form onSubmit={(e) => modify(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
-            label="Filled" variant="filled"
+            label="email" variant="filled"
             margin="normal"
             fullWidth
-            id="id"
-            name="id"
-            autoComplete="id"
-            value={id}
+            id="email"
+            name="email"
+            autoComplete="email"
+            value={email}
             disabled
           />
           <TextField
@@ -215,18 +205,6 @@ function Modify() {
             name="nickname"
             value={nickname || ''}
             onChange={(e) => setNickname(e.target.value)}
-          />
-          <TextField
-            label="이메일"
-            variant="filled"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            name="email"
-            value={email || ''}
-            autoFocus
-            onChange={(e) => setEmail(e.target.value)}
           />
           <Button
             type="submit"

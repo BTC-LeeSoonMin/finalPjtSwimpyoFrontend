@@ -10,7 +10,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import api from '../../../hooks/RefreshTokenAuto';
 
 function SignIn() {
-  const [id, setID] = useState('');
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
 
   const dispatch = useDispatch();
@@ -36,13 +36,13 @@ function SignIn() {
     e.preventDefault();
 
     console.log("click SignIn");
-    console.log("id : ", id);
+    console.log("email : ", email);
     console.log("pw : ", pw);
 
     let data = {};
 
     data = {
-      "id": id,
+      "email": email,
       "pw": pw,
     }
 
@@ -82,12 +82,12 @@ function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="id"
-            label="아이디"
-            name="id"
-            autoComplete="id"
-            value={id}
-            onChange={(e) => setID(e.target.value)}
+            id="email"
+            label="이메일"
+            name="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
