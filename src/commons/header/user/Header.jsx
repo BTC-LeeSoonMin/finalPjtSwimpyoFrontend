@@ -74,6 +74,28 @@ export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  };
+
+  const logout = (e) => {
+
+    console.log("logout");
+
+    api.post("/api/user/member/logout", config,)
+      .then((response) => {
+        if(response.data !== null) {
+          dispatch(setAccessToken.setAccessToken(''));
+          navigate('/');
+
+        } 
+        
+      })
+      .catch();
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -134,7 +156,7 @@ export default function Header() {
               justifyContent: 'flex-end', // 오른쪽 정렬
               alignItems: 'center' }}
           >
-            <Link to="/user/member/logout" style={linkStyle}>
+            <Link onClick={(e) => logout(e)} style={linkStyle}>
               로그아웃 
             </Link>
           </Typography>}
