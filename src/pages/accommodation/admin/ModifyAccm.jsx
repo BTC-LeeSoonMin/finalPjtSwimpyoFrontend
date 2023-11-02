@@ -9,7 +9,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const ModifyAccm = () => {
 
-    const { no } = useParams();
+    const { a_m_no } = useParams();
 
 
     // 다시 넘어온 json data받기 위한 state
@@ -70,7 +70,7 @@ const ModifyAccm = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${no}`);
+            const response = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
 
             console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
 
@@ -349,7 +349,7 @@ const ModifyAccm = () => {
             });
             console.log(response.data);  // "success" 출력
             alert("숙박업소가 수정되었습니다 수정된 숙박업소의 상세페이지로 이동됩니다");
-            navigate('/admin/accommodation/detailAccm');
+            navigate(`/admin/accommodation/detailAccm/${a_m_no}`);
 
 
         } catch (error) {
