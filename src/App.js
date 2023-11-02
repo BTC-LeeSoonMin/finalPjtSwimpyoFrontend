@@ -23,6 +23,7 @@ import AdminChangePw from './pages/member/admin/AdminChangePw';
 import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
+import MyPage from './pages/mypage/user/MyPage';
 
 function App() {
 
@@ -72,6 +73,10 @@ function App() {
                     <Route
                         path="/user/member/changePw"
                         element={<ChangePw />}
+                    ></Route>
+                    <Route
+                        path="/user/myPage"
+                        element={<MyPage />}
                     ></Route>
                     <Route
                         path="/admin"
