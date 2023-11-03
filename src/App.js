@@ -23,6 +23,7 @@ import AdminChangePw from './pages/member/admin/AdminChangePw';
 import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
+import MyPage from './pages/mypage/user/MyPage';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
 
 function App() {
@@ -66,13 +67,17 @@ function App() {
                         path="/user/member/signUp"
                         element={<SignUp />}
                     ></Route>
-                    <Route
+                    {/* <Route
                         path="/user/member/modify"
                         element={<Modify />}
-                    ></Route>
+                    ></Route> */}
                     <Route
                         path="/user/member/changePw"
                         element={<ChangePw />}
+                    ></Route>
+                    <Route
+                        path="/user/myPage"
+                        element={<MyPage />}
                     ></Route>
                     <Route
                         path="/admin"

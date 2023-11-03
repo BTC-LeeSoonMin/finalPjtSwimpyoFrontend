@@ -33,7 +33,7 @@ export default function Nav() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         {' '}
         <Toolbar>
@@ -89,7 +89,7 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <Link href="/user/myPage" style={linkStyle}>
+            <Link to="/user/myPage" style={linkStyle}>
               마이페이지
             </Link>
           </Typography>
