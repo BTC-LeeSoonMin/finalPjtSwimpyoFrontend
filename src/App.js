@@ -25,7 +25,7 @@ import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
 import MyPage from './pages/mypage/user/MyPage';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
-import SearchAccm from './pages/accommodation/user/SearchAccm';
+import SearchAccm from './pages/accommodation/user/searchAccm/SearchAccm';
 
 function App() {
 

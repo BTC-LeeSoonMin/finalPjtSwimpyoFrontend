@@ -40,7 +40,7 @@ function Filter() {
     };
 
     return (
-        <Box sx={{ ...list, borderRadius: '13px'}}>
+        <Box sx={{ ...list, borderRadius: '10px'}}>
             <Typography sx={{...titleFont}}>
                 필터
             </Typography>
