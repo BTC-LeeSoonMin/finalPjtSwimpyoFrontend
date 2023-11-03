@@ -108,7 +108,7 @@ function Modify() {
     console.log("click SignOut");
 
     if(window.confirm("정말 탈퇴하시겠습니까?")) {
-      api.post("/api/admin/member/signout", config,)
+      api.post("/api/user/member/signout", config,)
         .then((response) => {
           console.log('response.data ===', response.data);
           if(response.data === "signOutSuccess") {

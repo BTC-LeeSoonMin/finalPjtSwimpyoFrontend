@@ -74,8 +74,10 @@ api.interceptors.response.use(
 
         // 새로운 액세스토큰을 전역 변수로 저장하기 위해 선언
         let newToken ="";
+        let url = window.location.href
 
-        await axios.post("/api/admin/member/refreshToken", config,)
+        if (url.includes("user")) {
+          await axios.post("/api/user/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 
@@ -100,6 +102,33 @@ api.interceptors.response.use(
 
         })
         .catch();
+        } else {
+          await axios.post("/api/admin/member/refreshToken", config,)
+        .then((response) => {
+          console.log('response--', response.data);
+
+          if(response.data === "RefTokenNullInCookie") {
+            alert("로그인해주세요.");
+            window.location.href ="/admin/member/signIn";
+            
+          } else if(response.data === "RefTokenNullInDB") {
+            alert("정보가 없습니다. 로그인해주세요.");
+            window.location.href ="/admin/member/signIn";
+            
+          } else if(response.data === "RefTokenExpired") {
+            alert("로그인 시간 만료. 다시 로그인해주세요.");
+            window.location.href ="/admin/member/signIn";
+
+          } else {
+            // 새로운 토큰 저장 
+            newToken = store.dispatch({type: "accessToken/setAccessToken", payload : response.data});
+            console.log('새로 저장된 토큰', newToken);
+
+          }
+
+        })
+        .catch();
+        } 
 
         console.log('새로 저장된 토큰 확인', newToken);
         // newToken은 객체로 받아오기 때문에 payload로 입력 

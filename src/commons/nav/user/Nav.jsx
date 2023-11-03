@@ -89,7 +89,7 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <Link href="/member/user/myPage" style={linkStyle}>
+            <Link href="/user/myPage" style={linkStyle}>
               마이페이지
             </Link>
           </Typography>
