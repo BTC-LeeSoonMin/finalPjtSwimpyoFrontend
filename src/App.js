@@ -25,6 +25,7 @@ import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
 import MyPage from './pages/mypage/user/MyPage';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
+import SearchAccm from './pages/accommodation/user/SearchAccm';
 
 function App() {
 
@@ -78,6 +79,10 @@ function App() {
                     <Route
                         path="/user/myPage"
                         element={<MyPage />}
+                    ></Route>
+                    <Route
+                        path="/user/searchAccm"
+                        element={<SearchAccm />}
                     ></Route>
                     <Route
                         path="/admin"

@@ -111,7 +111,7 @@ function SignIn() {
             로그인
           </Button>
         </form>
-        <Link href="/user/member/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</Link>
+        <Link to="/user/member/signUp" style={linkStyle}>계정이 없으신가요? 회원가입</Link>
       </Paper>
     </Container>
   );
