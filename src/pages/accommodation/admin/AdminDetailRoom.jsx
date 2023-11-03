@@ -20,10 +20,7 @@ import ConfirmOrClose from '../../../components/ConfirmOrClose';
 import { Modal } from '@mui/base';
 import AdminRoomList from './AdminRoomList';
 
-
-const AdminDetailAccm = () => {
-
-
+const AdminDetailRoom = () => {
 
     const Item = styled(MuiPaper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,14 +31,14 @@ const AdminDetailAccm = () => {
 
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    // const [accmData, setAccmData] = useState({}); // 백엔드에서 넘어온 데이터 넣는곳
-    // const [images, setImages] = useState([]);
     const [backEndData, setBackEndData] = useState({
-        accmData: {},
-        accmImages: []
+        roomData: {},
+        roomImages: []
     })
-    const requestData = useParams(); // 넘어온 데이터
+
+    const roomNum = useParams();
     const navigate = useNavigate();
+
 
     // 수정과 삭제 버튼 클릭 시 모달 창 열기 위한 state
     const [open, setOpen] = useState(false);
@@ -49,13 +46,6 @@ const AdminDetailAccm = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [openImg, setOpenImg] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-
-    // 방 등록, 목록을 위한 state
-    const [rooms, setRooms] = useState([]); // 방 목록을 저장하는 상태
-    const [isAddingRoom, setIsAddingRoom] = useState(false);
-
-    // 등록에 보내기 위한 Props
-    const accomNum = backEndData.accmData;
 
 
     /* 수정과 삭제를 위한 함수 시작 */
@@ -80,9 +70,11 @@ const AdminDetailAccm = () => {
     const handleEditConfirmation = () => {
         // 이곳에서 수정 페이지로 이동 또는 관련 작업 수행
         // handleClose(); // 작업을 수행한 후 모달 닫기
-        navigate(`/admin/accommodation/modifyAccm/${requestData.a_m_no}`)
+        navigate(`/admin/accommodation/modifyRoom/${roomNum}`)
 
     };
+
+    console.log("roomNum", roomNum);
 
     const handleDeleteConfirmation = () => {
         // 삭제 버튼 클릭 시
@@ -91,34 +83,18 @@ const AdminDetailAccm = () => {
     /* 수정과 삭제를 위한 함수 끝 */
 
 
-
-
-    const handleRoomDetails = (roomId) => {
-        // 방 상세 정보 페이지로 이동
-        // 이동하는 방법은 여러 가지가 있을 수 있으며, 라우팅 라이브러리를 사용하거나
-        // React Router 등을 통해 페이지로 이동할 수 있습니다.
-    };
-
-
-
-    // console.log("accmData", accmData);
-
-
-
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
+                const res = await axios.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
                 //  res -> 서버에서 받아온 데이터
                 console.log("detail data success");
                 // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
 
                 // setAccmData(res.data.adminAccmDto);
                 setBackEndData({
-                    accmData: res.data.adminAccmDto,
-                    accmImages: res.data.a_i_images
+                    roomData: res.data.adminRoomDto,
+                    roomImages: res.data.r_i_images
                 });
                 setDataLoaded(true);
                 // setImages(res.data.a_i_images);
@@ -133,22 +109,10 @@ const AdminDetailAccm = () => {
         };
 
         fetchData(); // 비동기 함수 호출
-    }, [requestData]);
+    }, [roomNum]);
 
+    console.log("backEndData.roomImages", backEndData.roomImages);
 
-    // console.log("accmData", accmData);
-    // console.log("image", images);
-
-    // useEffect(() => {
-    //     if (Array.isArray(images)) {
-    // console.log(images)
-    // // const imageUrls = images.map(item => item.imageUrl);
-    // const imageUrls = res.data.a_i_images
-    // setImages(imageUrls);
-    //     } else {
-    //         console.error("images 상태가 배열 형식이 아닙니다:", images);
-    //     }
-    // }, [images]);
 
     if (!dataLoaded) {
 
@@ -173,8 +137,6 @@ const AdminDetailAccm = () => {
     }
 
     return (
-
-
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
             <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
 
@@ -182,7 +144,7 @@ const AdminDetailAccm = () => {
                     <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
                         <EditIcon />
                     </IconButton>
-                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.accmData.a_m_no)} words="수정" />
+                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.roomData.a_r_name)} words="수정" />
 
                     <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
                         <DeleteIcon />
@@ -193,7 +155,7 @@ const AdminDetailAccm = () => {
 
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
                     <Carousel>
-                        {backEndData.accmImages.map((imageUrl, index) => (
+                        {backEndData.roomImages.map((imageUrl, index) => (
                             <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
                                 <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                             </Paper>
@@ -206,7 +168,7 @@ const AdminDetailAccm = () => {
 
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
-                        {backEndData.accmData.a_acc_name}
+                        {backEndData.roomData.a_r_name}
                         <Grid item xs={10} sx={{ mt: '10px' }}>
                             <Divider variant="left" sx={{ width: '100%' }} />
                         </Grid>
@@ -218,27 +180,28 @@ const AdminDetailAccm = () => {
                     <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                주소 : {backEndData.accmData.a_acc_address}
+                                숙박/대실 : {backEndData.roomData.a_r_state}
+                            </Box>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                가격 : {backEndData.roomData.a_r_price}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                연락처 : {backEndData.accmData.a_acc_phone}
+                                체크인 시간 : {backEndData.roomData.a_r_check_in}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                이메일 : {backEndData.accmData.a_m_email}
+                                체크아웃 시간 : {backEndData.roomData.a_r_check_out}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                사업자 번호 : {backEndData.accmData.a_acc_bn}
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                대표자 명 : {backEndData.accmData.a_m_name}
+                                방 총 개수 : {backEndData.roomData.a_r_count}
                             </Box>
                         </Grid>
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -255,7 +218,7 @@ const AdminDetailAccm = () => {
                         업소 정보
                     </Grid>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <span dangerouslySetInnerHTML={{ __html: backEndData.accmData.a_acc_intro }}></span>
+                        <span dangerouslySetInnerHTML={{ __html: backEndData.roomData.a_r_content }}></span>
                     </Grid>
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -270,17 +233,13 @@ const AdminDetailAccm = () => {
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
                         객실
                     </Grid>
-                    <AdminRoomList accomNum={accomNum} requestData={requestData} />
+
                 </Item>
 
             </Paper>
         </Container >
-
-
     );
+
 }
 
-
-
-
-export default AdminDetailAccm;
+export default AdminDetailRoom;

@@ -11,7 +11,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
+import { format } from 'date-fns';
 
 const RegistRoom = () => {
 
@@ -251,22 +251,14 @@ const RegistRoom = () => {
 
 
 
-
-
     const registRoomConfirm = async (e) => {
         e.preventDefault();
 
         // 이미지 때문에 formData를 백엔드로 전송해야 한다.
         const data = new FormData();
+        const formattedCheckInTime = format(a_r_check_in, 'HH:mm');
+        const formattedCheckOutTime = format(a_r_check_out, 'HH:mm');
 
-
-
-        // for (const key in formData) {
-        //     if (key === "a_r_image") {
-        //         formData[key].forEach((file) => {
-        //             data.append("a_r_image", file);
-        //         });
-        //     }
 
         for (let i = 0; i < r_i_image.length; i++) {
             data.append('r_i_image', r_i_image[i]);
@@ -280,8 +272,8 @@ const RegistRoom = () => {
             a_r_name: a_r_name,
             a_r_state: a_r_state,
             a_r_price: a_r_price,
-            a_r_check_in: a_r_check_in,
-            a_r_check_out: a_r_check_out,
+            a_r_check_in: formattedCheckInTime,
+            a_r_check_out: formattedCheckOutTime,
             a_r_count: a_r_count,
             a_r_content: a_r_content,
         })], { type: "application/json" });
