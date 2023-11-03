@@ -66,10 +66,10 @@ function App() {
                         path="/user/member/signUp"
                         element={<SignUp />}
                     ></Route>
-                    <Route
+                    {/* <Route
                         path="/user/member/modify"
                         element={<Modify />}
-                    ></Route>
+                    ></Route> */}
                     <Route
                         path="/user/member/changePw"
                         element={<ChangePw />}

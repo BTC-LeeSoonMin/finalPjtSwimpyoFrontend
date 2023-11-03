@@ -33,7 +33,7 @@ export default function Nav() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         {' '}
         <Toolbar>
