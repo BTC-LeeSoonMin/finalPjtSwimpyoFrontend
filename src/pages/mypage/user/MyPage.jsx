@@ -6,11 +6,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Header from '../../../commons/header/user/Header';
 import Nav from '../../../commons/nav/user/Nav';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Modify from '../../member/user/Modify';
 import { useState } from 'react';
 import MyPageMain from './MyPageMain';
+import ResLog from './resLog/ResLog';
 
 const drawerWidth = 240;
 
@@ -24,16 +24,24 @@ const linkStyle = {
 
 export default function ClippedDrawer() {
 
-  const [modifyPage, setModifyPage] = useState(false);
   const [mainPage, setMainPage] = useState(true);
+  const [modifyPage, setModifyPage] = useState(false);
+  const [resLogListPage, setResLogListPage] = useState(false);
 
   const modify = (e) => {
     e.preventDefault();
     
-    if(mainPage) {
     setModifyPage(true);
     setMainPage(false);
-    }
+    setResLogListPage(false);
+  };
+
+  const resLogList = (e) => {
+    e.preventDefault();
+    
+    setResLogListPage(true);
+    setModifyPage(false);
+    setMainPage(false);
   };
 
   return (
@@ -55,23 +63,16 @@ export default function ClippedDrawer() {
         <Toolbar sx={{height: "160px"}}/>
         <Box sx={{ overflow: 'auto' }}>
           <Button fullWidth style={linkStyle} onClick={(e) => modify(e)}>회원정보수정</Button>
-          {/* <Link to="/user/member/modify"><Button fullWidth>회원정보수정</Button></Link> */}
           <Button fullWidth style={linkStyle}>찜</Button>
           <Button fullWidth style={linkStyle}>쿠폰</Button>
-          <Button fullWidth style={linkStyle}>예약리스트</Button>
+          <Button fullWidth style={linkStyle} onClick={(e) => resLogList(e)} >예약리스트</Button>
           <Button fullWidth style={linkStyle}>문의</Button>
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         {mainPage && (<MyPageMain />)}
         {modifyPage && (<Modify />)}
-        {/* <BrowserRouter>
-          <Routes>
-            <Route
-              path="/user/member/modify"
-              element={<Modify />} />
-          </Routes>
-        </BrowserRouter> */}
+        {resLogListPage && (<ResLog />)}
       </Box>
     </Box>
   );

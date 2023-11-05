@@ -173,6 +173,7 @@ function SignUp() {;
             name="name"
             // value={name}
             onChange={(e) => setName(e.target.value)}
+            sx={{mb: '24px'}}
           /> 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoItem>
@@ -194,6 +195,7 @@ function SignUp() {;
             name="nickname"
             // value={nickname}
             onChange={(e) => setNickname(e.target.value)}
+            sx={{mt: '24px'}}
           />
           <TextField
             variant="outlined"

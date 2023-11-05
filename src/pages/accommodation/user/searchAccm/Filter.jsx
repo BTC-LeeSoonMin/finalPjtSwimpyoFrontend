@@ -50,7 +50,7 @@ function Filter() {
                 labelId="demo-select-small-label"
                 id="demo-select-small"
                 value={area}
-                label="Age"
+                label="Area"
                 onChange={areaChange}
             >
                 <MenuItem value="">
@@ -75,7 +75,7 @@ function Filter() {
                 labelId="demo-select-small-label"
                 id="demo-select-small"
                 value={price}
-                label="Age"
+                label="Price"
                 onChange={priceChange}
             >
                 <MenuItem value="">
