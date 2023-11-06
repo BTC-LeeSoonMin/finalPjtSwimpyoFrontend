@@ -24,6 +24,7 @@ import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
+import ModifyRoom from './pages/accommodation/admin/ModifyRoom';
 
 function App() {
 
@@ -92,13 +93,18 @@ function App() {
                     ></Route>
 
                     <Route
-                        path="/admin/accommodation/registRoom/:a_acc_no"
+                        path="/admin/accommodation/registRoom/:a_m_no"
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <RegistRoom /></div>}>
                     </Route>
 
                     <Route
                         path="/admin/accommodation/detailRoom/:a_r_no"
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminDetailRoom /></div>}>
+                    </Route>
+
+                    <Route
+                        path="/admin/accommodation/modifyRoom/:a_r_no/:a_m_no"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <ModifyRoom /></div>}>
                     </Route>
 
                     <Route

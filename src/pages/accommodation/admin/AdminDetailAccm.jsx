@@ -188,7 +188,6 @@ const AdminDetailAccm = () => {
                         <DeleteIcon />
                     </IconButton>
                     <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
-
                 </Box>
 
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>

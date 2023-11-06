@@ -67,10 +67,12 @@ const AdminDetailRoom = () => {
         }
     };
 
+    console.log(backEndData.roomData.a_m_no);
+
     const handleEditConfirmation = () => {
         // 이곳에서 수정 페이지로 이동 또는 관련 작업 수행
         // handleClose(); // 작업을 수행한 후 모달 닫기
-        navigate(`/admin/accommodation/modifyRoom/${roomNum}`)
+        navigate(`/admin/accommodation/modifyRoom/${roomNum.a_r_no}/${backEndData.roomData.a_m_no}`)
 
     };
 
@@ -186,22 +188,22 @@ const AdminDetailRoom = () => {
 
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                가격 : {backEndData.roomData.a_r_price}
+                                가격 : {backEndData.roomData.a_r_price} 원
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크인 시간 : {backEndData.roomData.a_r_check_in}
+                                체크인 시간 : {backEndData.roomData.a_r_check_in} AM
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크아웃 시간 : {backEndData.roomData.a_r_check_out}
+                                체크아웃 시간 : {backEndData.roomData.a_r_check_out} PM
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                방 총 개수 : {backEndData.roomData.a_r_count}
+                                방 총 개수 : {backEndData.roomData.a_r_count} 개
                             </Box>
                         </Grid>
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -216,9 +218,14 @@ const AdminDetailRoom = () => {
                     {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         업소 정보
-                    </Grid>
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <span dangerouslySetInnerHTML={{ __html: backEndData.roomData.a_r_content }}></span>
+
+                        <Grid item xs={12}>
+                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginTop: 2, marginBottom: 2 }}>
+                                <div style={{ whiteSpace: 'pre-line' }}>
+                                    <span dangerouslySetInnerHTML={{ __html: backEndData.roomData.a_r_content }}></span>
+                                </div>
+                            </Box>
+                        </Grid>
                     </Grid>
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
@@ -230,9 +237,7 @@ const AdminDetailRoom = () => {
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
-                        객실
-                    </Grid>
+
 
                 </Item>
 
