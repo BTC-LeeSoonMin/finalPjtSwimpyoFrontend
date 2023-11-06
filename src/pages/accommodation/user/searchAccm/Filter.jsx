@@ -33,7 +33,7 @@ const linkStyle = {
 function Filter() {
     const [category, setCategory] = useState('호텔/리조트'); 
     const [area, setArea] = useState('서울'); 
-    const [price, setPrice] = useState('낮은순'); 
+    const [price, setPrice] = useState('０'); 
     const [stay, setStay] = useState('숙박'); 
     const [able, setAble] = useState('all'); 
 
@@ -54,70 +54,6 @@ function Filter() {
     const ableCheck = (e) => {
         setAble(e.target.checked ? 'possible' : 'all');
     }
-
-    // const categoryChange = (e) => {
-    //     const category = e.target.value
-    //     console.log('category', category);
-    
-    //     api.post("/api/user/mypage/resLogList", JSON.stringify(category), config,)
-    //       .then((response) => {
-    
-    //         if (response.data === "Fail") {
-    //           console.log("해당 데이터가 없습니다.", response.data);
-    //           alert("존재하지 않는 정보입니다.");
-    
-    //         } else if (response.data === "success") {
-    //           console.log("", response.data);
-    //           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-    
-    //         } 
-    
-    //       })
-    //       .catch();
-
-    // };
-
-    const areaChange = (e) => {
-        const area = e.target.value;
-        console.log('area', area);
-
-        api.post("/api/user/mypage/resLogList", JSON.stringify(area), config,)
-          .then((response) => {
-    
-            if (response.data === "Fail") {
-              console.log("해당 데이터가 없습니다.", response.data);
-              alert("존재하지 않는 정보입니다.");
-    
-            } else if (response.data === "success") {
-              console.log("", response.data);
-              alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-    
-            } 
-    
-          })
-          .catch();
-    };
-
-    const priceChange = (e) => {
-        const price = e.target.value;
-        console.log('price', price);
-
-        api.post("/api/user/mypage/resLogList", JSON.stringify(price), config,)
-          .then((response) => {
-    
-            if (response.data === "Fail") {
-              console.log("해당 데이터가 없습니다.", response.data);
-              alert("존재하지 않는 정보입니다.");
-    
-            } else if (response.data === "success") {
-              console.log("", response.data);
-              alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-    
-            } 
-    
-          })
-          .catch();
-    };
 
     return (
         <Box sx={{ ...list, borderRadius: '10px'}}>
@@ -174,7 +110,7 @@ function Filter() {
             <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={'낮은순'}
+                value={'０'}
                 label="Price"
                 // onChange={(e) => priceChange(e)}
                 onChange={(e) => setPrice(e.target.value)}
@@ -183,8 +119,8 @@ function Filter() {
                 {' '}
                 <em>None</em>{' '}
                 </MenuItem>
-                <MenuItem value={'높은순'}>높은 순</MenuItem>
-                <MenuItem value={'낮은순'}>낮은 순</MenuItem>
+                <MenuItem value={'１'}>높은 순</MenuItem>
+                <MenuItem value={'０'}>낮은 순</MenuItem>
             </Select>
             </FormControl>
 

@@ -40,34 +40,9 @@ function SearchAccmList() {
 
   const [listData, setListData] = useState([]);
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    }
-  };
-
-  useEffect(() => {
-    console.log('SearchList start');
-
-    api.get("/api/user/accm/search",
-      config,
-    )
-      .then(response => {
-        console.log(response.data);
-        setListData(response.data);
-        setAccImg(response.data.a_i_image);
-        setAccName(response.data.a_acc_name);
-        setAccKind(response.data.a_acc_kind);
-        setState(response.data.a_r_state);
-        setCheckIn(response.data.a_r_check_in);
-        setPrice(response.data.a_r_price);
-      }
-      )
-      .catch(error => console.log(error))
-
-  }, []);
 
   return (
+    
     <Grid item xs={6}>
       <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
         <Grid container>
