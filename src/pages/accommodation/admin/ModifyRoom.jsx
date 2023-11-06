@@ -13,6 +13,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { format } from 'date-fns';
 import { parseISO } from 'date-fns';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const ModifyRoom = () => {
 
@@ -282,7 +283,7 @@ const ModifyRoom = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${paramsData.a_r_no}`);
+            const response = await api.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${paramsData.a_r_no}`);
             //  res -> 서버에서 받아온 데이터
             if (response.status === 200) {
                 console.log("detail data success");
@@ -391,7 +392,7 @@ const ModifyRoom = () => {
         data.append("adminRoomDto", jsonBlob);
 
         try {
-            const response = await axios.post("/api/admin/room/modifyConfirm",
+            const response = await api.post("/api/admin/room/modifyConfirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

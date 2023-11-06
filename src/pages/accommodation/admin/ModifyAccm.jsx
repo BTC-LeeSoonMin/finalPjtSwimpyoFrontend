@@ -6,6 +6,7 @@ import { useNavigate, useNavigation, useParams } from 'react-router-dom';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import PostcodeComponent from '../../../components/PostCodeComponent';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const ModifyAccm = () => {
 
@@ -70,7 +71,7 @@ const ModifyAccm = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
+            const response = await api.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
 
             console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
 
@@ -341,7 +342,7 @@ const ModifyAccm = () => {
 
 
         try {
-            const response = await axios.post("/api/admin/accm/modify_confirm",
+            const response = await api.post("/api/admin/accm/modify_confirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -497,6 +498,10 @@ const ModifyAccm = () => {
                             name="a_acc_bn"
                             autoComplete="a_acc_bn"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_acc_bn}
                             onChange={handleChange}
                         />
@@ -511,6 +516,10 @@ const ModifyAccm = () => {
                             name="a_m_no"
                             autoComplete="a_m_no"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_no}
                             onChange={handleChange}
                         />
@@ -525,6 +534,10 @@ const ModifyAccm = () => {
                             name="a_m_email"
                             autoComplete="a_m_email"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_email}
                             onChange={handleChange}
                         />
@@ -571,6 +584,10 @@ const ModifyAccm = () => {
                             name="a_acc_phone"
                             autoComplete="a_acc_phone"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_acc_phone}
                             onChange={handleChange}
                         />

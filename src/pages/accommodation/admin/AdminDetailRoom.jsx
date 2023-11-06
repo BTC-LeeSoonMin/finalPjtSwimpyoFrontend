@@ -20,6 +20,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ConfirmOrClose from '../../../components/ConfirmOrClose';
 import { Modal } from '@mui/base';
 import AdminRoomList from './AdminRoomList';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const AdminDetailRoom = () => {
 
@@ -109,7 +110,7 @@ const AdminDetailRoom = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
+                const res = await api.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
                 //  res -> 서버에서 받아온 데이터
                 console.log("detail data success");
                 // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.

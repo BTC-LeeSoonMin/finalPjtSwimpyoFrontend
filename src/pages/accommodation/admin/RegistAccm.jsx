@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import PostcodeComponent from '../../../components/PostCodeComponent';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { applyMiddleware } from '@reduxjs/toolkit';
+import api from '../../../hooks/RefreshTokenAuto';
 
 
 const RegistAccm = () => {
@@ -127,6 +129,40 @@ const RegistAccm = () => {
     };
 
 
+    const fetchData = async () => {
+        try {
+            const response = await api.post(`/api/admin/member/adminInfo`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                }
+            );
+
+            if (response.status === 200) {
+                console.log("detail data success");
+                console.log("reponse.data", response.data);
+                // console.log("reponse.data", response.data);
+                setFormData(
+                    prevFormData => ({
+                        ...prevFormData,
+                        a_m_no: response.data.a_m_no,
+                        a_m_email: response.data.a_m_email,
+                        a_acc_phone: response.data.a_m_phone
+                    }));
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+
+    console.log("setFormData", formData);
+
+    useEffect(() => {
+        fetchData(); // 비동기 함수 호출
+    }, [])
+
+
     const registAccmConfirm = async (e) => {
         e.preventDefault();
 
@@ -203,7 +239,7 @@ const RegistAccm = () => {
         data.append("adminAccmDto", jsonBlob);
 
         try {
-            const response = await axios.post("/api/admin/accm/regist_confirm",
+            const response = await api.post("/api/admin/accm/regist_confirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -375,6 +411,10 @@ const RegistAccm = () => {
                             name="a_m_no"
                             autoComplete="a_m_no"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_no}
                             onChange={handleChange}
                         />
@@ -389,6 +429,10 @@ const RegistAccm = () => {
                             name="a_m_email"
                             autoComplete="a_m_email"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_email}
                             onChange={handleChange}
                         />
@@ -436,6 +480,10 @@ const RegistAccm = () => {
                             name="a_acc_phone"
                             autoComplete="a_acc_phone"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_acc_phone}
                             onChange={handleChange}
                         />
