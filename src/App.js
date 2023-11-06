@@ -27,6 +27,7 @@ import MyPage from './pages/mypage/user/MyPage';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
 import ModifyRoom from './pages/accommodation/admin/ModifyRoom';
 import SearchAccm from './pages/accommodation/user/searchAccm/SearchAccm';
+import UserDetailAccm from './pages/accommodation/user/UserDetailAccm';
 
 function App() {
 
@@ -133,6 +134,12 @@ function App() {
                         path="/admin/member/changePw"
                         element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <AdminChangePw /> </div>}
                     ></Route>
+
+                    <Route
+                        path="/user/accommodation/detailAccm/:a_acc_no"
+                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <UserDetailAccm /></div>}>
+                    </Route>
+
                 </Routes>
                 <Routes>
                     <Route

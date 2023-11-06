@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -72,7 +73,7 @@ const AdminDetailRoom = () => {
     const handleEditConfirmation = () => {
         // 이곳에서 수정 페이지로 이동 또는 관련 작업 수행
         // handleClose(); // 작업을 수행한 후 모달 닫기
-        navigate(`/admin/accommodation/modifyRoom/${roomNum.a_r_no}/${backEndData.roomData.a_m_no}`)
+        navigate(`/admin/accommodation/modifyRoom/${roomNum.a_r_no}/${backEndData.roomData.a_m_no}`);
 
     };
 
@@ -82,7 +83,27 @@ const AdminDetailRoom = () => {
         // 삭제 버튼 클릭 시
     }
 
-    /* 수정과 삭제를 위한 함수 끝 */
+    const handleBack = () => {
+        navigate(`/admin/accommodation/detailAccm/${backEndData.roomData.a_acc_no}`)
+    }
+
+    /* 수정과 삭제 상세페이지 가기를 위한 함수 끝 */
+
+
+    // 들어오는 시간에 따라 AM과 PM으로 변경하는 함수
+    const convertAMAndPM = (time) => {
+
+        const [hours, minutes] = time.split(':') // 시간과 분을 구분
+        const hoursInt = parseInt(hours, 10); // 시간 정수로 변환
+
+        if (hoursInt > 12) {
+            return "PM";
+        }
+
+        return "AM"
+
+
+    }
 
 
     useEffect(() => {
@@ -142,17 +163,21 @@ const AdminDetailRoom = () => {
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
             <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
 
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
-                        <EditIcon />
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <IconButton aria-label="뒤로 가기" onClick={handleBack}>
+                        <ArrowBackIcon />
                     </IconButton>
-                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.roomData.a_r_name)} words="수정" />
+                    <Box>
+                        <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
+                            <EditIcon />
+                        </IconButton>
+                        <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.roomData.a_r_name)} words="수정" />
 
-                    <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
-                        <DeleteIcon />
-                    </IconButton>
-                    <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
-
+                        <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
+                            <DeleteIcon />
+                        </IconButton>
+                        <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
+                    </Box>
                 </Box>
 
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
@@ -188,17 +213,17 @@ const AdminDetailRoom = () => {
 
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                가격 : {backEndData.roomData.a_r_price} 원
+                                가격 : {backEndData.roomData.a_r_price.toLocaleString('ko-KR')} 원
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크인 시간 : {backEndData.roomData.a_r_check_in} AM
+                                체크인 시간 : {backEndData.roomData.a_r_check_in} {convertAMAndPM(backEndData.roomData.a_r_check_in)}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크아웃 시간 : {backEndData.roomData.a_r_check_out} PM
+                                체크아웃 시간 : {backEndData.roomData.a_r_check_out} {convertAMAndPM(backEndData.roomData.a_r_check_out)}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>

@@ -238,10 +238,10 @@ const RegistRoom = () => {
                     behavior: 'smooth',
                     block: 'center'
                 });
+
+
             }
-
-
-            if (!allFieldsValid) return;
+            return;
             // 에러 메시지 띄우기 위한 로직 끝
         }
 
@@ -271,7 +271,7 @@ const RegistRoom = () => {
             a_m_no: backEndData.a_m_no,
             a_r_name: a_r_name,
             a_r_state: a_r_state,
-            a_r_price: a_r_price,
+            a_r_price: parseInt(a_r_price.replace(/,/g, ''), 10),
             a_r_check_in: formattedCheckInTime,
             a_r_check_out: formattedCheckOutTime,
             a_r_count: a_r_count,
