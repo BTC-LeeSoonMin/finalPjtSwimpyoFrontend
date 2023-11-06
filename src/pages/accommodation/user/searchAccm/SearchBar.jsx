@@ -61,7 +61,7 @@ export default function SearchBar() {
             const searchWord = e.target.value;
             console.log('검색어', searchWord);
 
-            api.post("/api/user/searchAccm", JSON.stringify(searchWord), config,)
+            api.get("/api/user/accm/search", JSON.stringify(searchWord), config,)
                 .then((response) => {
                     console.log(response.data);
                     if (response.data !== null) {
