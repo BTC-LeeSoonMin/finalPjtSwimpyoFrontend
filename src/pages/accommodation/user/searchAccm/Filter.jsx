@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Link } from 'react-router-dom';
+import api from '../../../../hooks/RefreshTokenAuto';
 
 const list = {
     bgcolor: 'background.paper',
-    height: '12rem',
+    width: '12rem',
+    height: '18rem',
     textAlign: 'center',
     mt: '1rem',
     padding: '1rem', 
+    position: 'fixed',
   };
 
 const titleFont = {
@@ -28,15 +31,92 @@ const linkStyle = {
   };
 
 function Filter() {
-    const [area, setArea] = useState('');
-    const [price, setPrive] = useState('');
+    const [category, setCategory] = useState('호텔/리조트'); 
+    const [area, setArea] = useState('서울'); 
+    const [price, setPrice] = useState('낮은순'); 
+    const [stay, setStay] = useState('숙박'); 
+    const [able, setAble] = useState('all'); 
+
+    const config = {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+    };
+
+    useEffect(() => {
+        console.log('category', category);
+        console.log('area', area);
+        console.log('price', price);
+        console.log('stay', stay);
+        console.log('able', able);
+    }, [category, area, price, stay, able]);
+
+    const ableCheck = (e) => {
+        setAble(e.target.checked ? 'possible' : 'all');
+    }
+
+    // const categoryChange = (e) => {
+    //     const category = e.target.value
+    //     console.log('category', category);
+    
+    //     api.post("/api/user/mypage/resLogList", JSON.stringify(category), config,)
+    //       .then((response) => {
+    
+    //         if (response.data === "Fail") {
+    //           console.log("해당 데이터가 없습니다.", response.data);
+    //           alert("존재하지 않는 정보입니다.");
+    
+    //         } else if (response.data === "success") {
+    //           console.log("", response.data);
+    //           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+    
+    //         } 
+    
+    //       })
+    //       .catch();
+
+    // };
 
     const areaChange = (e) => {
-      setArea(e.target.value);
+        const area = e.target.value;
+        console.log('area', area);
+
+        api.post("/api/user/mypage/resLogList", JSON.stringify(area), config,)
+          .then((response) => {
+    
+            if (response.data === "Fail") {
+              console.log("해당 데이터가 없습니다.", response.data);
+              alert("존재하지 않는 정보입니다.");
+    
+            } else if (response.data === "success") {
+              console.log("", response.data);
+              alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+    
+            } 
+    
+          })
+          .catch();
     };
 
     const priceChange = (e) => {
-        setPrive(e.target.value);
+        const price = e.target.value;
+        console.log('price', price);
+
+        api.post("/api/user/mypage/resLogList", JSON.stringify(price), config,)
+          .then((response) => {
+    
+            if (response.data === "Fail") {
+              console.log("해당 데이터가 없습니다.", response.data);
+              alert("존재하지 않는 정보입니다.");
+    
+            } else if (response.data === "success") {
+              console.log("", response.data);
+              alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+    
+            } 
+    
+          })
+          .catch();
     };
 
     return (
@@ -44,14 +124,34 @@ function Filter() {
             <Typography sx={{...titleFont}}>
                 필터
             </Typography>
+
+            <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
+                <InputLabel id="demo-select-small-label">카테고리</InputLabel>
+                <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={'호텔/리조트'}
+                    label="Category"
+                    onChange={(e) => setCategory(e.target.value)}
+                >
+                    <MenuItem value="">{' '}<em>카테고리전체</em>{' '}</MenuItem>
+                    <MenuItem value={'호텔/리조트'}>호텔/리조트</MenuItem>
+                    <MenuItem value={'펜션/풀빌라'}>펜션/풀빌라</MenuItem>
+                    <MenuItem value={'모텔'}>모텔</MenuItem>
+                    <MenuItem value={'캠핑/글램핑'}>캠핑/글램핑</MenuItem>
+                    <MenuItem value={'게스트하우스'}>게스트하우스</MenuItem>
+                </Select>
+            </FormControl>
+
             <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
             <InputLabel id="demo-select-small-label">지역</InputLabel>
             <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={area}
+                value={'서울'}
                 label="Area"
-                onChange={areaChange}
+                // onChange={(e) => areaChange(e)}
+                onChange={(e) => setArea(e.target.value)}
             >
                 <MenuItem value="">
                 {' '}
@@ -74,22 +174,25 @@ function Filter() {
             <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={price}
+                value={'낮은순'}
                 label="Price"
-                onChange={priceChange}
+                // onChange={(e) => priceChange(e)}
+                onChange={(e) => setPrice(e.target.value)}
             >
                 <MenuItem value="">
                 {' '}
                 <em>None</em>{' '}
                 </MenuItem>
-                <MenuItem value={'부산'}>높은 순민</MenuItem>
-                <MenuItem value={'서울'}>낮은 순민</MenuItem>
+                <MenuItem value={'높은순'}>높은 순</MenuItem>
+                <MenuItem value={'낮은순'}>낮은 순</MenuItem>
             </Select>
             </FormControl>
 
             <Typography sx={{mt: '10px'}}>
-                <Link style={linkStyle}>대실</Link> / <Link style={linkStyle}>숙박</Link>
+                <Link onClick={(e) => setStay('대실')} style={linkStyle}>대실</Link> / <Link onClick={(e) => setStay('숙박')} style={linkStyle}>숙박</Link>
             </Typography>
+
+            <FormControlLabel control={<Checkbox color="success" checked={able === 'possible'} onChange={(e) => ableCheck(e)}/>} label="예약가능여부" />
         </Box>
     );
 }
