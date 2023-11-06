@@ -116,7 +116,7 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                                         {room.a_r_name}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        가격: {room.a_r_price}
+                                        가격: {room.a_r_price.toLocaleString('ko-KR')}원
                                     </Typography>
                                     <Button
                                         type="button"

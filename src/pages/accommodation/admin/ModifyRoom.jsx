@@ -128,6 +128,8 @@ const ModifyRoom = () => {
         setSelectedFileURLs(updatedFileURLs);
     };
 
+    console.log("deleteImage", deleteImage);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -252,7 +254,7 @@ const ModifyRoom = () => {
     };
 
 
-    // 들어온 시간 데이터를 다시 변환
+    // 들어온 시간 데이터를 다시 타임피커에 나타내기 위해 변환
     const convertTimeToDate = (time) => {
         if (!time) {
             return new Date(); // 현재 시간을 기본값으로 설정
@@ -265,6 +267,17 @@ const ModifyRoom = () => {
 
         return now;
     };
+    // 들어온 시간 데이터를 다시 타임피커에 나타내기 위해 변환
+
+    // 들어온 금액 데이터를 1000단위로 , 표시하기 위해 변환 디비에는 숫자형이다. 다시 스트링으로 변환
+    const convertPrice = (price) => {
+        if (!price) {
+            return null;
+        }
+
+        const priceToString = price.toLocaleString();
+        return priceToString;
+    }
 
 
     const fetchData = async () => {
@@ -285,9 +298,6 @@ const ModifyRoom = () => {
                     r_i_no: [...response.data.r_i_nos],
                     r_i_image: [...response.data.r_i_images]
                 });
-
-
-
 
 
                 // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
@@ -326,7 +336,7 @@ const ModifyRoom = () => {
         if (backEndData) {
             setA_r_name(backEndData.a_r_name || '');
             setA_r_state(backEndData.a_r_state || '');
-            setA_r_price(backEndData.a_r_price || '');
+            setA_r_price(convertPrice(backEndData.a_r_price) || '');
             setA_r_check_in(convertTimeToDate(backEndData.a_r_check_in) || '');
             setA_r_check_out(convertTimeToDate(backEndData.a_r_check_out) || '');
             setA_r_count(backEndData.a_r_count || '');
@@ -356,11 +366,11 @@ const ModifyRoom = () => {
         }
 
         if (deleteImage.length > 0) {
-            data.append("deleteImg", deleteImage);
+            data.append("deleteNo", deleteImage);
             // const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
             // data.append("deleteImg", deleteImageBlob);
         }
-        console.log("deleteImg", data.deleteImageBlob);
+        console.log("deleteNo", data.deleteImageBlob);
 
 
         scrollToError();
@@ -368,9 +378,10 @@ const ModifyRoom = () => {
         const jsonBlob = new Blob([JSON.stringify({
             a_acc_no: backEndData.a_acc_no,
             a_m_no: backEndData.a_m_no,
+            a_r_no: paramsData.a_r_no,
             a_r_name: a_r_name,
             a_r_state: a_r_state,
-            a_r_price: a_r_price,
+            a_r_price: parseInt(a_r_price.replace(/,/g, ''), 10),
             a_r_check_in: formattedCheckInTime,
             a_r_check_out: formattedCheckOutTime,
             a_r_count: a_r_count,
