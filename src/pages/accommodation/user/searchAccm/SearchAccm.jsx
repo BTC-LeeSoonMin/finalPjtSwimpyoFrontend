@@ -19,6 +19,14 @@ function SearchAccm() {
         <Grid item xs={10}>
             <Grid container>
                 <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
+                <SearchAccmList />
             </Grid>
         </Grid>
 

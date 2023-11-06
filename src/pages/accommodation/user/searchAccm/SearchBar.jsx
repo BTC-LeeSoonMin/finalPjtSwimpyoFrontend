@@ -61,20 +61,14 @@ export default function SearchBar() {
             const searchWord = e.target.value;
             console.log('검색어', searchWord);
 
-            // let data = {};
+            api.get("/api/user/accm/search", JSON.stringify(searchWord), config,)
+                .then((response) => {
+                    console.log(response.data);
+                    if (response.data !== null) {
+                        navigate('/user/searchAccm');
+                    } 
 
-            // data = {
-            //     "searchWord": searchWord,
-            // }
-
-            // api.post("/api/user/searchAccm", JSON.stringify(data), config,)
-            //     .then((response) => {
-            //         console.log(response.data);
-            //         if (response.data !== null) {
-            //             navigate('/user/searchAccm');
-            //         }
-
-            //     });
+                });
 
         }
       };
@@ -86,7 +80,7 @@ export default function SearchBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="지역 또는 숙소명을 검색해보세요."
+              placeholder="숙소명을 검색해보세요."
               inputProps={{ 'aria-label': 'search' }}
               onKeyDown={searchEnter}
             />
