@@ -12,8 +12,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { format } from 'date-fns';
+import { parseISO } from 'date-fns';
 
-const RegistRoom = () => {
+const ModifyRoom = () => {
 
     const paramsData = useParams(); // 넘어온 데이터
 
@@ -37,6 +38,8 @@ const RegistRoom = () => {
         // 필요한 나머지 필드들도 여기에 추가
     });
 
+    console.log("params data", paramsData);
+
     // 파일 업로드를 위한 상태
     const [selectedFileNames, setSelectedFileNames] = useState([]);
     const [selectedFileURLs, setSelectedFileURLs] = useState([]); // 이미지 URL을 저장할 상태 추가
@@ -44,9 +47,17 @@ const RegistRoom = () => {
     const errorMessageRef = useRef(null);
     // 파일 업로드를 위한 상태
 
+
+
+    // 삭제한 이미지의 배열을 증가 시킨다.(어떤 이미지를 삭제하는 지 알기위해서)
+    const [deleteImage, setDeleteImage] = useState([]);
+    // 삭제한 이미지의 배열을 증가 시킨다.(어떤 이미지를 삭제하는 지 알기위해서)
+
+
     // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 시작
     const [imageError, setImageError] = useState(false);
     // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 끝
+
 
     const navigate = useNavigate();
 
@@ -60,33 +71,6 @@ const RegistRoom = () => {
     const handleCheckOutTimeChange = (time) => {
         setA_r_check_out(time);
     };
-
-    console.log("paramsData", paramsData);
-
-
-    const fetchData = async () => {
-        try {
-            const res = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${paramsData.a_m_no}`);
-            //  res -> 서버에서 받아온 데이터
-            console.log("detail data success");
-            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-            console.log("확인 : ", res.data);
-            setBackEndData(res.data.adminAccmDto);
-            console.log("accmData", backEndData);
-            // const imageUrls = images.a_i_images;
-            // setImages(imageUrls);
-
-        } catch (error) {
-            console.error("An error occurred:", error);
-        }
-    };
-
-
-    useEffect(() => {
-
-
-        fetchData(); // 비동기 함수 호출
-    }, [paramsData]);
 
 
 
@@ -118,7 +102,22 @@ const RegistRoom = () => {
         // 선택된 이미지를 제거합니다.
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
+        // setR_i_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
+
+
+        // 이미지의 a_i_no 값을 찾습니다.
+        const imageNoToRemove = selectedFileNames[indexToRemove]?.key;  // key = a_i_no
+        console.log("키 번호", imageNoToRemove);
+        console.log("키 번호 타입", typeof (imageNoToRemove));
+        console.log("ffffffffffffffffff", Array.isArray(r_i_image));
+
+        // 이미지 고유 번호(a_i_no)를 deleteImage 배열에 추가합니다.
+        if (!imageNoToRemove.includes('.')) {
+            setDeleteImage(prevDeleteImage => [...prevDeleteImage, imageNoToRemove]);
+        }
+        // 백엔드에서 받아온 이미지 또한 제거
         setR_i_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
+        //
 
         // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
         const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
@@ -128,6 +127,7 @@ const RegistRoom = () => {
         const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
         setSelectedFileURLs(updatedFileURLs);
     };
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -164,6 +164,7 @@ const RegistRoom = () => {
                 break;
         }
 
+
         // 에러 필드를 나타내기 위한 코드 //
         if (value === '') {
             setFieldErrors({
@@ -179,6 +180,7 @@ const RegistRoom = () => {
         // 에러 필드를 나타내기 위한 코드 //
 
     };
+
 
     const scrollToError = () => {
         // 에러 메시지 띄우기 위한 변수 시작 //
@@ -250,12 +252,101 @@ const RegistRoom = () => {
     };
 
 
+    // 들어온 시간 데이터를 다시 변환
+    const convertTimeToDate = (time) => {
+        if (!time) {
+            return new Date(); // 현재 시간을 기본값으로 설정
+        }
 
-    const registRoomConfirm = async (e) => {
+        // 현재 날짜를 기준으로 하지만, 시간만 '14:00'에서 가져옵니다.
+        const [hours, minutes] = time.split(':').map(Number);
+        const now = new Date();
+        now.setHours(hours, minutes, 0, 0); // 초와 밀리초는 0으로 설정합니다.
+
+        return now;
+    };
+
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${paramsData.a_r_no}`);
+            //  res -> 서버에서 받아온 데이터
+            if (response.status === 200) {
+                console.log("detail data success");
+                // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+                console.log("확인 : ", response.data);
+                setBackEndData(response.data.adminRoomDto);
+                console.log("accmData", backEndData);
+                // const imageUrls = images.a_i_images;
+                // setImages(imageUrls);
+
+                setBackEndData({
+                    ...response.data.adminRoomDto,
+                    r_i_no: [...response.data.r_i_nos],
+                    r_i_image: [...response.data.r_i_images]
+                });
+
+
+
+
+
+                // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
+
+                const initialImageURLAndNo = response.data.r_i_images.map((url, index) => ({
+                    url,
+                    r_i_no: response.data.r_i_nos[index]
+                }));
+                setSelectedFileURLs(initialImageURLAndNo.map(item => item.url));
+
+
+
+                // 이미지가 배열이기 때문에 배열을 풀어서 해결해준다.
+                const initialFileName = initialImageURLAndNo.map(item => (
+                    <ListItem key={item.r_i_no}>
+                        <ListItemText primary={item.url.split('/').pop()} />
+                    </ListItem>
+                ));
+                setSelectedFileNames(initialFileName);
+                // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
+
+            } else {
+                console.error("Server responded with status:", response.status);
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(); // 비동기 함수 호출
+    }, [paramsData]);
+
+
+    useEffect(() => {
+        if (backEndData) {
+            setA_r_name(backEndData.a_r_name || '');
+            setA_r_state(backEndData.a_r_state || '');
+            setA_r_price(backEndData.a_r_price || '');
+            setA_r_check_in(convertTimeToDate(backEndData.a_r_check_in) || '');
+            setA_r_check_out(convertTimeToDate(backEndData.a_r_check_out) || '');
+            setA_r_count(backEndData.a_r_count || '');
+            setA_r_content(backEndData.a_r_content || '');
+            setR_i_image(backEndData.r_i_image || null);
+        }
+    }, [backEndData]);
+
+
+    console.log("체크인 시간 ", a_r_check_in);
+    console.log("체크아웃 시간 ", a_r_check_out);
+
+
+    const modifyRoomConfirm = async (e) => {
         e.preventDefault();
 
         // 이미지 때문에 formData를 백엔드로 전송해야 한다.
         const data = new FormData();
+
+        // 타임피커 시간 형태를 바꿔서 사용 (ex : 14:00)
         const formattedCheckInTime = format(a_r_check_in, 'HH:mm');
         const formattedCheckOutTime = format(a_r_check_out, 'HH:mm');
 
@@ -263,6 +354,14 @@ const RegistRoom = () => {
         for (let i = 0; i < r_i_image.length; i++) {
             data.append('r_i_image', r_i_image[i]);
         }
+
+        if (deleteImage.length > 0) {
+            data.append("deleteImg", deleteImage);
+            // const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
+            // data.append("deleteImg", deleteImageBlob);
+        }
+        console.log("deleteImg", data.deleteImageBlob);
+
 
         scrollToError();
 
@@ -281,15 +380,15 @@ const RegistRoom = () => {
         data.append("adminRoomDto", jsonBlob);
 
         try {
-            const response = await axios.post("/api/admin/room/registConfirm",
+            const response = await axios.post("/api/admin/room/modifyConfirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
             console.log(response.data);  // "success" 출력
-            alert("해당 객실이 등록되었습니다 숙박업소 상세 페이지로 이동됩니다");
-            navigate(`/admin/accommodation/detailAccm/${backEndData.a_m_no}`);
+            alert("해당 객실이 수정되었습니다 룸 상세 페이지로 이동됩니다");
+            navigate(`/admin/accommodation/detailRoom/${paramsData.a_r_no}`);
 
         } catch (error) {
             console.error("등록실패:", error);
@@ -309,10 +408,10 @@ const RegistRoom = () => {
                     }}
                 >
                     <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
-                        방 등록
+                        방 수정
                     </Typography>
 
-                    <form onSubmit={registRoomConfirm} name='regist_room_confirm' style={{ width: '100%', marginTop: 1 }}>
+                    <form onSubmit={modifyRoomConfirm} name='modify_room_confirm' style={{ width: '100%', marginTop: 1 }}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -533,7 +632,7 @@ const RegistRoom = () => {
                                 sx={{ mt: 3, mb: 2, mr: 2 }}
                             // disabled={!setSelectedFileNames[0]}
                             >
-                                등록
+                                수정
                             </Button>
 
                             <Button
@@ -555,4 +654,4 @@ const RegistRoom = () => {
     );
 }
 
-export default RegistRoom;
+export default ModifyRoom;
