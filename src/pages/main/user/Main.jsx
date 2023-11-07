@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'
-import {Paper, Button} from '@mui/material'
+import { Paper, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiPaper from '@mui/material/Paper';
@@ -14,6 +14,7 @@ import { CardActionArea } from '@mui/material';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
 import temp3 from '../../../assets/temp3.png';
+import { useNavigate } from 'react-router-dom';
 
 const Item = styled(MuiPaper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -32,12 +33,20 @@ const linkStyle = {
 
 function Main() {
 
+  const testAccmNum = 7;
+  const navigate = useNavigate();
+
+  const testHandler = () => {
+    navigate(`/user/accommodation/detailAccm/${testAccmNum}`);
+  }
+
   return (
     <Container component="main">
+      <Button onClick={testHandler}>숙소가기 테스트</Button>
       <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
         <Carousel>
-          <Paper sx={{height: '180px'}}><img src={temp1} alt="Temp Image" /></Paper>
-          <Paper sx={{height: '180px'}}><img src={temp2}/></Paper>
+          <Paper sx={{ height: '180px' }}><img src={temp1} alt="Temp Image" /></Paper>
+          <Paper sx={{ height: '180px' }}><img src={temp2} /></Paper>
         </Carousel>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
@@ -48,8 +57,8 @@ function Main() {
                 <Grid item xs={3}>
                   지역별 숙소
                 </Grid>
-                <Grid item xs={9} sx={{mt: '10px'}}>
-                  <Divider variant="middle" />  
+                <Grid item xs={9} sx={{ mt: '10px' }}>
+                  <Divider variant="middle" />
                 </Grid>
               </Grid>
               <a href="/" style={linkStyle}>
@@ -88,8 +97,8 @@ function Main() {
                 <Grid item xs={2}>
                   인기 호텔
                 </Grid>
-                <Grid item xs={10} sx={{mt: '10px'}}>
-                  <Divider variant="middle" />  
+                <Grid item xs={10} sx={{ mt: '10px' }}>
+                  <Divider variant="middle" />
                 </Grid>
               </Grid>
               <Card sx={{ maxWidth: 200, mt: '6px' }}>
@@ -111,13 +120,13 @@ function Main() {
                 </CardActionArea>
               </Card>
             </Item>
-            <Item sx={{marginTop: '1rem'}}>
+            <Item sx={{ marginTop: '1rem' }}>
               <Grid container>
                 <Grid item xs={2}>
                   인기 펜션
                 </Grid>
-                <Grid item xs={10} sx={{mt: '10px'}}>
-                  <Divider variant="middle" />  
+                <Grid item xs={10} sx={{ mt: '10px' }}>
+                  <Divider variant="middle" />
                 </Grid>
               </Grid>
               <Card sx={{ maxWidth: 200, mt: '6px' }}>

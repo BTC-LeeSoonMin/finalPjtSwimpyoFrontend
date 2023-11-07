@@ -276,7 +276,7 @@ const RegistAccm = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
+                    <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
                         숙박 업소 등록
                     </Typography>
                     {/* <Box component="form" onSubmit={registAccmConfirm} noValidate sx={{ mt: 1 }}> */}

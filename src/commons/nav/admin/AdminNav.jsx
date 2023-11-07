@@ -33,7 +33,7 @@ export default function AdminNav() {
 
   const fetchData = async () => {
     try {
-      const res = await api.post("api/admin/member/adminInfo");
+      const res = await api.post("/api/admin/member/adminInfo");
 
       console.log(res.data);
       setA_m_no(res.data.a_m_no);
