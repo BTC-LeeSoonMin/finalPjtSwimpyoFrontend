@@ -94,9 +94,9 @@ export default function SearchBar() {
 
       api.post("/api/user/accm/search", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data);
+          console.log('서치바' ,response.data);
           if (response.data !== null) {
-            navigate('/user/searchAccm');
+            navigate('/user/searchAccm', {data: response.data});
           }
 
         });

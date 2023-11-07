@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SearchAccmList from './SearchAccmList';
 import Filter from './Filter';
 import DateFilter from './DateFilter';
@@ -11,26 +11,25 @@ import api from '../../../../hooks/RefreshTokenAuto';
 
 function SearchAccm() {
 
+  const {data} = useParams();
+
+  console.log('data', data);
+  const [list, setList] = useState([]);
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  };
+
   useEffect(() => {
     console.log('SearchList start');
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      }
-    };  
-
+    
     api.post("/api/user/accm/search", config,
     )
       .then(response => {
-        // console.log(response.data);
-        // setListData(response.data);
-        // setAccImg(response.data.a_i_image);
-        // setAccName(response.data.a_acc_name);
-        // setAccKind(response.data.a_acc_kind);
-        // setState(response.data.a_r_state);
-        // setCheckIn(response.data.a_r_check_in);
-        // setPrice(response.data.a_r_price);
+        console.log('백',response.data);
+        setList(response.data);
       }
       )
       .catch(error => console.log(error))
@@ -45,6 +44,7 @@ function SearchAccm() {
 
         <Grid item xs={10}>
             <Grid container>
+               {list}
                 <SearchAccmList />
                 <SearchAccmList />
                 <SearchAccmList />
