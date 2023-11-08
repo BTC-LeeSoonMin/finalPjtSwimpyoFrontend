@@ -18,7 +18,7 @@ const dateStyle = {
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
 
-function DateFilter() {
+function DateFilter({onDataChange}) {
     const [checkIn, setCheckIn] = useState(today);
     const [checkOut, setCheckOut] = useState(tomorrow);
 
@@ -28,26 +28,15 @@ function DateFilter() {
         }
     };
 
-    useEffect(() => {
-        console.log('checkIn', checkIn);
-        console.log('checkOut', checkOut);
-    }, [checkOut]);
-
     const dateFiler = (newValue) => {
-        console.log('날짜', newValue);
-        console.log('날짜1', newValue[0]);
-        console.log('날짜2', newValue[1]);
+        // console.log('날짜', newValue);
+        // console.log('날짜1', newValue[0]);
+        // console.log('날짜2', newValue[1]);
         setCheckIn(newValue[0]);
         if(newValue[1] !== null ) {
             setCheckOut(newValue[1]);
+            onDataChange(newValue);
         }
-
-        let data = {
-            "date" : newValue, 
-        };
-
-        // api.post("/api/user/searchAccm", JSON.stringify(data), config,)
-        //     .then((response))
     }
 
     return (

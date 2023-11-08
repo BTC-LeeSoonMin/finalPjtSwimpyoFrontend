@@ -55,10 +55,10 @@ export default function SearchBar() {
 
   const [checkIn, setCheckIn] = useState(today);
   const [checkOut, setCheckOut] = useState(tomorrow);
-  const [category, setCategory] = useState('호텔/리조트'); 
-  const [area, setArea] = useState('서울'); 
-  const [price, setPrice] = useState('０'); 
-  const [stay, setStay] = useState('숙박'); 
+  // const [category, setCategory] = useState('호텔/리조트'); 
+  // const [area, setArea] = useState('서울'); 
+  // const [price, setPrice] = useState('０'); 
+  // const [stay, setStay] = useState('숙박'); 
   const [able, setAble] = useState('all'); 
 
   const config = {
@@ -73,30 +73,21 @@ export default function SearchBar() {
     if (e.key === 'Enter') {
 
       const searchWord = e.target.value;
-      // console.log('checkIn', checkIn);
-      // console.log('checkOut', checkOut);
-      // console.log('검색어', searchWord);
 
       let data = {};
       data = {
         "searchValue" : searchWord, 
         "startDay" : checkIn, 
         "endDay" : checkOut,
-        "accmValue" : category,
-        "region" : area,
-        "dayUseOrStay" : stay,
-        "priceOrder" : price,
-        "able" : able,
+        "able" : able
 
       };
 
-      // console.log("data",data); 
-
       api.post("/api/user/accm/search", JSON.stringify(data), config,)
         .then((response) => {
-          console.log('서치바' ,response.data);
+          console.log('서치바' , response.data);
           if (response.data !== null) {
-            navigate('/user/searchAccm', {data: response.data});
+            navigate('/user/searchAccm', { state : response.data});
           }
 
         });

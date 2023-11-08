@@ -29,7 +29,7 @@ const info = {
   fontWeight: 'normal',
 }
 
-function SearchAccmList() {
+function SearchAccmList(props) {
   const [star, setStar] = useState(4);
   const [accImg, setAccImg] = useState('');   // 숙박업소 이름
   const [accName, setAccName] = useState('');   // 숙박업소 이름
@@ -40,29 +40,28 @@ function SearchAccmList() {
 
   const [listData, setListData] = useState([]);
 
-
   return (
     
     <Grid item xs={6}>
       <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
         <Grid container>
-          <Grid item xs={6}>
-            <img style={{ maxHeight: '125px', maxWidth: '200px' }} src={accmImg} alt="Accm Image" />
+          <Grid item xs={4}>
+            <img style={{ maxHeight: '125px', maxWidth: '200px' }} src={props.a_i_image} alt="Accm Image" />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
               <Typography sx={{ ...titleFont }}>
-                숙박업소 이름
+                {props.a_acc_name}
               </Typography>
               <Rating name="read-only" value={star} readOnly size="small" />
               <Typography sx={{ ...font }} >
-                모텔
+                {props.a_acc_kind}
+              </Typography>
+              <Typography sx={{ ...font }} >
+                {props.a_acc_address}
               </Typography>
               <Typography sx={{ ...info, mt: '10px' }} >
-                대실 4시간 | 40,000원~
-              </Typography>
-              <Typography sx={{ ...info }} >
-                숙박 15:00~ | 80,000원~
+                {props.a_r_state} {props.a_r_check_in} |  {props.a_r_price}원~
               </Typography>
             </Box>
           </Grid>
