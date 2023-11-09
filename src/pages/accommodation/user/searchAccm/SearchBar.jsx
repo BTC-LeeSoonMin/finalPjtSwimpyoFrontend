@@ -77,8 +77,8 @@ export default function SearchBar() {
       let data = {};
       data = {
         "searchValue" : searchWord, 
-        "startDay" : checkIn, 
-        "endDay" : checkOut,
+        "startDay" : dayjs(checkIn).format("YYYY-MM-DD"), 
+        "endDay" : dayjs(checkOut).format("YYYY-MM-DD"), 
         "able" : able
 
       };

@@ -30,9 +30,6 @@ function SearchAccm() {
   const SearchInfo = [...location.state];
   const SearchList = useRef(SearchInfo);
 
-  // console.log("tp11요", SearchInfo);
-  // console.log("tp22요", SearchList);
-
   return (
     <Container component="main" maxWidth="lg" sx={{ marginBottom: '3rem', marginTop: '1rem' }}>
       <Grid container>

@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../../hooks/RefreshTokenAuto';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 const list = {
     bgcolor: 'background.paper',
@@ -32,7 +33,7 @@ const linkStyle = {
 };
 
 function Filter({ data }) {
-// function Filter() {
+    // function Filter() {
     const [category, setCategory] = useState('호텔/리조트');
     const [area, setArea] = useState('서울');
     const [price, setPrice] = useState('０');
@@ -78,26 +79,24 @@ function Filter({ data }) {
 
         let filter = {};
         filter = {
-            "startDay": startDay,
-            "endDay": endDay,
-            "accmValue": category, 
-            "region": area, 
-            "priceOrder": price, 
-            "able": able, 
-            "dayUseOrStay": stay, 
+            "startDay": dayjs(startDay).format("YYYY-MM-DD"),
+            "endDay": dayjs(endDay).format("YYYY-MM-DD"),
+            "accmValue": category,
+            "region": area,
+            "priceOrder": price,
+            "able": able,
+            "dayUseOrStay": stay,
         };
 
         console.log("0000000555 : ", filter.startDay);
         console.log("11111116666 : ", filter.endDay);
 
         axios.post("/api/user/accm/search", JSON.stringify(filter), config,)
-        .then((response) => {
-          console.log('필터' , response.data);
-          if (response.data !== null) {
-            navigate('/user/searchAccm', { state : response.data});
-          }
+            .then((response) => {
+                console.log('필터', response.data);
+                navigate('/user/searchAccm', { state: response.data });
 
-        });
+            });
 
     }, [category, area, price, stay, able, data]);
 
@@ -116,7 +115,7 @@ function Filter({ data }) {
                 <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={'호텔/리조트'}
+                    value={category}
                     label="Category"
                     onChange={(e) => setCategory(e.target.value)}
                 >
@@ -134,7 +133,7 @@ function Filter({ data }) {
                 <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={'서울'}
+                    value={area}
                     label="Area"
                     // onChange={(e) => areaChange(e)}
                     onChange={(e) => setArea(e.target.value)}
@@ -160,7 +159,7 @@ function Filter({ data }) {
                 <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={'０'}
+                    value={price}
                     label="Price"
                     // onChange={(e) => priceChange(e)}
                     onChange={(e) => setPrice(e.target.value)}
