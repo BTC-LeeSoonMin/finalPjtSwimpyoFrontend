@@ -2,10 +2,7 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import api from '../../../../hooks/RefreshTokenAuto';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -48,24 +45,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const today = dayjs();
-const tomorrow = dayjs().add(1, 'day');
-
 export default function SearchBar() {
-
-  const [checkIn, setCheckIn] = useState(today);
-  const [checkOut, setCheckOut] = useState(tomorrow);
-  // const [category, setCategory] = useState('호텔/리조트'); 
-  // const [area, setArea] = useState('서울'); 
-  // const [price, setPrice] = useState('０'); 
-  // const [stay, setStay] = useState('숙박'); 
-  const [able, setAble] = useState('all'); 
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    }
-  };
 
   const navigate = useNavigate();
 
@@ -73,24 +53,7 @@ export default function SearchBar() {
     if (e.key === 'Enter') {
 
       const searchWord = e.target.value;
-
-      let data = {};
-      data = {
-        "searchValue" : searchWord, 
-        "startDay" : dayjs(checkIn).format("YYYY-MM-DD"), 
-        "endDay" : dayjs(checkOut).format("YYYY-MM-DD"), 
-        "able" : able
-
-      };
-
-      api.post("/api/user/accm/search", JSON.stringify(data), config,)
-        .then((response) => {
-          console.log('서치바' , response.data);
-          if (response.data !== null) {
-            navigate('/user/searchAccm', { state : response.data});
-          }
-
-        });
+      navigate('/user/searchAccm', { state: searchWord });
 
     }
   };

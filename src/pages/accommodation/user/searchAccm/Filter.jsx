@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,9 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../../../hooks/RefreshTokenAuto';
-import axios from 'axios';
-import dayjs from 'dayjs';
 
 const list = {
     bgcolor: 'background.paper',
@@ -32,34 +29,12 @@ const linkStyle = {
     fontWeight: 'normal',
 };
 
-function Filter({ data }) {
-    // function Filter() {
+function Filter({setFilter}) {
     const [category, setCategory] = useState('호텔/리조트');
     const [area, setArea] = useState('서울');
     const [price, setPrice] = useState('０');
     const [stay, setStay] = useState('숙박');
     const [able, setAble] = useState('all');
-    // const [startDay, setStartDay] = useState([]);
-    // const [endDay, setEndDay] = useState([]);
-
-    const config = {
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-    };
-
-    // console.log("0 : ", data[0])
-    // console.log("1 : ", data[1])
-    // console.log("99 : ", data)
-
-    // const startDay = useRef(data[0]);
-    // const endDay = useRef(data[1]);
-    // console.log("useRef startDay : ", startDay);
-
-    // setStartDay(data[0]);
-    // setEndDay(data[1]);
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         console.log('Filter category', category);
@@ -67,38 +42,10 @@ function Filter({ data }) {
         console.log('Filter price', price);
         console.log('Filter stay', stay);
         console.log('Filter able', able);
-        // console.log('Filter data', data[1]);
-        // console.log("0000000 : ", data[0])
-        // console.log("1111111 : ", data[1])
 
-        let startDay = data[0];
-        let endDay = data[1];
-        console.log("0000000 : ", startDay);
-        console.log("1111111 : ", endDay);
+        setFilter([category, area, price, stay, able]);
 
-
-        let filter = {};
-        filter = {
-            "startDay": dayjs(startDay).format("YYYY-MM-DD"),
-            "endDay": dayjs(endDay).format("YYYY-MM-DD"),
-            "accmValue": category,
-            "region": area,
-            "priceOrder": price,
-            "able": able,
-            "dayUseOrStay": stay,
-        };
-
-        console.log("0000000555 : ", filter.startDay);
-        console.log("11111116666 : ", filter.endDay);
-
-        axios.post("/api/user/accm/search", JSON.stringify(filter), config,)
-            .then((response) => {
-                console.log('필터', response.data);
-                navigate('/user/searchAccm', { state: response.data });
-
-            });
-
-    }, [category, area, price, stay, able, data]);
+    }, [category, area, price, stay, able]);
 
     const ableCheck = (e) => {
         setAble(e.target.checked ? 'possible' : 'all');
@@ -135,7 +82,6 @@ function Filter({ data }) {
                     id="demo-select-small"
                     value={area}
                     label="Area"
-                    // onChange={(e) => areaChange(e)}
                     onChange={(e) => setArea(e.target.value)}
                 >
                     <MenuItem value="">
@@ -161,7 +107,6 @@ function Filter({ data }) {
                     id="demo-select-small"
                     value={price}
                     label="Price"
-                    // onChange={(e) => priceChange(e)}
                     onChange={(e) => setPrice(e.target.value)}
                 >
                     <MenuItem value="">
