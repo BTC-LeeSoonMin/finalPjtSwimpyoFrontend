@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import SignInSlice from './slice/SignInSlice'
 import sessionStorage from 'redux-persist/lib/storage'
 import { persistReducer } from 'redux-persist';
+import ForKakaoPaySlice from './slice/ForKakaoPaySlice';
 
 //combineReducers는 여러개의 reducer를 하나의 root reducer로 합쳐준다. 
 // const reducers = combineReducers({
@@ -27,8 +28,9 @@ import { persistReducer } from 'redux-persist';
 // });
 
 export const store = configureStore({
-  reducer:{
+  reducer: {
     accessToken: SignInSlice.reducer,
+    forkakaoPay: ForKakaoPaySlice.reducer
   }
 })
 

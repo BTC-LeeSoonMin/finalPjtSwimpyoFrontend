@@ -11,11 +11,15 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Modal } from '@mui/base';
 import api from '../../../../hooks/RefreshTokenAuto';
 import UserRoomList from './UserRoomList';
 import axios from 'axios';
+import KakaoMapForAccm from '../../../../components/KaokaoMapForAccm';
+import '../../../../css/MapModal.css';
+import CloseIcon from '@mui/icons-material/Close';
+import markerForMap from '../../../../imgs/markerForMap.png';
 
 
 
@@ -25,7 +29,6 @@ const UserDetailAccm = () => {
     const accmNum = useParams();
 
     // const accmNumTest = 7;
-
 
     const Item = styled(MuiPaper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -44,6 +47,7 @@ const UserDetailAccm = () => {
     })
     const requestData = useParams(); // 넘어온 데이터
     const navigate = useNavigate();
+    const location = useLocation();
 
     // 수정과 삭제 버튼 클릭 시 모달 창 열기 위한 state
     const [open, setOpen] = useState(false);
@@ -51,6 +55,7 @@ const UserDetailAccm = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [openImg, setOpenImg] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [exitAnimation, setExitAnimation] = useState(false);
 
     // 방 등록, 목록을 위한 state
     const [rooms, setRooms] = useState([]); // 방 목록을 저장하는 상태
@@ -60,23 +65,28 @@ const UserDetailAccm = () => {
     const accomNum = backEndData.accmData;
 
 
-    /* 수정과 삭제를 위한 함수 시작 */
+    /* 지도 모달을 위한 함수 시작 */
 
-    const handleClickOpen = (type) => {
-        // 수정과 삭제 버튼 클릭 시 실행
-        if (type === 'edit') {
-            setOpenEdit(true); // 수정 버튼 클릭 시 수정 모달을 열도록
-        } else if (type === 'delete') {
-            setOpenDelete(true); // 삭제 버튼 클릭 시 삭제 모달을 열도록
+    useEffect(() => {
+        // URL의 해시가 'locationMapModal'일 때 모달을 엽니다.
+        if (location.hash === '#locationMapModal') {
+            setOpen(true);
+        } else {
+            setOpen(false);
         }
+    }, [location.hash])
+
+    const handleMapOpen = () => {
+        setOpen(true);
+        window.history.pushState(null, null, '#locationMapModal');
+        setExitAnimation(false);
     }
 
-    const close = (type) => {
-        if (type === 'edit') {
-            setOpenEdit(false);
-        } else if (type === 'delete') {
-            setOpenDelete(false);
-        }
+    const handleMapClose = () => {
+        setOpen(false);
+        window.history.pushState(null, null, ' ');
+        setExitAnimation(true);
+        setTimeout(() => setOpen(false), 500);
     };
 
 
@@ -84,7 +94,7 @@ const UserDetailAccm = () => {
         // 삭제 버튼 클릭 시
     }
 
-    /* 수정과 삭제를 위한 함수 끝 */
+    /* 지도 모달을 위한 함수 끝 */
 
 
 
@@ -117,6 +127,7 @@ const UserDetailAccm = () => {
         fetchData(); // 비동기 함수 호출
     }, [accmNum])
 
+    console.log("accmData", backEndData.accmData);
     console.log("accmNum", accmNum);
     console.log("accmImages", backEndData.accmImages);
 
@@ -160,18 +171,77 @@ const UserDetailAccm = () => {
 
 
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                    <Carousel>
+                    <Carousel sx={{ zIndex: 0 }}>
                         {backEndData.accmImages.map((imageUrl, index) => (
-                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
-                                <img src={imageUrl.a_i_image} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden', zIndex: -100 }}>
+                                <img src={imageUrl.a_i_image} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain', zIndex: -200 }} />
                             </Paper>
                         ))}
                     </Carousel>
+                    <img src={markerForMap} alt="마커 이미지" style={{ width: "10px", height: "auto", marginRight: "-5px" }} /><Button onClick={handleMapOpen}>{backEndData.accmData.a_acc_address}</Button>
+                    <Modal
+                        open={open}
+                        onClose={handleMapClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1300,
+                            position: 'fixed'
+                        }}
+                        closeAfterTransition
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                position: 'fixed', // 모달을 화면에 고정합니다.
+                                top: 0,
+                                left: 0,
+                                width: '100vw', // 모달의 너비를 뷰포트 너비의 100%로 설정합니다.
+                                height: '100vh', // 모달의 높이를 뷰포트 높이의 100%로 설정합니다.
+                                bgcolor: 'background.paper',
+                                boxShadow: 24,
+                                p: 4,
+                                overflowY: 'auto', // 내용이 많을 경우 스크롤을 허용합니다.
+                                transform: open ? 'translateY(0)' : 'translateY(100%)',
+                                transition: 'transform 0.3s ease-in-out'
+                            }}
+                            className={open ? 'modal-slide-up-enter' : 'modal-slide-down-exit'} // 애니메이션 클래스를 적용합니다.
+                        >
+                            <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                                <Grid item sx={{ margin: 0 }}>
+                                    <IconButton
+                                        edge="end"
+                                        color="inherit"
+                                        onClick={handleMapClose} // 모달을 닫는 함수 호출
+                                        aria-label="close"
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+
+                                </Grid>
+                                <Grid item sx={{ margin: 0 }}>
+                                    <h2>지도보기</h2>
+                                </Grid>
+
+                            </Grid>
+
+                            <KakaoMapForAccm longitude={backEndData.accmData.a_acc_longitude} latitude={backEndData.accmData.a_acc_latitude} />
+                            <Grid Container xs={12} sx={{ textAlign: 'left' }}>
+                                <Box sx={{ fontSize: '15px', marginBottom: 2 }}>
+                                    주소 : {backEndData.accmData.a_acc_address}
+                                </Box>
+                            </Grid>
+                        </Box>
+                    </Modal>
                 </Box>
 
 
                 <Item sx={{ marginTop: '1rem' }}>
-
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
                         {backEndData.accmData.a_acc_name}
@@ -238,10 +308,10 @@ const UserDetailAccm = () => {
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
                         객실 선택
                     </Grid>
-                    <UserRoomList accomNum={accomNum} requestData={requestData} />
+                    <UserRoomList accomNum={accomNum} requestData={requestData} accmName={backEndData.accmData.a_acc_name} />
                 </Item>
 
-            </Paper>
+            </Paper >
         </Container >
     );
 

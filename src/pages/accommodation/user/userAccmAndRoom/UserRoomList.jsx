@@ -4,7 +4,7 @@ import { Box, Button, Card, CardActionArea, CardContent, CardMedia, CircularProg
 import Carousel from 'react-material-ui-carousel'
 import api from "../../../../hooks/RefreshTokenAuto";
 
-const UserRoomList = ({ accomNum, requestData }) => {
+const UserRoomList = ({ accomNum, requestData, accmName }) => {
 
 
     // 모달창 열기 //
@@ -34,14 +34,18 @@ const UserRoomList = ({ accomNum, requestData }) => {
 
     console.log("accomNum", accomNum.a_acc_no);
     console.log("accomNum.a_m_no", accomNum.a_m_no);
-
+    console.log("requestData", requestData);
+    console.log("accmName", accmName);
 
 
     console.log("backEndData.roomData.a_r_no", backEndData.roomData.map((item) => item.a_r_no));
+    console.log("backEndData.roomData.a_acc_no", backEndData.roomData.map((item) => item.a_acc_no));
+
 
     const handleMoveToDetailRoom = (roomNum) => {
-        navigate(`/user/accommodation/detailRoom/${backEndData.roomData.a_acc_no}/${roomNum}`);
+        navigate(`/user/accommodation/detailRoom/${backEndData.roomData.map((item) => item.a_acc_no)}/${roomNum}`, { state: accmName });
     }
+
 
 
     const fetchData = async () => {
@@ -98,7 +102,7 @@ const UserRoomList = ({ accomNum, requestData }) => {
                                 m: 3
                             }}>
                                 <Card sx={{ maxWidth: 400, elevation: 3 }}>
-                                    <Carousel>
+                                    <Carousel sx={{ zIndex: 0 }}>
                                         <CardMedia
                                             component="img"
                                             height="300"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Paper, Button } from '@mui/material'
@@ -10,10 +10,19 @@ import MuiPaper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import api from '../../../../hooks/RefreshTokenAuto';
+import DatePicker from 'react-date-picker';
+import 'react-datepicker/dist/react-datepicker.css';
+import CalendarForRes from '../../../../components/CalendarForRes';
+import { useSelector } from 'react-redux';
 
 const UserDetailRoom = () => {
 
+    // 리덕스 툴킷에서 로그인 확인을 위한 코드 시작
+    const token = useSelector((store) => store.accessToken.value);
+    console.log('토큰 값', token);
+    // 리덕스 툴킷에서 로그인 확인을 위한 코드 끝
 
+    const accmName = useLocation();
 
     const Item = styled(MuiPaper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,6 +37,24 @@ const UserDetailRoom = () => {
         roomData: {},
         roomImages: []
     })
+
+    // 달력 선택시 숙소 방 정보와  날짜 등 모든 것을 넣어서 예약 창으로 전달
+    const [sendToResData, setSendToResData] = useState({
+        accmName: '',
+        backEndData: {}, // 초기 backEndData 상태
+        resDates: {}
+    });
+
+    // 달력
+    const [dates, setDates] = useState({
+        startDate: new Date(),
+        endDate: new Date(),
+    });
+
+
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
 
     const roomNum = useParams();
     const navigate = useNavigate();
@@ -62,7 +89,40 @@ const UserDetailRoom = () => {
 
     console.log(backEndData.roomData.a_m_no);
 
+    // 선택 날짜 함수
+    const handleDateChange = (date) => {
+        setSelectedDate(date); // 선택된 날짜를 업데이트합니다.
+    };
 
+
+    // const calendarDataChange = (date) => {
+    //     console.log("날짜 정보 확인 ", date);
+    //     setSendToResData({
+    //         backEndData: backEndData,
+    //         resDates: date
+    //     });
+    // }
+
+    const calendarDataChange = (dates) => {
+        console.log("날짜 정보 확인 ", dates);
+        setSendToResData(prev => ({
+            ...prev,
+            backEndData: backEndData.roomData,
+            resDates: dates,
+            accmName: accmName
+        }));
+        console.log("sendToResData", sendToResData);
+    }
+
+    useEffect(() => {
+        if (dates.startDate && dates.endDate) {
+            calendarDataChange(dates);
+        }
+    }, [dates]);
+
+    // useEffect(() => {
+    //     console.log("sendToResData 업데이트됨:", sendToResData);
+    // }, [sendToResData]);
 
     console.log("roomNum", roomNum);
 
@@ -73,8 +133,14 @@ const UserDetailRoom = () => {
     /* 수정과 삭제 상세페이지 가기를 위한 함수 끝 */
 
 
-    const handleMoveToReservation = (roomNumForReservation) => {
-        navigate(`user/accommodation/reservation`);
+    const handleMoveToReservation = () => {
+        if (!token) {
+            alert('로그인이 필요한 서비스입니다.');
+            navigate(`/user/member/signIn`);
+        } else {
+            alert('객실 예약 페이지로 이동합니다');
+            navigate(`/user/accommodation/reservation/${sendToResData.backEndData.a_acc_no}/${sendToResData.backEndData.a_r_no}`, { state: sendToResData });
+        }
     }
 
     // 들어오는 시간에 따라 AM과 PM으로 변경하는 함수
@@ -88,8 +154,6 @@ const UserDetailRoom = () => {
         }
 
         return "AM"
-
-
     }
 
 
@@ -121,11 +185,15 @@ const UserDetailRoom = () => {
         fetchData(); // 비동기 함수 호출
     }, [roomNum]);
 
+
+    console.log("roomNum", roomNum);
+
     console.log("backEndData.roomImages", backEndData.roomImages);
 
 
-    if (!dataLoaded) {
 
+
+    if (!dataLoaded) {
         return (
             <Box
                 display="flex"
@@ -161,7 +229,7 @@ const UserDetailRoom = () => {
 
 
                 <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                    <Carousel>
+                    <Carousel sx={{ zIndex: 0 }}>
                         {backEndData.roomImages.map((imageUrl, index) => (
                             <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
                                 <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
@@ -172,15 +240,24 @@ const UserDetailRoom = () => {
 
 
                 <Item sx={{ marginTop: '1rem' }}>
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
+                        <CalendarForRes startDate={dates.startDate}
+                            endDate={dates.endDate}
+                            setDates={setDates} />
+                        <Grid item xs={10} sx={{ mt: '10px' }}>
+                            <Divider variant="left" sx={{ width: '100%' }} />
+                        </Grid>
+                    </Grid>
+                </Item>
 
 
+                <Item sx={{ marginTop: '1rem' }}>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
                         {backEndData.roomData.a_r_name}
                         <Grid item xs={10} sx={{ mt: '10px' }}>
                             <Divider variant="left" sx={{ width: '100%' }} />
                         </Grid>
                     </Grid>
-
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
