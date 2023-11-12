@@ -33,16 +33,10 @@ const linkStyle = {
 
 function Main() {
 
-  const testAccmNum = 7;
   const navigate = useNavigate();
-
-  const testHandler = () => {
-    navigate(`/user/accommodation/detailAccm/${testAccmNum}`);
-  }
 
   return (
     <Container component="main">
-      <Button onClick={testHandler}>숙소가기 테스트</Button>
       <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
         <Carousel>
           <Paper sx={{ height: '180px' }}><img src={temp1} alt="Temp Image" /></Paper>

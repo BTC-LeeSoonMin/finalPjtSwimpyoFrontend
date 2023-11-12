@@ -25,7 +25,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import api from "../../../../hooks/RefreshTokenAuto";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { ForKakaoPayAction, setParams } from "../../../../commons/rtk/slice/ForKakaoPaySlice";
+
 
 
 // 슬라이드 애니메이션 주기위한 것
@@ -360,17 +360,6 @@ const UserReservation = () => {
     }
 
 
-    useEffect(() => {
-        if (params.cid !== '') {
-            // params 데이터를 Redux 상태로 저장
-            console.log("발생")
-            console.log("params123123123  ", params)
-            dispatch(ForKakaoPayAction.setParams(params));
-
-        }
-    }, [params, dispatch]);
-
-
 
 
 
@@ -529,10 +518,10 @@ const UserReservation = () => {
 
 
 
-    const handlePaymentClick = (e) => {
-        e.preventDefault();
+    const handlePaymentClick = () => {
+
         setOpen(true); // 모달창을 열어줍니다.
-        console.log("params!!!!!!!!!!!!!!!!!!!!", params);
+
 
 
         // const timer = setTimeout(() => {
@@ -759,7 +748,7 @@ const UserReservation = () => {
                             </Typography>
                         </Box>
                         <Button
-                            type="button"
+                            type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"

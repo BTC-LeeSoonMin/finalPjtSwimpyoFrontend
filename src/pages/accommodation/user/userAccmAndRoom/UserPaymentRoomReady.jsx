@@ -2,42 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../../../hooks/RefreshTokenAuto";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 const UserPaymentRoomReady = () => {
 
     const navigate = useNavigate();
-
     const location = useLocation();
     console.log("location", location);
 
-
-    const { storeParams } = useSelector((state) => state.forkakaoPay);
-    console.log("DataToKakao", storeParams);
-
-    const [params, setParams] = useState({
-        cid: '',
-        tid: '',
-        partner_order_id: '',
-        partner_user_id: '',
-        pg_token: '',
-    });
-
-
-    useEffect(() => {
-        console.log("storeParams", storeParams)
-        if (storeParams.cid !== '') {
-            setParams({
-                cid: storeParams.cid,
-                tid: storeParams.tid,
-                partner_order_id: storeParams.partner_order_id,
-                partner_user_id: storeParams.partner_user_id,
-                pg_token: storeParams.pg_token,
-            });
-        }
-
-
-    }, [storeParams])
 
     // const url = location.state.nextRedirectPcUrl;
     // console.log("url", url);
@@ -53,20 +24,26 @@ const UserPaymentRoomReady = () => {
 
     const queryString = location.search;
     const tp_query = queryString.split("=")[1];
-
+    const [params, setParams] = useState({
+        cid: '',
+        tid: '',
+        partner_order_id: '',
+        partner_user_id: '',
+        pg_token: '',
+    });
 
     useEffect(() => {
 
-        // setParams({
-        //     cid: location.state.cid,
-        //     tid: location.state.tid,
-        //     partner_order_id: location.state.partner_order_id,
-        //     partner_user_id: location.state.partner_user_id,
-        //     pg_token: `${tp_query}`,
-        // })
-
-
-    }, [storeParams])
+        if (tp_query) {
+            setParams({
+                cid: location.state.cid,
+                tid: location.state.tid,
+                partner_order_id: location.state.partner_order_id,
+                partner_user_id: location.state.partner_user_id,
+                pg_token: `${tp_query}`,
+            })
+        }
+    }, [tp_query])
 
 
 
@@ -131,7 +108,7 @@ const UserPaymentRoomReady = () => {
 
 
 
-    // console.log("params", params);
+    console.log("params", params);
 
     useEffect(() => {
         // const {
@@ -142,7 +119,6 @@ const UserPaymentRoomReady = () => {
         //   ...prevParams,
         //   pg_token: queryString.split("=")[1],
         // }));
-        console.log("일로들어가나");
         if (params.pg_token !== '') {
             console.log("tp!!!!");
             axios({
