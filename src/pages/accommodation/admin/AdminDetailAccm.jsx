@@ -94,10 +94,9 @@ const AdminDetailAccm = () => {
 
 
 
-    const handleRoomDetails = (roomId) => {
-        // 방 상세 정보 페이지로 이동
-        // 이동하는 방법은 여러 가지가 있을 수 있으며, 라우팅 라이브러리를 사용하거나
-        // React Router 등을 통해 페이지로 이동할 수 있습니다.
+    const handleRegistAccm = () => {
+        navigate(`/admin/accommodation/registAccm`);
+        alert("숙박시설 등록 페이지로 이동합니다");
     };
 
 
@@ -172,112 +171,165 @@ const AdminDetailAccm = () => {
             </Box>
         );
     }
+    else if (!backEndData.accmData.a_acc_no) {
 
-    return (
+        return (
+
+            <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
+                <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography
+                        variant="h1"
+                        component="div"
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10rem', // Adjust size as needed
+                            color: 'rgba(0, 0, 0, 0.8)' // Adjust color as needed
+                        }}
+                    >
+                        × {/* This is a multiplication sign, which resembles an X mark. */}
+                    </Typography>
+                    <Typography component="h2" variant="h6" align="center">
+                        현재 등록된 숙박시설이 없습니다. 숙박시설을 등록해주세요.
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        sx={{
+                            mt: 3,
+                            width: 150, // 버튼의 넓이를 150픽셀로 설정
+                            backgroundColor: "black",
+                            borderColor: 'white', // 버튼의 테두리 색상도 검정색으로 설정합니다.
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                            },
+                        }}
+                        onClick={handleRegistAccm}
+                    >
+                        숙박시설 등록
+                    </Button>
+                </Paper>
+            </Container >
+        );
+
+    }
+
+    else
+        return (
+
+            <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
+                <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '700px', margin: 'auto' }}>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}>
+                        <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
+                            나의 업소 관리
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
+                            <EditIcon />
+                        </IconButton>
+                        <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.accmData.a_m_no)} words="수정" />
+
+                        <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
+                            <DeleteIcon />
+                        </IconButton>
+                        <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
+                    </Box>
+
+                    <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
+                        <Carousel>
+                            {backEndData.accmImages.map((imageUrl, index) => (
+                                <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
+                                    <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                </Paper>
+                            ))}
+                        </Carousel>
+                    </Box>
 
 
-        <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
-            <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
-                        <EditIcon />
-                    </IconButton>
-                    <ConfirmOrClose open={openEdit} close={() => close('edit')} confirmation={() => handleEditConfirmation(backEndData.accmData.a_m_no)} words="수정" />
-
-                    <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
-                        <DeleteIcon />
-                    </IconButton>
-                    <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
-                </Box>
-
-                <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                    <Carousel>
-                        {backEndData.accmImages.map((imageUrl, index) => (
-                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
-                                <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </Paper>
-                        ))}
-                    </Carousel>
-                </Box>
+                    <Item sx={{ marginTop: '1rem' }}>
 
 
-                <Item sx={{ marginTop: '1rem' }}>
-
-
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
-                        {backEndData.accmData.a_acc_name}
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
+                            {backEndData.accmData.a_acc_name}
+                            <Grid item xs={10} sx={{ mt: '10px' }}>
+                                <Divider variant="left" sx={{ width: '100%' }} />
+                            </Grid>
                         </Grid>
-                    </Grid>
 
-                </Item>
+                    </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
-                    <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                주소 : {backEndData.accmData.a_acc_address}
-                            </Box>
+                    <Item sx={{ marginTop: '1rem' }}>
+                        <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                    주소 : {backEndData.accmData.a_acc_address}
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                    연락처 : {backEndData.accmData.a_acc_phone}
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                    이메일 : {backEndData.accmData.a_m_email}
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                    사업자 번호 : {backEndData.accmData.a_acc_bn}
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
+                                    대표자 명 : {backEndData.accmData.a_m_name}
+                                </Box>
+                            </Grid>
+                            <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                <Grid item xs={10} sx={{ mt: '10px' }}>
+                                    <Divider variant="left" sx={{ width: '100%' }} />
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                연락처 : {backEndData.accmData.a_acc_phone}
-                            </Box>
+                    </Item>
+
+                    <Item sx={{ marginTop: '1rem' }}>
+                        {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
+                            업소 정보
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                이메일 : {backEndData.accmData.a_m_email}
-                            </Box>
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                            <span dangerouslySetInnerHTML={{ __html: backEndData.accmData.a_acc_intro }}></span>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                사업자 번호 : {backEndData.accmData.a_acc_bn}
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                대표자 명 : {backEndData.accmData.a_m_name}
-                            </Box>
-                        </Grid>
+
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
                             <Grid item xs={10} sx={{ mt: '10px' }}>
                                 <Divider variant="left" sx={{ width: '100%' }} />
                             </Grid>
                         </Grid>
-                    </Grid>
-                </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
-                    {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
-                        업소 정보
-                    </Grid>
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <span dangerouslySetInnerHTML={{ __html: backEndData.accmData.a_acc_intro }}></span>
-                    </Grid>
+                    </Item>
 
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
+                    <Item sx={{ marginTop: '1rem' }}>
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
+                            객실
                         </Grid>
-                    </Grid>
+                        <AdminRoomList accomNum={accomNum} requestData={requestData} />
+                    </Item>
 
-                </Item>
-
-                <Item sx={{ marginTop: '1rem' }}>
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
-                        객실
-                    </Grid>
-                    <AdminRoomList accomNum={accomNum} requestData={requestData} />
-                </Item>
-
-            </Paper>
-        </Container >
+                </Paper>
+            </Container >
 
 
-    );
+        );
 }
 
 

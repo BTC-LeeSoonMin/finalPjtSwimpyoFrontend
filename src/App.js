@@ -27,7 +27,12 @@ import MyPage from './pages/mypage/user/MyPage';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
 import ModifyRoom from './pages/accommodation/admin/ModifyRoom';
 import SearchAccm from './pages/accommodation/user/searchAccm/SearchAccm';
-import UserDetailAccm from './pages/accommodation/user/UserDetailAccm';
+import UserDetailAccm from './pages/accommodation/user/userAccmAndRoom/UserDetailAccm';
+import UserDetailRoom from './pages/accommodation/user/userAccmAndRoom/UserDetailRoom';
+import UserReservation from './pages/accommodation/user/userAccmAndRoom/UserReservation';
+import UserPaymentRoomReady from './pages/accommodation/user/userAccmAndRoom/UserPaymentRoomReady';
+import PayResult from './pages/accommodation/user/userAccmAndRoom/PayResult';
+
 
 function App() {
 
@@ -137,8 +142,24 @@ function App() {
 
                     <Route
                         path="/user/accommodation/detailAccm/:a_acc_no"
-                        element={<div style={{ backgroundColor: 'lightgray', height: '100vh', overflow: 'auto' }}> <UserDetailAccm /></div>}>
+                        element={<div > <UserDetailAccm /></div>}>
                     </Route>
+                    <Route
+                        path="/user/accommodation/detailRoom/:a_acc_no/:a_r_no"
+                        element={<div > <UserDetailRoom /></div>}>
+                    </Route>
+                    <Route
+                        path="/user/accommodation/reservation/:a_acc_no/:a_r_no"
+                        element={<div > <UserReservation /></div>}>
+                    </Route>
+                    <Route
+                        path="/payment/success"
+                        element={<div > <UserPaymentRoomReady /></div>}>
+                    </Route>
+                    {/* <Route
+                        path="/payment/success"
+                        element={<div > <PayResult /></div>}>
+                    </Route> */}
 
                 </Routes>
                 <Routes>

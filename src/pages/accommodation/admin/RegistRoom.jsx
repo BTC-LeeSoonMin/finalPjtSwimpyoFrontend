@@ -67,7 +67,7 @@ const RegistRoom = () => {
 
     const fetchData = async () => {
         try {
-            const res = await api.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${paramsData.a_m_no}`);
+            const res = await api.post(`/api/admin/accm/show_accm_detail?a_m_no=${paramsData.a_m_no}`);
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
             // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
