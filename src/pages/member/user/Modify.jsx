@@ -6,8 +6,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import api from '../../../hooks/RefreshTokenAuto';
 
 const linkStyle = {
@@ -17,14 +17,15 @@ const linkStyle = {
   fontWeight: 'normal',
 };
 
-function AdminModify() {
-  const [pw, setPw] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+function Modify() {
   const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [name, setName] = useState('');
+  const [birth, setBirth] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
-  const token = useSelector((store)=> store.accessToken.value);
 
   const config = {
     headers: {
@@ -33,17 +34,19 @@ function AdminModify() {
   };
 
   useEffect(() => {
-    console.log('adminModify start');
+    console.log('userModify start');
 
-    api.post("/api/admin/member/adminInfo",
+    api.post("/api/user/member/userInfo",
       config,
     )
       .then(response => {
         console.log(response.data);
-        setEmail(response.data.a_m_email);
-        setPw(response.data.a_m_pw);
-        setName(response.data.a_m_name);
-        setPhone(response.data.a_m_phone);
+        setEmail(response.data.u_m_email);
+        setPw(response.data.u_m_pw);
+        setNickname(response.data.u_m_nickname);
+        setName(response.data.u_m_name);
+        setBirth(response.data.u_m_birth);
+        setPhone(response.data.u_m_phone);
       }
       )
       .catch(error => console.log(error))
@@ -55,27 +58,28 @@ function AdminModify() {
   const modify = (e) => {
     e.preventDefault();
     console.log("click Modify");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
+    console.log("u_m_nickname : ", nickname);
+    console.log("u_m_name : ", name);
+    console.log("u_m_phone : ", phone);
 
     let data = {};
 
-    // 연락처 유효성 검사 후
+    // 이메일, 연락처 유효성 검사 확인 후
     if (patternPhone.test(phone)) {
       data = {
         "name": name,
         "phone": phone,
-        "email": email,
+        "nickname": nickname,
       }
 
-      api.post("/api/admin/member/modify", JSON.stringify(data), config,)
+      api.post("/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === "MemberAdminModifySuccess") {
+          if (response.data === "MemberUserModifySuccess") {
             console.log('성공');
-            navigate('/admin');
+            navigate('/');
 
-          } else if (response.data === "MemberAdminModifyFail") {
+          } else if (response.data === "MemberUserModifyFail") {
             console.log('실패');
 
           } else if (response.data === -1) {
@@ -84,10 +88,9 @@ function AdminModify() {
           } else {
             console.log('fail');
 
-
           }
         }).catch((error) => {
-          // 실패 힝힝 속상하다리 ㅠ
+          // 실패
 
         });
     } else if (!patternPhone.test(phone)) {
@@ -98,19 +101,21 @@ function AdminModify() {
 
   };
 
+  const navigate = useNavigate();
+
   const signOut = (e) => {
     e.preventDefault();
     console.log("click SignOut");
 
     if(window.confirm("정말 탈퇴하시겠습니까?")) {
-      api.post("/api/admin/member/signout", config,)
+      api.post("/api/user/member/signout", config,)
         .then((response) => {
           console.log('response.data ===', response.data);
           if(response.data === "signOutSuccess") {
             //탈퇴 성공
             dispatch(setAccessToken.setAccessToken(''));
             alert('탈퇴되었습니다.');
-            navigate('/admin/member/signIn');
+            navigate('/user/member/signIn');
           } else if(response.data === "signOutFail") {
             //실패 
             alert('탈퇴 실패. 다시 시도해주세요.');
@@ -132,21 +137,19 @@ function AdminModify() {
 
   };
 
-  const navigate = useNavigate();
-
   return (
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography variant="h5" component="h1">
-          관리자 정보 수정
+        <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold'}}>
+          정보 수정
         </Typography>
         <form onSubmit={(e) => modify(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
-            label="Filled" variant="filled"
+            label="email" variant="filled"
             margin="normal"
             fullWidth
-            id="mail"
-            name="mail"
+            id="email"
+            name="email"
             autoComplete="email"
             value={email}
             disabled
@@ -161,10 +164,10 @@ function AdminModify() {
             value={pw}
             disabled
           />
-          <Link to="/admin/member/changePw" style={linkStyle}>
+          <Link to="/user/member/changePw" style={linkStyle}>
             <Button
               variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }}
+              sx={{ ml: 2, mt: 3, backgroundColor: 'skyblue', color: 'white' }} // 검정색 배경, 흰색 글자색
             >
               비밀번호 변경
             </Button>
@@ -192,11 +195,22 @@ function AdminModify() {
             autoFocus
             onChange={(e) => setPhone(e.target.value)}
           />
+          <TextField
+            label="닉네임"
+            variant="filled"
+            margin="normal"
+            required
+            fullWidth
+            id="nickname"
+            name="nickname"
+            value={nickname || ''}
+            onChange={(e) => setNickname(e.target.value)}
+          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} 
+            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white' }} 
           >
             회원 정보 수정
           </Button>
@@ -204,7 +218,7 @@ function AdminModify() {
       </Paper>
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: 'black' }} 
+        sx={{ mt: 3, backgroundColor: 'skyblue' }}
         onClick={(e) => signOut(e)}
       >
         회원탈퇴
@@ -213,4 +227,4 @@ function AdminModify() {
   );
 }
 
-export default AdminModify;
+export default Modify;

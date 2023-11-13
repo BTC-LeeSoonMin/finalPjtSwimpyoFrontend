@@ -2,19 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useNavigation, useParams } from 'react-router-dom';
 import { Button, TextField, Container, Typography, Box, List, ListItem, ListItemText, Paper, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 import PostcodeComponent from '../../../components/PostCodeComponent';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const ModifyAccm = () => {
 
-    const { no } = useParams();
+    const { a_m_no } = useParams();
 
 
     // 다시 넘어온 json data받기 위한 state
     // const [formData, setFormData] = useState([]);
 
     const [formData, setFormData] = useState({
+        a_i_no: [], // 이미지 고유 번호 받기 위함(어느 이미지 제거했는지 알기 위해)
+        a_acc_no: '',
         a_acc_name: '',
         a_acc_intro: '',
         a_acc_kind: '',
@@ -25,8 +29,7 @@ const ModifyAccm = () => {
             combinedAddress: ''
         },
         a_acc_phone: '',
-        a_acc_image: []
-
+        a_i_image: []
     });
 
 
@@ -37,12 +40,20 @@ const ModifyAccm = () => {
         // 필요한 나머지 필드들도 여기에 추가
     });
 
+    // 기존에 백엔드에서 받아온 이미지와 새로 업로드된 이미지를 분리해서 관리해야 합니다. 
+    // 현재 selectedFileNames와 selectedFileURLs 배열에는 새로 업로드된 파일의 이름과 URL만 저장되므로, 기존 이미지에 대한 정보를 포함하지 않습니다
+    const [newImages, setNewImages] = useState([]);
+
     // 파일 업로드를 위한 상태
     const [selectedFileNames, setSelectedFileNames] = useState([]);
     // 이미지 미리보기를 위해 초기값을 백엔드에서 넘어온 이미지를 준다.
     const [selectedFileURLs, setSelectedFileURLs] = useState([]); // 이미지 URL을 저장할 상태 추가
     const fileInputRef = useRef(null);
     const errorMessageRef = useRef(null);
+
+    // 삭제한 이미지의 배열을 증가 시킨다.(어떤 이미지를 삭제하는 지 알기위해서)
+    const [deleteImage, setDeleteImage] = useState([]);
+    // 삭제한 이미지의 배열을 증가 시킨다.(어떤 이미지를 삭제하는 지 알기위해서)
 
     // 이미지 파일 업로드 하지 않고 등록 시 에러 메시지 띄우기 위한 상태 시작
     const [imageError, setImageError] = useState(false);
@@ -55,62 +66,85 @@ const ModifyAccm = () => {
 
     }
 
-
-
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log(formData.a_acc_image);
-    }, [formData.a_acc_image]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${no}`);
+    const fetchData = async () => {
+        try {
+            const response = await api.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
 
-                console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
+            console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
 
-                if (response.status === 200) {
-                    console.log("detail data success");
-                    setFormData(response.data);
-                    console.log(response.data);
+            if (response.status === 200) {
+                console.log("detail data success");
+                setFormData(response.data);
+                console.log("reponse.data", response.data);
 
-                    // FormData안에 데이터가 combinedAddress가 없기 때문에 FormData내에 response.data의 주소를 넣어준다.
-                    setFormData({
-                        ...response.data, a_acc_address: {
-                            combinedAddress: response.data.a_acc_address
-                        },
-                        a_acc_image: [response.data.a_acc_image]
+                // FormData안에 데이터가 combinedAddress가 없기 때문에 FormData내에 response.data의 주소를 넣어준다.
+                setFormData({
+                    ...response.data.adminAccmDto, a_acc_address: {
+                        combinedAddress: response.data.adminAccmDto.a_acc_address
+                    },
+                    a_i_no: [...response.data.a_i_nos],
+                    a_i_image: [...response.data.a_i_images]
 
-                    });
+                });
 
-                    // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
-                    const initialImageURL = response.data.a_acc_image;
-                    setSelectedFileURLs([initialImageURL]);
+                // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
+                // const initialImageURL = response.data.a_i_images;
+                // const initialImageURL = [...response.data.a_i_images];
+                const initialImageURLAndNo = response.data.a_i_images.map((url, index) => ({
+                    url,
+                    a_i_no: response.data.a_i_nos[index]
+                }));
+                setSelectedFileURLs(initialImageURLAndNo.map(item => item.url));
+                // setSelectedFileURLs(initialImageURL);
 
-                    const initialFileName = <ListItem key={initialImageURL}>
-                        <ListItemText primary={initialImageURL.split('/').pop()} />
-                    </ListItem>;
-                    setSelectedFileNames([initialFileName]);
-                    //
+                // const initialFileName = <ListItem key={initialImageURL}>
+                // const initialFileName = <ListItem key={initialImageURL}>
+                //     <ListItemText primary={initialImageURL.split('/').pop()} />
+                // </ListItem>;
 
-                } else {
-                    console.error("Server responded with status:", response.status);
-                }
-            } catch (error) {
-                console.error("An error occurred:", error);
+                // 이미지가 배열이기 때문에 배열을 풀어서 해결해준다.
+                const initialFileName = initialImageURLAndNo.map(item => (
+                    <ListItem key={item.a_i_no}>
+                        <ListItemText primary={item.url.split('/').pop()} />
+                    </ListItem>
+                ));
+                setSelectedFileNames(initialFileName);
+                // 백엔드에서 받아온 이미지 데이터를 사용하여 미리보기 상태 초기화
+
+            } else {
+                console.error("Server responded with status:", response.status);
             }
-        };
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
 
+
+    useEffect(() => {
         fetchData(); // 비동기 함수 호출
-    }, [no]);
+    }, [])
 
 
+
+    console.log("selectedFileURLs", selectedFileURLs);
+    console.log("selectedFileNames", selectedFileNames);
+    // console.log("formData.a_i_no", formData.a_i_no);
+
+    // console.log("formData.a_i_image", formData.a_i_image);
+    // console.log("selectedFileURLs", selectedFileURLs);
+    // console.log("selectedFileNames", selectedFileNames);
+
+
+    // 이미지 파일 업로드 버튼 누른 후 실행
     const uploadProfile = (e) => {
         const files = Array.from(e.target.files);
+
         setFormData(prevState => ({
             ...prevState,
-            a_acc_image: [...prevState.a_acc_image, ...files]
+            a_i_image: [...prevState.a_i_image, ...files]
         }));
         // 선택된 파일의 이름들을 보여주는 코드 추가
         const fileNames = files.map(file => (
@@ -119,6 +153,7 @@ const ModifyAccm = () => {
             </ListItem>
         ));
         setSelectedFileNames(prevFileNames => [...prevFileNames, ...fileNames]); // React의 state를 사용하여 파일 이름을 저장
+        setNewImages(prevNewImages => [...prevNewImages, ...files]);
 
         const fileURLs = files.map(file => URL.createObjectURL(file)); // 이미지 URL 생성
         setSelectedFileURLs(prevURLs => [...prevURLs, ...fileURLs]); // 이미지 URL 상태에 저장
@@ -137,21 +172,33 @@ const ModifyAccm = () => {
         // 선택된 이미지를 제거합니다.
         // const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        // const updatedImages = formData.a_acc_image.filter((_, index) => index !== indexToRemove);
+        // const updatedImages = formData.a_i_image.filter((_, index) => index !== indexToRemove);
         // setFormData(prevState => ({
         //     ...prevState,
-        //     a_acc_image: updatedImages
+        //     a_i_image: updatedImages
         // }));
 
         // 수정한 코드
         // 선택된 이미지를 제거합니다.
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
+        console.log("Index to remove:", indexToRemove);
+
+        console.log("Selected file object:", selectedFileNames[indexToRemove]); // 이미지의 no값이 든 객체 선택
+        // 이미지의 a_i_no 값을 찾습니다.
+        const imageNoToRemove = selectedFileNames[indexToRemove]?.key;  // key = a_i_no
+        console.log("키 번호", imageNoToRemove);
+        console.log("키 번호 타입", typeof (imageNoToRemove));
+
+        // 이미지 고유 번호(a_i_no)를 deleteImage 배열에 추가합니다.
+        if (!imageNoToRemove.includes('.')) {
+            setDeleteImage(prevDeleteImage => [...prevDeleteImage, imageNoToRemove]);
+        }
         // 백엔드에서 받아온 이미지 또한 제거
-        const updatedImages = formData.a_acc_image.filter((image, index) => index !== indexToRemove);
+        const updatedImages = formData.a_i_image.filter((image, index) => index !== indexToRemove);
         setFormData(prevState => ({
             ...prevState,
-            a_acc_image: updatedImages
+            a_i_image: updatedImages
         }));
         //
 
@@ -162,7 +209,11 @@ const ModifyAccm = () => {
         // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
         const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
         setSelectedFileURLs(updatedFileURLs);
+
+
     };
+
+    console.log("deleteImage", deleteImage);
 
 
 
@@ -200,15 +251,44 @@ const ModifyAccm = () => {
         // 에러 메시지 띄우기 위한 변수 끝 //
 
         for (const key in formData) {
-            if (key === "a_acc_image") {
+            if (key === "a_i_image") {
                 formData[key].forEach((file) => {
-                    data.append("a_acc_image", file);
+                    //     data.append("a_i_image", file);
+                    // });
+                    // if (file instanceof File) {
+                    data.append("a_i_image", file);
+                    // }
                 });
+                // selectedFileURLs.forEach((url) => {
+                //     // URL 형태인 경우에만 'a_i_image_existing'로 추가합니다.
+                //     if (typeof url === 'string' && !url.startsWith("blob:")) {
+                //         data.append("a_i_image", url);
+                //     }
+                // });
             } else if (key === "a_acc_address") { // a_acc_address 객체를 처리하는 부분
                 data.append("a_acc_address", formData[key].combinedAddress);
-            } else {
+            }
+            else {
                 data.append(key, formData[key]);
             }
+        }
+
+        // if (deleteImage.length > 0) {
+        //     // data.append("a_i_image[]", JSON.stringify(deleteImage));
+        //     for (let i = 0; i < deleteImage.length; i++) {
+        //         const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
+        //         data.append("deleteImg", deleteImageBlob);
+        //     }
+        // }
+        if (deleteImage.length > 0) {
+            data.append("deleteImg", deleteImage);
+            // const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
+            // data.append("deleteImg", deleteImageBlob);
+        }
+        console.log("deleteImg", data.deleteImageBlob);
+
+        for (let [key, value] of data.entries()) {
+            console.log("보내는 이미지들", key, value);
         }
 
 
@@ -247,6 +327,7 @@ const ModifyAccm = () => {
 
         // adminAccmDto 객체에 모든 데이터를 담아서 보내기
         const jsonBlob = new Blob([JSON.stringify({
+            a_acc_no: formData.a_acc_no,
             a_acc_name: formData.a_acc_name,
             a_acc_intro: formData.a_acc_intro,
             a_acc_kind: formData.a_acc_kind,
@@ -254,13 +335,14 @@ const ModifyAccm = () => {
             a_m_no: formData.a_m_no,
             a_m_email: formData.a_m_email,
             a_acc_address: formData.a_acc_address.combinedAddress,
-            a_acc_phone: formData.a_acc_phone
+            a_acc_phone: formData.a_acc_phone,
         })], { type: "application/json" });
 
         data.append("adminAccmDto", jsonBlob);
 
+
         try {
-            const response = await axios.post("/api/admin/accm/modify_confirm",
+            const response = await api.post("/api/admin/accm/modify_confirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -268,13 +350,14 @@ const ModifyAccm = () => {
             });
             console.log(response.data);  // "success" 출력
             alert("숙박업소가 수정되었습니다 수정된 숙박업소의 상세페이지로 이동됩니다");
-            navigate('/admin/accommodation/detailAccm');
+            navigate(`/admin/accommodation/detailAccm/${a_m_no}`);
 
 
         } catch (error) {
             console.error("등록실패:", error);
         }
     };
+
 
     const handlerAddressSelected = (data) => {
         setFormData(prevState => ({
@@ -300,7 +383,7 @@ const ModifyAccm = () => {
                         숙박 업소 수정
                     </Typography>
                     {/* <Box component="form" onSubmit={modifyAccmConfirm} noValidate sx={{ mt: 1 }}> */}
-                    <form onSubmit={modifyAccmConfirm} name='regist_accm_confirm' style={{ width: '100%', marginTop: 1 }}>
+                    <form onSubmit={modifyAccmConfirm} name='modify_accm_confirm' style={{ width: '100%', marginTop: 1 }}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -317,7 +400,7 @@ const ModifyAccm = () => {
 
                         <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
                         <label htmlFor="fileInput">
-                            <Button variant="contained" color="primary" component="span">
+                            <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
                                 이미지 업로드
                             </Button>
                         </label>
@@ -415,6 +498,10 @@ const ModifyAccm = () => {
                             name="a_acc_bn"
                             autoComplete="a_acc_bn"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_acc_bn}
                             onChange={handleChange}
                         />
@@ -429,6 +516,10 @@ const ModifyAccm = () => {
                             name="a_m_no"
                             autoComplete="a_m_no"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_no}
                             onChange={handleChange}
                         />
@@ -443,6 +534,10 @@ const ModifyAccm = () => {
                             name="a_m_email"
                             autoComplete="a_m_email"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_m_email}
                             onChange={handleChange}
                         />
@@ -489,6 +584,10 @@ const ModifyAccm = () => {
                             name="a_acc_phone"
                             autoComplete="a_acc_phone"
                             autoFocus
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: "#e0e0e0" },
+                            }}
                             value={formData.a_acc_phone}
                             onChange={handleChange}
                         />
@@ -518,11 +617,12 @@ const ModifyAccm = () => {
                                 수정
                             </Button>
                             <Button
-                                type="submit"
+                                type="button"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
                                 sx={{ mt: 3, mb: 2 }}
+                                onClick={() => navigate(-1)}
                             >
                                 취소
                             </Button>

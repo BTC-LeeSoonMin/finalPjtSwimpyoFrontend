@@ -1,17 +1,15 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const linkStyle = {
   color: 'black',
   textDecoration: 'none',
-  fontSize: '14px',
-  fontWeight: 'normal',
+  fontSize: '18px',
 };
 
 const separatorStyle = {
@@ -20,19 +18,21 @@ const separatorStyle = {
   fontWeight: 'normal',
 };
 
-const borderStyles = {
-    bgcolor: 'background.paper',
-    m: 1,
-    borderColor: 'text.primary',
-    width: '5rem',
+export default function Nav() {
+
+  const token = useSelector((store)=> store.accessToken.value);
+  console.log('토큰 값', token);
+
+  const notSignIn = (e) => {
+    alert('로그인 후 사용 가능합니다.');
+
   };
 
-export default function Nav() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}
+        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         {' '}
         <Toolbar>
@@ -50,47 +50,48 @@ export default function Nav() {
           <Typography
             noWrap
             component="div"
-            sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
+            sx={{  
+              fontFamily: 'GangwonEdu_OTFBoldA',
               display: 'flex', 
+              justifyContent: 'center',
               alignItems: 'center',
               width: '100%' }}
           >
-            <a href="/user/member/signUp" style={linkStyle}>
+            <Link to="/user/hotel_resort" style={linkStyle}>
               호텔/리조트
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/pension_poolvilla" style={linkStyle}>
               펜션/풀빌라
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signUp" style={linkStyle}>
+            <Link to="/user/motel" style={linkStyle}>
               모텔
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/camping_glamping" style={linkStyle}>
               캠핑/글램핑
-            </a>
+            </Link>
             <span style={separatorStyle}>|</span>
-            <a href="/user/member/signIn" style={linkStyle}>
+            <Link to="/user/guesthouse" style={linkStyle}>
               게스트하우스
-            </a>
+            </Link>
           </Typography>
           <Typography
             noWrap
             component="div"
             sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
+              fontFamily: 'GangwonEdu_OTFBoldA',
               display: 'flex', 
-              alignItems: 'center',
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <a href="/member/user/myPage" style={linkStyle}>
+            {token && <Link to="/user/myPage" style={linkStyle}>
               마이페이지
-            </a>
+            </Link>}
+            {!token && <Link to="/user/member/signIn" onClick={(e) => notSignIn(e)} style={linkStyle}>
+              마이페이지
+            </Link>}
           </Typography>
         </Toolbar>
       </AppBar>

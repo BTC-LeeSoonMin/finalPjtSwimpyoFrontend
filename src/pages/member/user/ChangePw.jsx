@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function AdminChangePw() {
+function ChangePw() {
   const [pw, setPw] = useState(''); // 현재 비밀번호
   const [newPw, setNewPw] = useState(''); // 새로운 비밀번호
   const [pwConfirm, setPwConfirm] = useState(''); // 비밀번호 확인 필드 추가
@@ -45,15 +45,15 @@ function AdminChangePw() {
         "afterPw": newPw,
       }
 
-      axios.post("/api/admin/member/changePw", JSON.stringify(data), config,)
+      axios.post("/api/user/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
           console.log(response.data)
-          if (response.data === "AdminChangePwSuccess") {
+          if (response.data === "UserChangePwSuccess") {
             //성공
             console.log('성공');
-            navigate('/admin');
+            navigate('/');
 
-          } else if (response.data === "AdminChangePwFail") {
+          } else if (response.data === "UserChangePwFail") {
             // 기존 비밀번호 틀렸을 경우
             alert('다시 시도해주세요.');
 
@@ -123,7 +123,7 @@ function AdminChangePw() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white' }} 
           >
             비밀번호 변경
           </Button>
@@ -133,4 +133,4 @@ function AdminChangePw() {
   );
 }
 
-export default AdminChangePw;
+export default ChangePw;
