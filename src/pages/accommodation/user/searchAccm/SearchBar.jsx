@@ -13,7 +13,7 @@ const Search = styled('div')(({ theme }) => ({
   },
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginRight: theme.spacing(7),
+    // marginRight: theme.spacing(7),
     width: '100%',
   },
 }));
@@ -60,7 +60,7 @@ export default function SearchBar() {
 
   return (
 
-    <Search sx={{ flexGrow: 1 }}>
+    <Search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

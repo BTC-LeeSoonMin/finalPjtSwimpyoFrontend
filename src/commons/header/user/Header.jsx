@@ -14,14 +14,13 @@ import SearchBar from '../../../pages/accommodation/user/searchAccm/SearchBar';
 const linkStyle = {
   color: 'black',
   textDecoration: 'none',
-  fontSize: '16px',
-  fontWeight: 'normal',
+  fontSize: '18px',
 };
 
 const separatorStyle = {
   margin: '0 8px',
   color: 'black',
-  fontWeight: 'normal',
+  fontWeight: '300',
 };
 
 export default function Header() {
@@ -75,13 +74,20 @@ export default function Header() {
               <img style={{maxHeight: '80px'}} src={logo} alt="logo Image" />
             </Link>
           </Box>
-          <SearchBar />
+          <Box sx={{ 
+              fontWeight: 'bold', 
+              color: 'white', 
+              display: 'flex', 
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%' }}>
+            <SearchBar />
+          </Box>
           {!token && <Typography
             noWrap
             component="div"
             sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
+              fontFamily: 'GangwonEdu_OTFBoldA', 
               width: '100%', 
               display: 'flex', 
               justifyContent: 'flex-end', // 오른쪽 정렬
@@ -99,8 +105,7 @@ export default function Header() {
             noWrap
             component="div"
             sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
+              fontFamily: 'GangwonEdu_OTFBoldA',
               width: '100%', 
               display: 'flex', 
               justifyContent: 'flex-end', // 오른쪽 정렬
