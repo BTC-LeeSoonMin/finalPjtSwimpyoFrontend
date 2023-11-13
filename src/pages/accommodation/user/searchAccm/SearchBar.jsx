@@ -65,7 +65,7 @@ export default function SearchBar() {
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="숙소명을 검색해보세요."
+        placeholder="숙소명"
         inputProps={{ 'aria-label': 'search' }}
         onKeyDown={searchEnter}
       />

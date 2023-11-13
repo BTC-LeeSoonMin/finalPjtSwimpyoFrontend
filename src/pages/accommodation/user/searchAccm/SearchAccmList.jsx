@@ -31,14 +31,6 @@ const info = {
 
 function SearchAccmList(props) {
   const [star, setStar] = useState(4);
-  const [accImg, setAccImg] = useState('');   // 숙박업소 이름
-  const [accName, setAccName] = useState('');   // 숙박업소 이름
-  const [accKind, setAccKind] = useState('');   // 종류
-  const [state, setState] = useState('');       // 숙박/대실
-  const [checkIn, setCheckIn] = useState('');   //체크인 시간
-  const [price, setPrice] = useState('');       //가격
-
-  const [listData, setListData] = useState([]);
 
   return (
     

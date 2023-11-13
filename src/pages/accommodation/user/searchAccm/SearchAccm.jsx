@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Grid } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import SearchAccmList from './SearchAccmList';
 import Filter from './Filter';
@@ -7,6 +7,14 @@ import DateFilter from './DateFilter';
 import { useEffect } from 'react';
 import api from '../../../../hooks/RefreshTokenAuto';
 import dayjs from 'dayjs';
+
+const list = {
+  bgcolor: 'background.paper',
+  height: '8rem',
+  mt: '1rem',
+  padding: '1rem',
+  textAlign: 'center'
+};
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
@@ -65,15 +73,14 @@ function SearchAccm() {
         if(response.data != null) {
           setSearchList(response.data);
           console.log('searchList', searchList);
-        }
-
+        } 
       });
 
-  }, [filter, endDay]);
+  }, [filter, endDay, searchWord]);
  
 
   return (
-    <Container component="main" maxWidth="lg" sx={{ marginBottom: '3rem', marginTop: '1rem' }}>
+    <Container component="main" maxWidth="lg" sx={{ marginBottom: '3rem', marginTop: '1rem',  height: '100vh'}}>
       <Grid container>
 
         <DateFilter
@@ -81,7 +88,13 @@ function SearchAccm() {
 
         <Grid item xs={10}>
           <Grid container>
-            {searchList.map((item) => (<SearchAccmList {...item}  />))}
+            {(searchList.length != 0) && searchList.map((item) => (<SearchAccmList {...item}  />))}
+            {(searchList.length == 0) && 
+            <Grid item xs={9} sx={{ml: '13rem'}}>
+              <Box sx={{ ...list, borderRadius: '10px' }}>
+                검색 결과가 없습니다.
+              </Box>
+            </Grid>}
 
           </Grid>
         </Grid>
