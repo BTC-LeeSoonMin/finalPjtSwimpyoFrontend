@@ -142,7 +142,7 @@ function AdminModify() {
         </Typography>
         <form onSubmit={(e) => modify(e)} style={{ width: '100%', marginTop: 1 }}>
           <TextField
-            label="Filled" variant="filled"
+            label="이메일" variant="filled"
             margin="normal"
             fullWidth
             id="mail"
@@ -152,7 +152,7 @@ function AdminModify() {
             disabled
           />
           <TextField
-            label="*******" variant="filled"
+            label="비밀번호" variant="filled"
             margin="normal"
             name="pw"
             type="password"
