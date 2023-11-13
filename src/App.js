@@ -32,6 +32,7 @@ import UserDetailRoom from './pages/accommodation/user/userAccmAndRoom/UserDetai
 import UserReservation from './pages/accommodation/user/userAccmAndRoom/UserReservation';
 import UserPaymentRoomReady from './pages/accommodation/user/userAccmAndRoom/UserPaymentRoomReady';
 import PayResult from './pages/accommodation/user/userAccmAndRoom/PayResult';
+import CategoryAccm from './pages/accommodation/user/categoryAccmList/CategoryAccm';
 
 
 function App() {
@@ -75,10 +76,6 @@ function App() {
                         path="/user/member/signUp"
                         element={<SignUp />}
                     ></Route>
-                    {/* <Route
-                        path="/user/member/modify"
-                        element={<Modify />}
-                    ></Route> */}
                     <Route
                         path="/user/member/changePw"
                         element={<ChangePw />}
@@ -90,6 +87,10 @@ function App() {
                     <Route
                         path="/user/searchAccm"
                         element={<SearchAccm />}
+                    ></Route>
+                    <Route
+                        path="/user/categoryAccm"
+                        element={<CategoryAccm />}
                     ></Route>
                     <Route
                         path="/admin"

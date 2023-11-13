@@ -10,7 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const list = {
     bgcolor: 'background.paper',
     width: '12rem',
-    height: '18rem',
+    height: '14rem',
     textAlign: 'center',
     mt: '1rem',
     padding: '1rem',
@@ -29,23 +29,21 @@ const linkStyle = {
     fontWeight: 'normal',
 };
 
-function Filter({setFilter}) {
-    const [category, setCategory] = useState('호텔/리조트');
+function CategoryFilter({setFilter}) {
     const [area, setArea] = useState('서울');
     const [price, setPrice] = useState('０');
     const [stay, setStay] = useState('숙박');
     const [able, setAble] = useState('all');
 
     useEffect(() => {
-        console.log('Filter category', category);
         console.log('Filter area', area);
         console.log('Filter price', price);
         console.log('Filter stay', stay);
         console.log('Filter able', able);
 
-        setFilter([category, area, price, stay, able]);
+        setFilter([area, price, stay, able]);
 
-    }, [category, area, price, stay, able]);
+    }, [area, price, stay, able]);
 
     const ableCheck = (e) => {
         setAble(e.target.checked ? 'possible' : 'all');
@@ -56,24 +54,6 @@ function Filter({setFilter}) {
             <Typography sx={{ ...titleFont }}>
                 필터
             </Typography>
-
-            <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
-                <InputLabel id="demo-select-small-label">카테고리</InputLabel>
-                <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={category}
-                    label="Category"
-                    onChange={(e) => setCategory(e.target.value)}
-                >
-                    <MenuItem value={'all'}>{' '}<em>카테고리전체</em>{' '}</MenuItem>
-                    <MenuItem value={'호텔/리조트'}>호텔/리조트</MenuItem>
-                    <MenuItem value={'펜션/풀빌라'}>펜션/풀빌라</MenuItem>
-                    <MenuItem value={'모텔'}>모텔</MenuItem>
-                    <MenuItem value={'캠핑/글램핑'}>캠핑/글램핑</MenuItem>
-                    <MenuItem value={'게스트하우스'}>게스트하우스</MenuItem>
-                </Select>
-            </FormControl>
 
             <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
                 <InputLabel id="demo-select-small-label">지역</InputLabel>
@@ -123,4 +103,4 @@ function Filter({setFilter}) {
     );
 }
 
-export default Filter;
+export default CategoryFilter;
