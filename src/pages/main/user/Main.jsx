@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
-import temp3 from '../../../assets/temp3.png';
 import { useNavigate } from 'react-router-dom';
+import RegionAccm from './RegionAccm';
 
 const Item = styled(MuiPaper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,13 +23,7 @@ const Item = styled(MuiPaper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-const linkStyle = {
-  color: 'black',
-  textDecoration: 'none',
-  fontSize: '15px',
-  fontWeight: 'normal',
-  margin: '10px',
-};
+
 
 function Main() {
 
@@ -45,46 +39,7 @@ function Main() {
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
-          <Grid item xs={5}>
-            <Item>
-              <Grid container>
-                <Grid item xs={3}>
-                  지역별 숙소
-                </Grid>
-                <Grid item xs={9} sx={{ mt: '10px' }}>
-                  <Divider variant="middle" />
-                </Grid>
-              </Grid>
-              <a href="/" style={linkStyle}>
-                서울
-              </a>
-              <a href="/" style={linkStyle}>
-                부산
-              </a>
-              <a href="/" style={linkStyle}>
-                제주
-              </a>
-              <a href="/" style={linkStyle}>
-                경기
-              </a>
-              <a href="/" style={linkStyle}>
-                인천
-              </a>
-              <a href="/" style={linkStyle}>
-                강원
-              </a>
-              <a href="/" style={linkStyle}>
-                경상
-              </a>
-              <a href="/" style={linkStyle}>
-                전라
-              </a>
-              <a href="/" style={linkStyle}>
-                충청
-              </a>
-              <img src={temp3} style={{ width: '418px', height: 'auto', margin: '1rem' }} />
-            </Item>
-          </Grid>
+          <RegionAccm />
           <Grid item xs={7}>
             <Item>
               <Grid container>
