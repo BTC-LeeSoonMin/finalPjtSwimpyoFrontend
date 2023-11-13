@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const linkStyle = {
   color: 'black',
@@ -18,6 +19,15 @@ const separatorStyle = {
 };
 
 export default function Nav() {
+
+  const token = useSelector((store)=> store.accessToken.value);
+  console.log('토큰 값', token);
+
+  const notSignIn = (e) => {
+    alert('로그인 후 사용 가능합니다.');
+
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -76,9 +86,12 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            <Link to="/user/myPage" style={linkStyle}>
+            {token && <Link to="/user/myPage" style={linkStyle}>
               마이페이지
-            </Link>
+            </Link>}
+            {!token && <Link to="/user/member/signIn" onClick={(e) => notSignIn(e)} style={linkStyle}>
+              마이페이지
+            </Link>}
           </Typography>
         </Toolbar>
       </AppBar>
