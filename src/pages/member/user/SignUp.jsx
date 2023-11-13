@@ -80,11 +80,11 @@ function SignUp() {;
         .then((response) => {
           console.log(response.data)
           if (response.data === "MemberUserDup") {
-            console.log('사용중인 아이디입니다.');
+            alert("사용중인 아이디입니다. 다른 아이디를 입력하세요.");
 
           } else if (response.data === "MemberUserSignUpSuccess") { 
             //성공 
-            console.log('성공');
+            alert("회원가입에 성공했습니다. 로그인 후 서비스를 이용해보세요.");
             //로그인 페이지로 가도록 경로 변경하기
             navigate('/user/member/signIn');
 
