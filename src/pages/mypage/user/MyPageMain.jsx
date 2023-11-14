@@ -1,88 +1,98 @@
 import * as React from 'react';
-import {Grid, Container, Typography} from '@mui/material';
+import { Grid, Container, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import { useState } from 'react';
+import api from '../../../hooks/RefreshTokenAuto';
+import { useEffect } from 'react';
+import user_icon from '../../../assets/user_icon.png';
 
 const button = {
-    bgcolor: 'lemonchiffon',
-    height: '7rem',
-    textAlign: 'center',
-    padding: '2rem', 
-    mt: '1rem'
-  };
+  width: '20rem',
+  bgcolor: 'lemonchiffon',
+  height: '7rem',
+  textAlign: 'center',
+  padding: '2rem',
+  mt: '1rem',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
 const list = {
-    bgcolor: 'background.paper',
-    height: '20rem',
-    textAlign: 'center',
-    mt: '2rem',
-    padding: '1rem', 
-  };
+  bgcolor: 'background.paper',
+  height: '20rem',
+  textAlign: 'center',
+  mt: '2rem',
+  padding: '1rem',
+};
 
 const titleFont = {
-    fontSize: '20px',
-    fontWeight: 'bold',
+  fontSize: '20px',
+  fontWeight: 'bold',
 };
-  
 
 export default function MyPageMain() {
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userNickName, setUserNickName] = useState('');
+  console.log('userName', userName);
+  console.log('userEmail', userEmail);
+  console.log('userNickName', userNickName);
+
+  useEffect(() => {
+
+    api.post("/api/user/member/userInfo",)
+      .then((response) => {
+        console.log('response.data', response.data);
+        if(response.data != null) {
+          setUserName(response.data.u_m_name);
+          setUserEmail(response.data.u_m_email);
+          setUserNickName(response.data.u_m_nickname);
+        } 
+      });
+
+  }, []);
 
   return (
-    <Container component="main" sx={{
-      display: { xs: 'none', sm: 'block' },
-      color: 'black',
-      width: '100%',
-      boxShadow: 'none', 
-      
+    <Container component="main"
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      minHeight: '100vh',
     }}>
-    {/* <Grid container>
-      <Grid item xs={4}>
-        <Box sx={{ ...button, mr: '5px', borderRadius: '50px'}}>
-            <Typography sx={{...titleFont}}>
-                찜
-            </Typography>
-        </Box>
-      </Grid>
-      <Grid item xs={4}>
-        <Box sx={{ ...button, ml: '5px', mr: '5px', borderRadius: '50px'}}>
-            <Typography sx={{...titleFont}}>
-                쿠폰
-            </Typography>
-        </Box>
-      </Grid>
-      <Grid item xs={4}>
-        <Box sx={{ ...button, ml: '5px', borderRadius: '50px'}}>
-            <Typography sx={{...titleFont}}>
-                포인트
-            </Typography>
-        </Box>
-      </Grid>
-    </Grid> */}
-    <Grid container>
-      
-      <Grid item xs={6}>
-        <Box sx={{ ...list, borderRadius: '13px', mr: '10px'}}>
-            <Typography sx={{...titleFont}}>
-                예약
-            </Typography>
-        </Box>
-      </Grid>
-      <Grid item xs={6}>
-        <Box sx={{ ...list, borderRadius: '13px', ml: '10px'}}>
-            <Typography sx={{...titleFont}}>
-                리뷰
-            </Typography>
-        </Box>
-      </Grid>
+      <Box sx={{ ...button, borderRadius: '10px' }}>
+        <Grid container>
+        <Grid item xs={4}><img src={user_icon} style={{width: '100%', maxWidth: '100px'}}/></Grid>
+        <Grid item xs={8}>
+          <Typography sx={{fontWeight: 'bold', mt: '1rem'}}>
+            {userNickName}님
+          </Typography>
+          <Typography>
+            {userEmail}
+          </Typography>
+        </Grid>
+        </Grid>
+      </Box>
+      <Grid container>
 
-    </Grid>
+        <Grid item xs={6}>
+          <Box sx={{ ...list, borderRadius: '13px', mr: '10px' }}>
+            <Typography sx={{ ...titleFont }}>
+              예약
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={6}>
+          <Box sx={{ ...list, borderRadius: '13px', ml: '10px' }}>
+            <Typography sx={{ ...titleFont }}>
+              리뷰
+            </Typography>
+          </Box>
+        </Grid>
+
+      </Grid>
     </Container>
   );
 }

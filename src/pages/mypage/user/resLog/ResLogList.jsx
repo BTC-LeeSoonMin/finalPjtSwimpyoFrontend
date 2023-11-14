@@ -11,6 +11,7 @@ const list = {
     height: '10rem',
     mt: '1rem',
     padding: '1rem',
+    width: '62rem'
 };
 
 const font = {
@@ -49,19 +50,19 @@ function ResLogList(props) {
                 <Grid item xs={6}>
                     <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
                         <Typography sx={{ ...titleFont }}>
-                            숙박업소 이름
+                            업소이름 {props.a_acc_name}
                         </Typography>
                         <Typography sx={{ ...font }} >
-                            룸 이름 1객실 1주차, 연박 불가, 넷플릭스 가능
+                            룸이름{props.a_r_name} 소개글{props.a_r_content}
                         </Typography>
                         <Typography sx={{ ...font }} >
-                            2023.12.25(월) ~ 2023.12.26(화) | 숙박
+                            체크인날짜{props.u_r_check_in} ~ 체크아웃날짜{props.u_r_check_out} | 숙박/대실{props.a_r_state}
                         </Typography>
+                        {<Typography sx={{ ...font }} >
+                            차량유무 {props.u_r_car_yn}
+                        </Typography>}
                         <Typography sx={{ ...font }} >
-                            도보
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            체크인 18:00 | 체크아웃 12:00
+                            체크인 {props.u_r_check_in_time} | 체크아웃 {props.u_r_check_out_time}
                         </Typography>
                     </Box>
                 </Grid>

@@ -46,7 +46,7 @@ function ResLog() {
               <Box sx={{ ...list, borderRadius: '10px' }}>
                 검색 결과가 없습니다.
               </Box>}
-            <ResLogList />
+            {/* <ResLogList /> */}
         </>
     );
 }
