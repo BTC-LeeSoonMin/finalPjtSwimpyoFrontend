@@ -24,6 +24,7 @@ import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
 import MyPage from './pages/mypage/user/MyPage';
+import ResLogDetail from './pages/mypage/user/ResLogDetail';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
 import ModifyRoom from './pages/accommodation/admin/ModifyRoom';
 import SearchAccm from './pages/accommodation/user/searchAccm/SearchAccm';
@@ -87,6 +88,10 @@ function App() {
                     <Route
                         path="/user/myPage"
                         element={<MyPage />}
+                    ></Route>
+                    <Route
+                        path="/user/myPage/resLogDetail"
+                        element={<ResLogDetail />}
                     ></Route>
                     <Route
                         path="/user/searchAccm"

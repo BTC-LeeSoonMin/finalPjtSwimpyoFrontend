@@ -123,7 +123,7 @@ function AdminChangePw() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }} 
           >
             비밀번호 변경
           </Button>

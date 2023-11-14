@@ -131,7 +131,7 @@ function AdminSignUp() {
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
       <Paper elevation={3} sx={{ padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography variant="h5" component="h1">
-          관리자 회원가입 요청
+          관리자 회원가입
         </Typography>
         <form onSubmit={(e) => createAccountConfirm(e)} name='create_account_form' style={{ width: '100%', marginTop: 1 }}>
           <TextField
@@ -238,9 +238,9 @@ function AdminSignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} // 검정색 배경, 흰색 글자색
+            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }} 
           >
-            회원가입 요청
+            회원가입
           </Button>
         </form>
         <Link to="/admin/member/signIn" style={linkStyle}>이미 계정이 있으신가요? 로그인</Link>

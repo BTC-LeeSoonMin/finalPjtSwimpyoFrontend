@@ -212,8 +212,7 @@ function SignUp() {;
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'skyblue', color: 'white' }} // 검정색 배경, 흰색 글자색
-          // onClick={createAccountForm}
+            sx={{ mt: 2, mb: 2, backgroundColor: 'skyblue', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }} 
           >
             회원가입
           </Button>

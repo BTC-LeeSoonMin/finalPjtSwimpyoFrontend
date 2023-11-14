@@ -87,7 +87,6 @@ function ChangePw() {
             type="password"
             id="password"
             autoComplete="new-password"
-            // value={pw}
             onChange={(e) => setPw(e.target.value)}
           />
           <TextField
@@ -100,7 +99,6 @@ function ChangePw() {
             type="password"
             id="password"
             autoComplete="new-password"
-            // value={pw}
             onChange={(e) => setNewPw(e.target.value)}
           />
           <TextField
@@ -113,7 +111,6 @@ function ChangePw() {
             type="password"
             id="pwConfirm"
             autoComplete="new-password"
-            // value={pwConfirm}
             onChange={onChangePwCheck}
           />
           {!pwCheck && (<Typography variant="body2" color="error">
@@ -123,7 +120,7 @@ function ChangePw() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white' }} 
+            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }} 
           >
             비밀번호 변경
           </Button>

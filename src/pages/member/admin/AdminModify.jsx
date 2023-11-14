@@ -164,7 +164,7 @@ function AdminModify() {
           <Link to="/admin/member/changePw" style={linkStyle}>
             <Button
               variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white' }}
+              sx={{ ml: 2, mt: 3, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }}
             >
               비밀번호 변경
             </Button>
@@ -196,7 +196,7 @@ function AdminModify() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white' }} 
+            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }} 
           >
             회원 정보 수정
           </Button>
@@ -204,7 +204,7 @@ function AdminModify() {
       </Paper>
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: 'black' }} 
+        sx={{ mt: 3, backgroundColor: 'black', '&:hover': { backgroundColor: 'black' } }} 
         onClick={(e) => signOut(e)}
       >
         회원탈퇴
