@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const linkStyle = {
     color: 'black',
@@ -42,11 +45,33 @@ const right = {
     width: '100%'
 }
 
+const today = dayjs();
+
 export default function ResLogDetail() {
+    const [resLog, setResLog] = useState([]);
+    const [use, setUse] = useState('');
 
-    const [hidden, setHidden] = useState(true);
+    const config = {
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    };
 
-    console.log('hidden', hidden);
+    // useEffect(() => {
+
+    //     api.post("/api/user/mypage/getRezDetail", JSON.stringify(u_r_no), config,)
+    //         .then((response) => {
+               
+    //             if (response.data != null) {
+    //                 console.log('resLogDetail', response.data);
+    //                 setResLog(response.data);
+    //             }
+    //         }).catch((error) => {
+    //             // 실패
+
+    //         });
+
+    // }, []);
 
     return (
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
@@ -60,10 +85,9 @@ export default function ResLogDetail() {
                         {/* <Link to='/user/accommodation/reviewDetail/' style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link> */}
                     </Typography>
                     <Box sx={{ display: 'flex', width: '100%' }}>
-                        <Typography sx={{ ...left, color: '#C8C8C8' }}>주문번호</Typography>
+                        <Typography sx={{ ...left, color: '#34A853', fontWeight: "bold" }}>이용여부</Typography>
                         <Typography sx={{ ...right, color: '#C8C8C8' }}>예약한 날</Typography>
                     </Box>
-                    <Typography sx={{ ...right, fontWeight: 'bold', color: '#C8C8C8' }}>이용여부</Typography>
                 </Box>
                 <Divider sx={{ width: '100%', mt: '1rem' }} />
                 <Typography component="h1" variant="h6" sx={{ mt: 3, fontWeight: "bold" }}>
@@ -125,7 +149,7 @@ export default function ResLogDetail() {
                     sx={{
                         mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
                         '&:hover': {
-                            backgroundColor: 'skyblue', 
+                            backgroundColor: 'skyblue',
                         }
                     }}
                 >

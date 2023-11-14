@@ -24,6 +24,13 @@ const Item = styled(MuiPaper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const slide = {
+  display: 'flex',
+  width: '100%',
+  overflowX: 'auto',
+  flexWrap: 'nowrap',
+  mt: '8px',
+};
 
 function Main() {
 
@@ -62,24 +69,27 @@ function Main() {
                   <Divider variant="middle" />
                 </Grid>
               </Grid>
-              <Card sx={{ maxWidth: 200, mt: '6px' }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="100"
-                    image={temp1}
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom component="div">
-                      호텔 이름
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      평점
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <Box sx={{ ...slide }}>
+                <Card sx={{ maxWidth: 200, mt: '6px' }}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      height="100"
+                      image={temp1}
+                      alt="green iguana"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom component="div">
+                        호텔 이름
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        평점
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Box>
+
             </Item>
             <Item sx={{ marginTop: '1rem' }}>
               <Grid container>
