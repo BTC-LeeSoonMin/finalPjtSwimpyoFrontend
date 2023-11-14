@@ -15,7 +15,6 @@ const KakaoMapForAccm = ({ longitude, latitude }) => {
         let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
 
-
         let imageSrc = markerImage;
         let imageSize = new window.kakao.maps.Size(50, 50);
         let imageOption = { offset: new window.kakao.maps.Point(27, 50) };

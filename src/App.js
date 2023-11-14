@@ -36,6 +36,7 @@ import CategoryAccm from './pages/accommodation/user/categoryAccmList/CategoryAc
 import AccmReviewList from './pages/review/user/reviewList/AccmReviewList';
 import AccmReview from './pages/review/user/reviewList/AccmReview';
 import RoomReview from './pages/review/user/reviewList/RoomReview';
+import ResReview from './pages/review/user/ResReview';
 
 
 function App() {
@@ -172,6 +173,10 @@ function App() {
                         path="/payment/success"
                         element={<div > <PayResult /></div>}>
                     </Route> */}
+                    <Route
+                        path="/user/review/regist/:a_acc_no/:a_r_no"
+                        element={<div > <ResReview /></div>}>
+                    </Route>
 
                 </Routes>
                 <Routes>
