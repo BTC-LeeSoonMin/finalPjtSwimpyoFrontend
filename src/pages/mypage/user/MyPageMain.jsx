@@ -20,7 +20,7 @@ const button = {
   };
 const list = {
     bgcolor: 'background.paper',
-    height: '15rem',
+    height: '20rem',
     textAlign: 'center',
     mt: '2rem',
     padding: '1rem', 
@@ -40,9 +40,9 @@ export default function MyPageMain() {
       color: 'black',
       width: '100%',
       boxShadow: 'none', 
-    }}>
-    <Grid container>
       
+    }}>
+    {/* <Grid container>
       <Grid item xs={4}>
         <Box sx={{ ...button, mr: '5px', borderRadius: '50px'}}>
             <Typography sx={{...titleFont}}>
@@ -64,8 +64,7 @@ export default function MyPageMain() {
             </Typography>
         </Box>
       </Grid>
-
-    </Grid>
+    </Grid> */}
     <Grid container>
       
       <Grid item xs={6}>
