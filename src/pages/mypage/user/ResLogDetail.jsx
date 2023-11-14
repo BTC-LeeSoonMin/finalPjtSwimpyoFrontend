@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Container, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
 
@@ -43,10 +43,8 @@ const right = {
 }
 
 export default function ResLogDetail() {
-
-    const [hidden, setHidden] = useState(true);
-
-    console.log('hidden', hidden);
+    const { u_r_no } = useParams();
+    console.log('u_r_no', u_r_no);
 
     return (
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>

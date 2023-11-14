@@ -67,8 +67,7 @@ function ResLogList(props) {
                     </Box>
                 </Grid>
                 <Grid item xs={3}>
-                    {/* <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.a}`}>상세보기 &gt;</Link> */}
-                    <Link style={{ ...info }} to="/user/myPage/resLogDetail">상세보기 &gt;</Link>
+                    <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
                         <Button variant="contained" sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px', 
                         '&:hover': { backgroundColor: 'skyblue' } }}>리뷰작성</Button>

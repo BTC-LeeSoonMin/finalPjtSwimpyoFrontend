@@ -90,7 +90,7 @@ function App() {
                         element={<MyPage />}
                     ></Route>
                     <Route
-                        path="/user/myPage/resLogDetail"
+                        path="/user/myPage/resLogDetail/:u_r_no"
                         element={<ResLogDetail />}
                     ></Route>
                     <Route
