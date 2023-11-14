@@ -11,6 +11,7 @@ import Modify from '../../member/user/Modify';
 import { useState } from 'react';
 import MyPageMain from './MyPageMain';
 import ResLog from './resLog/ResLog';
+import MyReview from './MyReview';
 
 const drawerWidth = 240;
 
@@ -27,6 +28,7 @@ export default function ClippedDrawer() {
   const [mainPage, setMainPage] = useState(true);
   const [modifyPage, setModifyPage] = useState(false);
   const [resLogListPage, setResLogListPage] = useState(false);
+  const [reviewListPage, setReviewListPage] = useState(false);
 
   const modify = (e) => {
     e.preventDefault();
@@ -34,12 +36,23 @@ export default function ClippedDrawer() {
     setModifyPage(true);
     setMainPage(false);
     setResLogListPage(false);
+    setReviewListPage(false);
   };
 
   const resLogList = (e) => {
     e.preventDefault();
     
     setResLogListPage(true);
+    setModifyPage(false);
+    setMainPage(false);
+    setReviewListPage(false);
+  };
+
+  const reviewList = (e) => {
+    e.preventDefault();
+    
+    setReviewListPage(true);
+    setResLogListPage(false);
     setModifyPage(false);
     setMainPage(false);
   };
@@ -66,7 +79,7 @@ export default function ClippedDrawer() {
           {/* <Button fullWidth style={linkStyle}>찜</Button>
           <Button fullWidth style={linkStyle}>쿠폰</Button> */}
           <Button fullWidth style={linkStyle} onClick={(e) => resLogList(e)} >예약리스트</Button>
-          <Button fullWidth style={linkStyle} onClick={(e) => resLogList(e)} >리뷰리스트</Button>
+          <Button fullWidth style={linkStyle} onClick={(e) => reviewList(e)} >리뷰리스트</Button>
           {/* <Button fullWidth style={linkStyle}>문의</Button> */}
         </Box>
       </Drawer>
@@ -74,6 +87,7 @@ export default function ClippedDrawer() {
         {mainPage && (<MyPageMain />)}
         {modifyPage && (<Modify />)}
         {resLogListPage && (<ResLog />)}
+        {reviewListPage && (<MyReview />)}
       </Box>
     </Box>
   );

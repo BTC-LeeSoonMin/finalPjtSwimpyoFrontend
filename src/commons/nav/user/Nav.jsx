@@ -96,7 +96,7 @@ export default function Nav() {
               justifyContent: 'flex-end',
               width: '100%' }}
           >
-            {token && <Link to="/user/myPage" style={linkStyle}>
+            {token && <Link to={"/user/myPage"} style={linkStyle}>
               마이페이지
             </Link>}
             {!token && <Link to="/user/member/signIn" onClick={(e) => notSignIn(e)} style={linkStyle}>

@@ -44,7 +44,7 @@ function ResLog() {
             {(resLogList.length != 0) && resLogList.map((item) => (<ResLogList  {...item}  />))}
             {(resLogList.length == 0) && 
               <Box sx={{ ...list, borderRadius: '10px' }}>
-                검색 결과가 없습니다.
+                 예약 정보가 없습니다.
               </Box>}
             {/* <ResLogList /> */}
         </>

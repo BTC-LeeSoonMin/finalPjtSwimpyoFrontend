@@ -44,30 +44,30 @@ function ResLogList(props) {
             <Grid container>
                 <Grid item xs={3}>
                     <div style={{ width: '220px', height: '125px', overflow: 'hidden' }}>
-                        <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={accmImg} alt="Accm Image" />
+                        <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={props.a_i_image} alt="Accm Image" />
                     </div>
                 </Grid>
                 <Grid item xs={6}>
                     <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
                         <Typography sx={{ ...titleFont }}>
-                            업소이름 {props.a_acc_name}
+                            {props.a_acc_name}
+                        </Typography>
+                        <Typography sx={{ ...font }} noWrap>
+                            {props.a_r_name} {props.a_r_content}
                         </Typography>
                         <Typography sx={{ ...font }} >
-                            룸이름{props.a_r_name} 소개글{props.a_r_content}
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            체크인날짜{props.u_r_check_in} ~ 체크아웃날짜{props.u_r_check_out} | 숙박/대실{props.a_r_state}
+                            {props.u_r_check_in} ~ {props.u_r_check_out} | {props.a_r_state}
                         </Typography>
                         {<Typography sx={{ ...font }} >
-                            차량유무 {props.u_r_car_yn}
+                            차량 유무 {props.u_r_car_yn}
                         </Typography>}
                         <Typography sx={{ ...font }} >
-                            체크인 {props.u_r_check_in_time} | 체크아웃 {props.u_r_check_out_time}
+                            {props.u_r_check_in_time}{props.a_r_check_in} | {props.u_r_check_out_time}{props.a_r_check_out}
                         </Typography>
                     </Box>
                 </Grid>
                 <Grid item xs={3}>
-                    <Link style={{ ...info }}>상세보기 &gt;</Link>
+                    <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.a}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
                         <Button variant="contained" sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px' }}>리뷰작성</Button>
                     </Link>
