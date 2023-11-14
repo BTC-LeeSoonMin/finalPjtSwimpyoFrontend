@@ -25,6 +25,12 @@ import markerForMap from '../../../../imgs/markerForMap.png';
 
 const UserDetailAccm = () => {
 
+    const allReview = (e) => {
+        e.preventDefault();
+        console.log("click allReview");
+        // navigate('/user/accommodation/reviewList', { state: a_acc_no } );
+        navigate('/user/accommodation/detailAccm/reviewList');
+    }
 
     const accmNum = useParams();
 
@@ -309,6 +315,26 @@ const UserDetailAccm = () => {
                         객실 선택
                     </Grid>
                     <UserRoomList accomNum={accomNum} requestData={requestData} accmName={backEndData.accmData.a_acc_name} />
+                    <Grid item xs={10} sx={{ mt: '10px' }}>
+                        <Divider variant="left" sx={{ width: '100%' }} />
+                    </Grid>
+                </Item>
+
+                <Item sx={{ marginTop: '1rem' }}>
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' ,
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                            }}} 
+                            onClick={(e) => allReview(e)}
+                        >
+                            후기 전체보기
+                        </Button>
+                    </Grid>
+
                 </Item>
 
             </Paper >

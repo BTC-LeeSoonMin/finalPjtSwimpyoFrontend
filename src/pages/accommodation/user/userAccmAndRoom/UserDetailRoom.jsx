@@ -17,6 +17,13 @@ import { useSelector } from 'react-redux';
 
 const UserDetailRoom = () => {
 
+    const allReview = (e) => {
+        e.preventDefault();
+        console.log("click allReview");
+        // navigate('/user/room/reviewList', { state: a_r_no } );
+        navigate('/user/accommodation/detailRoom/reviewList');
+    }
+
     // 리덕스 툴킷에서 로그인 확인을 위한 코드 시작
     const token = useSelector((store) => store.accessToken.value);
     console.log('토큰 값', token);
@@ -329,8 +336,19 @@ const UserDetailRoom = () => {
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
-
-
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' ,
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                            }}} 
+                            onClick={(e) => allReview(e)}
+                        >
+                            후기 전체보기
+                        </Button>
+                    </Grid>
                 </Item>
 
             </Paper>

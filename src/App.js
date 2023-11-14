@@ -33,6 +33,9 @@ import UserReservation from './pages/accommodation/user/userAccmAndRoom/UserRese
 import UserPaymentRoomReady from './pages/accommodation/user/userAccmAndRoom/UserPaymentRoomReady';
 import PayResult from './pages/accommodation/user/userAccmAndRoom/PayResult';
 import CategoryAccm from './pages/accommodation/user/categoryAccmList/CategoryAccm';
+import AccmReviewList from './pages/review/user/reviewList/AccmReviewList';
+import AccmReview from './pages/review/user/reviewList/AccmReview';
+import RoomReview from './pages/review/user/reviewList/RoomReview';
 
 
 function App() {
@@ -143,19 +146,27 @@ function App() {
 
                     <Route
                         path="/user/accommodation/detailAccm/:a_acc_no"
-                        element={<div > <UserDetailAccm /></div>}>
+                        element={<UserDetailAccm />}>
+                    </Route>
+                    <Route
+                        path="/user/accommodation/detailAccm/reviewList"
+                        element={<AccmReview />}>
                     </Route>
                     <Route
                         path="/user/accommodation/detailRoom/:a_acc_no/:a_r_no"
-                        element={<div > <UserDetailRoom /></div>}>
+                        element={<UserDetailRoom />}>
+                    </Route>
+                    <Route
+                        path="/user/accommodation/detailRoom/reviewList"
+                        element={<RoomReview />}>
                     </Route>
                     <Route
                         path="/user/accommodation/reservation/:a_acc_no/:a_r_no"
-                        element={<div > <UserReservation /></div>}>
+                        element={<UserReservation />}>
                     </Route>
                     <Route
                         path="/payment/success"
-                        element={<div > <UserPaymentRoomReady /></div>}>
+                        element={<UserPaymentRoomReady />}>
                     </Route>
                     {/* <Route
                         path="/payment/success"
