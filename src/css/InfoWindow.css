@@ -1,0 +1,8 @@
+.info-window-content {
+    max-width: 200px;
+    /* Adjust width as needed */
+    max-height: 100px;
+    /* Adjust height as needed */
+    overflow: auto;
+    /* Add scrollbars if content overflows */
+}
