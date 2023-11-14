@@ -37,7 +37,7 @@ const info = {
 
 function ResLogList() {
 
-    const [log, setLog] = useState(false);   
+    const [log, setLog] = useState(false);
     const [accName, setAccName] = useState('');   // 숙박업소 이름
     const [content, setContent] = useState('');   // 종류
     const [state, setState] = useState('');       // 숙박/대실
@@ -83,37 +83,37 @@ function ResLogList() {
 
     return (
         <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
-            {log && 
-            <Grid container>
-                <Grid item xs={2}>
-                    <img style={{ maxHeight: '125px', maxWidth: '200px' }} src={accmImg} alt="Accm Image" />
-                </Grid>
-                <Grid item xs={7} sx={{ pl: '1rem' }}>
-                    <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
-                        <Typography sx={{ ...titleFont }}>
-                            숙박업소 이름
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            룸 이름 1객실 1주차, 연박 불가, 넷플릭스 가능
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            2023.12.25(월) ~ 2023.12.26(화) | 숙박
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            도보
-                        </Typography>
-                        <Typography sx={{ ...font }} >
-                            체크인 18:00 | 체크아웃 12:00
-                        </Typography>
-                    </Box>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link style={{ ...info }}>상세보기 &gt;</Link>
-                    <Link style={{ ...info }}>
-                        <Button variant="contained" sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px' }}>리뷰작성</Button>
-                    </Link>
-                </Grid>
-            </Grid>}
+            {log &&
+                <Grid container>
+                    <Grid item xs={2}>
+                        <img style={{ maxHeight: '125px', maxWidth: '200px' }} src={accmImg} alt="Accm Image" />
+                    </Grid>
+                    <Grid item xs={7} sx={{ pl: '1rem' }}>
+                        <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
+                            <Typography sx={{ ...titleFont }}>
+                                숙박업소 이름
+                            </Typography>
+                            <Typography sx={{ ...font }} >
+                                룸 이름 1객실 1주차, 연박 불가, 넷플릭스 가능
+                            </Typography>
+                            <Typography sx={{ ...font }} >
+                                2023.12.25(월) ~ 2023.12.26(화) | 숙박
+                            </Typography>
+                            <Typography sx={{ ...font }} >
+                                도보
+                            </Typography>
+                            <Typography sx={{ ...font }} >
+                                체크인 18:00 | 체크아웃 12:00
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Link style={{ ...info }}>상세보기 &gt;</Link>
+                        <Link style={{ ...info }}>
+                            <Button variant="contained" sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px' }}>리뷰작성</Button>
+                        </Link>
+                    </Grid>
+                </Grid>}
             {!log && <Typography>예약 내역이 없습니다.</Typography>}
         </Box>
     );

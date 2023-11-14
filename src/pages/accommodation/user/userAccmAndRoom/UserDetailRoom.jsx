@@ -14,6 +14,7 @@ import DatePicker from 'react-date-picker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CalendarForRes from '../../../../components/CalendarForRes';
 import { useSelector } from 'react-redux';
+import { differenceInCalendarDays } from 'date-fns';
 
 const UserDetailRoom = () => {
 
@@ -51,7 +52,7 @@ const UserDetailRoom = () => {
         endDate: new Date(),
     });
 
-
+    const nightsCount = differenceInCalendarDays(dates.endDate, dates.startDate);
 
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -137,7 +138,10 @@ const UserDetailRoom = () => {
         if (!token) {
             alert('로그인이 필요한 서비스입니다.');
             navigate(`/user/member/signIn`);
-        } else {
+        } else if (nightsCount < 1) {
+            alert('최소 1박 이상 선택해야 예약이 가능합니다.');
+        }
+        else {
             alert('객실 예약 페이지로 이동합니다');
             navigate(`/user/accommodation/reservation/${sendToResData.backEndData.a_acc_no}/${sendToResData.backEndData.a_r_no}`, { state: sendToResData });
         }

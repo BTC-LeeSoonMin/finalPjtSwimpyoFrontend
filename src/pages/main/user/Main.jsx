@@ -34,6 +34,16 @@ const linkStyle = {
 function Main() {
 
   const navigate = useNavigate();
+  const testNo = 7;
+  const test = () => {
+    navigate(`/user/accommodation/detailAccm/${testNo}`);
+  }
+
+  const arNo = 1;
+
+  const testReview = () => {
+    navigate(`/user/review/regist/${testNo}/${arNo}`);
+  }
 
   return (
     <Container component="main">
@@ -43,6 +53,8 @@ function Main() {
           <Paper sx={{ height: '180px' }}><img src={temp2} /></Paper>
         </Carousel>
       </Box>
+      <button onClick={test}>숙소가기테스트</button>
+      <button onClick={testReview}>리뷰테스트</button>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           <Grid item xs={5}>

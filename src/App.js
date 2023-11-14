@@ -32,6 +32,7 @@ import UserDetailRoom from './pages/accommodation/user/userAccmAndRoom/UserDetai
 import UserReservation from './pages/accommodation/user/userAccmAndRoom/UserReservation';
 import UserPaymentRoomReady from './pages/accommodation/user/userAccmAndRoom/UserPaymentRoomReady';
 import PayResult from './pages/accommodation/user/userAccmAndRoom/PayResult';
+import ResReview from './pages/review/user/ResReview';
 
 
 function App() {
@@ -160,6 +161,10 @@ function App() {
                         path="/payment/success"
                         element={<div > <PayResult /></div>}>
                     </Route> */}
+                    <Route
+                        path="/user/review/regist/:a_acc_no/:a_r_no"
+                        element={<div > <ResReview /></div>}>
+                    </Route>
 
                 </Routes>
                 <Routes>

@@ -49,6 +49,11 @@ const UserReservation = () => {
         u_m_phone: '',
     });
 
+    const queryString = location.search;
+    const tp_query = queryString.split("=")[1];
+    const [backEndData, setBackEndData] = useState({});
+
+
     console.log("location", location);
     console.log("a_accm_name", location.state.accmName.state);
 
@@ -60,12 +65,24 @@ const UserReservation = () => {
 
     const u_r_check_in = startDate.toLocaleDateString('ko-KR', options).replace(/\. /g, '.');
     const u_r_check_out = endDate.toLocaleDateString('ko-KR', options).replace(/\. /g, '.');
+
+    console.log("startDate", startDate);
     // 넘어온 데이터 중 날짜 데이터 변환 끝
 
     // 날짜의 차이를 계산 시작
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     // 날짜의 차이를 계산 끝
+
+    // 백엔드에서 date타입으로 필요로 하기에 바꿔주는 작업 시작
+    const convertDateToISO = (dateString) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
+    }
+
+    const toBackStartDate = convertDateToISO(startDate);
+    const toBackEndDate = convertDateToISO(endDate);
+    // 백엔드에서 date타입으로 필요로 하기에 바꿔주는 작업 끝
 
     // 날짜 -1일 전 무료취소 가능 시작
     const forCancelDate = new Date(startDate);
@@ -217,100 +234,65 @@ const UserReservation = () => {
 
 
 
-    useEffect(() => {
-        console.log("useEffect!@!!!!!");
-        if (dataForPayment.u_m_email) {
-            // axios를 사용하여 POST 요청을 보냅니다.
-            const fetchDataForKakaoURL = async () => {
-                const data = new FormData();
+    // useEffect(() => {
+    //     console.log("useEffect!@!!!!!");
+    //     if (dataForPayment.u_m_email) {
+    //         // axios를 사용하여 POST 요청을 보냅니다.
+    //         const fetchDataForKakaoURL = async () => {
+    //             const data = new FormData();
 
-                console.log("이;메일", dataForPayment.u_m_email);
-                console.log("a_r_check_out", location.state.backEndData.a_r_check_out);
+    //             console.log("이메일", dataForPayment.u_m_email);
+    //             console.log("a_r_check_out", location.state.backEndData.a_r_check_out);
 
-                const jsonBlob = new Blob([JSON.stringify({
-                    u_m_email: dataForPayment.u_m_email,
-                    u_r_name: dataForPayment.u_r_name,
-                    u_r_phone: dataForPayment.u_m_phone,
-                    a_r_no: location.state.backEndData.a_r_no,
-                    u_r_check_in: u_r_check_in,
-                    u_r_check_out: u_r_check_out,
-                    u_r_stay_yn: u_r_stay_yn,
-                    u_r_car_yn: u_r_car_yn,
-                    a_r_price: a_r_price,
-                    a_acc_name: location.state.accmName.state,
-                    a_r_name: location.state.backEndData.a_r_name,
-                    a_r_check_in: location.state.backEndData.a_r_check_in,
-                    a_r_check_out: location.state.backEndData.a_r_check_out,
-                    a_acc_no: location.state.backEndData.a_acc_no,
-                    a_acc_name: location.state.accmName.state
-                })], { type: "application/json" });
-                data.append("reservationDto", jsonBlob);
+    //             const jsonBlob = new Blob([JSON.stringify({
+    //                 u_m_email: dataForPayment.u_m_email,
+    //                 u_r_name: dataForPayment.u_r_name,
+    //                 u_r_phone: dataForPayment.u_r_phone,
+    //                 a_r_no: location.state.backEndData.a_r_no,
+    //                 u_r_check_in: toBackStartDate,
+    //                 u_r_check_out: toBackEndDate,
+    //                 u_r_stay_yn: u_r_stay_yn,
+    //                 u_r_car_yn: u_r_car_yn,
+    //                 a_r_price: a_r_price,
+    //                 a_acc_name: location.state.accmName.state,
+    //                 a_r_name: location.state.backEndData.a_r_name,
+    //                 a_r_check_in: location.state.backEndData.a_r_check_in,
+    //                 a_r_check_out: location.state.backEndData.a_r_check_out,
+    //                 a_acc_no: location.state.backEndData.a_acc_no,
+    //                 a_acc_name: location.state.accmName.state
+    //             })], { type: "application/json" });
+    //             data.append("reservationDto", jsonBlob);
 
-                const response = await api.post('/api/user/reservation', data, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
+    //             const response = await api.post('/api/user/reservation', data, {
+    //                 headers: {
+    //                     'Content-Type': 'multipart/form-data'
+    //                 }
+    //             })
 
-                // 성공적으로 데이터를 보냈다면 response 변수를 사용할 수 있습니다.
-                console.log("백엔드 url", response.data);
-                // setDataCheckFromBack({
-                //     kakaoReadyResponseDto: response.data.kakaoReadyResponseDto,
-                // });
-
-                // console.log("tp : ", response.data);
-                // const { next_redirect_pc_url, tid, created_at } = response.data;
-                // // localstorage에 tid 저장
-                // window.localStorage.setItem("next_redirect_pc_url", response.data.kakaoReadyResponseDto.next_redirect_pc_url);
-                // window.localStorage.setItem("tid", response.data.kakaoReadyResponseDto.tid);
-                // window.localStorage.setItem("created_at", response.data.kakaoReadyResponseDto.created_at);
-                // console.log("response.data.kakaoReadyResponseDto.cid", response.data.kakaoReadyResponseDto.cid);
-                window.localStorage.setItem("cid", response.data.kakaoReadyResponseDto.cid);
-                window.localStorage.setItem("partner_order_id", response.data.kakaoReadyResponseDto.partner_order_id);
-                window.localStorage.setItem("partner_user_id", response.data.kakaoReadyResponseDto.u_m_email);
-                window.localStorage.setItem("item_name", response.data.kakaoReadyResponseDto.item_name);
-                window.localStorage.setItem("quantity", response.data.kakaoReadyResponseDto.quantity);
-                window.localStorage.setItem("total_amount", response.data.kakaoReadyResponseDto.total);
-                window.localStorage.setItem("vat_amount", response.data.kakaoReadyResponseDto.tax);
-                window.localStorage.setItem("tax_free_amount", response.data.kakaoReadyResponseDto.tax_free);
+    //             // 성공적으로 데이터를 보냈다면 response 변수를 사용할 수 있습니다.
+    //             console.log("백엔드 url", response.data);
+    //             setBackEndData(response.data);
+    //             setNextRedirectPcUrl(response.data.kakaoReadyResponseDto.next_redirect_pc_url);
+    //             // setCid(response.data.kakaoReadyResponseDto.cid);
+    //             // setPartner_order_id(response.data.kakaoReadyResponseDto.partner_order_id);
+    //             // setPartner_user_id(response.data.kakaoReadyResponseDto.u_m_email);
+    //             // setItem_name(response.data.kakaoReadyResponseDto.item_name);
+    //             // setQuantity(response.data.kakaoReadyResponseDto.quantity);
+    //             // setTotal_amount(response.data.kakaoReadyResponseDto.total);
+    //             // setVat_amount(response.data.kakaoReadyResponseDto.tax);
+    //             // setTax_free_amount(response.data.kakaoReadyResponseDto.tax_free);
+    //             // // setTid(response.data.kakaoReadyResponseDto.tid);
+    //             // setCreated_at(response.data.kakaoReadyResponseDto.created_at);
+    //         }
+    //         fetchDataForKakaoURL();
+    //     };
+    // }, [dataForPayment])
 
 
 
-                setCid(response.data.kakaoReadyResponseDto.cid);
-                setPartner_order_id(response.data.kakaoReadyResponseDto.partner_order_id);
-                setPartner_user_id(response.data.kakaoReadyResponseDto.u_m_email);
-                setItem_name(response.data.kakaoReadyResponseDto.item_name);
-                setQuantity(response.data.kakaoReadyResponseDto.quantity);
-                setTotal_amount(response.data.kakaoReadyResponseDto.total);
-                setVat_amount(response.data.kakaoReadyResponseDto.tax);
-                setTax_free_amount(response.data.kakaoReadyResponseDto.tax_free);
-                // setNextRedirectPcUrl(response.data.kakaoReadyResponseDto.next_redirect_pc_url);
-                // // setTid(response.data.kakaoReadyResponseDto.tid);
-                // setCreated_at(response.data.kakaoReadyResponseDto.created_at);
-            }
-            fetchDataForKakaoURL();
-        };
+    // console.log("cid!!!!!!!!!!!!!", cid);
 
-        // const [cid, setCid] = useState("");
-        // const [partner_order_id, setPartner_order_id] = useState("");
-        // const [partner_user_id, setPartner_user_id] = useState("");
-        // const [item_name, setItem_name] = useState("");
-        // const [quantity, setQuantity] = useState("");
-        // const [total_amount, setTotal_amount] = useState("");
-        // const [vat_amount, setVat_amount] = useState("");
-        // const [tax_free_amount, setTax_free_amount] = useState("");
 
-        // 필요한 경우 다른 페이지로 이동하거나 다이얼로그를 엽니다.
-        // 예: navigate('/success-page');
-
-    }, [dataForPayment])
-
-    // console.log("next_redirect_pc_url", nextRedirectPcUrl);
-    // console.log("tid", tid);
-    // console.log("created_at", created_at);
-    // console.log("item_name", item_name);
-
-    console.log("cid!!!!!!!!!!!!!", cid);
 
 
     // const params = {
@@ -345,63 +327,65 @@ const UserReservation = () => {
     // }), [cid, partner_order_id, partner_user_id, item_name, total_amount, vat_amount, tax_free_amount]);
 
 
-    const params = {
-        cid: cid,
-        partner_order_id: partner_order_id,
-        partner_user_id: partner_user_id,
-        item_name: item_name,
-        quantity: 1,
-        total_amount: total_amount,
-        vat_amount: vat_amount,
-        tax_free_amount: tax_free_amount,
-        approval_url: `http://localhost:3000/payment/success`,
-        fail_url: "http://localhost:3000/payment/fail",
-        cancel_url: "http://localhost:3000/payment/cancel",
-    }
+    // const params = {
+    //     cid: cid,
+    //     partner_order_id: partner_order_id,
+    //     partner_user_id: partner_user_id,
+    //     item_name: item_name,
+    //     quantity: 1,
+    //     total_amount: total_amount,
+    //     vat_amount: vat_amount,
+    //     tax_free_amount: tax_free_amount,
+    //     approval_url: `http://localhost:3000/payment/success`,
+    //     fail_url: "http://localhost:3000/payment/fail",
+    //     cancel_url: "http://localhost:3000/payment/cancel",
+    // }
+
+
+    // console.log("params", params);
+
+    // useEffect(() => {
+    //     if (cid !== '') {
+    //         console.log("useEffect");
+    //         console.log("params", params);
+
+    //         axios({
+    //             url: "https://kapi.kakao.com/v1/payment/ready", // 카카오 요청 보내는 url
+    //             method: "POST", // 
+    //             headers: {
+    //                 Authorization: "KakaoAK 1980ead0ae347e6c0c29225e22ede43c", // admin키 있어야함
+    //                 "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+    //             }, params,
+    //             // 방금 위에 적은 데이터들
+    //         }).then((response) => { // 통신이 된다면
+    //             console.log("tp : ", response.data);
+    //             const { next_redirect_pc_url, tid, created_at } = response.data;
+    //             // localstorage에 tid 저장
+    //             window.localStorage.setItem("next_redirect_pc_url", next_redirect_pc_url);
+    //             // 이 url이 클릭해서 가는게 아니라 결제버튼을 누르면 자동으로 떠야함 (QR코드임)
+    //             window.localStorage.setItem("tid", tid); // 카카오에서 고정으로 주거
+    //             window.localStorage.setItem("created_at", created_at); // 요청 시간
+    //             // 방금 위에 3개는 백으로 함
+    //             setNextRedirectPcUrl(response.data.next_redirect_pc_url);
+    //             setTid(response.data.tid);
+    //             setCreated_at(response.data.created_at);
+
+    //         });
+    //     }
+
+    // }, [params.cid, params.partner_order_id, params.partner_user_id, params.item_name, params.total_amount, params.vat_amount, params.tax_free_amount]);
 
 
 
 
 
-    console.log("params", params);
 
-    useEffect(() => {
-        if (cid !== '') {
-            console.log("useEffect");
-            console.log("params", params);
-
-            axios({
-                url: "https://kapi.kakao.com/v1/payment/ready", // 카카오 요청 보내는 url
-                method: "POST", // 
-                headers: {
-                    Authorization: "KakaoAK 1980ead0ae347e6c0c29225e22ede43c", // admin키 있어야함
-                    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-                }, params,
-                // 방금 위에 적은 데이터들
-            }).then((response) => { // 통신이 된다면
-                console.log("tp : ", response.data);
-                const { next_redirect_pc_url, tid, created_at } = response.data;
-                // localstorage에 tid 저장
-                window.localStorage.setItem("next_redirect_pc_url", next_redirect_pc_url);
-                // 이 url이 클릭해서 가는게 아니라 결제버튼을 누르면 자동으로 떠야함 (QR코드임)
-                window.localStorage.setItem("tid", tid); // 카카오에서 고정으로 주거
-                window.localStorage.setItem("created_at", created_at); // 요청 시간
-                // 방금 위에 3개는 백으로 함
-                setNextRedirectPcUrl(response.data.next_redirect_pc_url);
-                setTid(response.data.tid);
-                setCreated_at(response.data.created_at);
-
-            });
-        }
-
-    }, [params.cid, params.partner_order_id, params.partner_user_id, params.item_name, params.total_amount, params.vat_amount, params.tax_free_amount]);
+    // console.log("next_redirect_pc_url", nextRedirectPcUrl);
+    // console.log("tid", tid);
+    // console.log("created_at", created_at);
 
 
 
-
-    console.log("next_redirect_pc_url", nextRedirectPcUrl);
-    console.log("tid", tid);
-    console.log("created_at", created_at);
 
 
     // console.log(dataCheckFromBack);
@@ -459,8 +443,56 @@ const UserReservation = () => {
 
 
     const [open, setOpen] = useState(false); // 모달창 오픈
+    // console.log()''
+
+    // if (open == true && tp_query !== undefined) {
+    // if (tp_query) {
+
+    const completePay = async () => {
+        try {
+            console.log("useEffect 결제 성공완료");
+            const response = await api.get(`/api/user/reservation/success`);
+            console.log("response.data", response.data);
+            if (response.data == "success") {
+                return (
+                    <h2>
+                        결제 완료 성공
+                    </h2>
+                );
+            }
+        } catch (error) {
+            console.error('주문 처리 중 오류 발생:', error);
+        }
+    }
+
+    // , {
+    // headers: {
+    //     'Content-Type': 'multipart/form-data'
+    // }
+
+
+    // setSuccess(response.data.status);
+    // }
+
+    // }
+
+
+
+    useEffect(() => {
+
+
+
+    }, [open, tp_query]);
+
+
 
     const PaymentModal = ({ open, onClose, url }) => {
+
+
+
+        console.log("tp_query", tp_query);
+
+
         // const queryString = location.search;
         // const tp_query = queryString.split("=")[1];
         // if (tp_query) {
@@ -511,40 +543,100 @@ const UserReservation = () => {
 
         return (
             <Dialog open={open} onClose={onClose}>
-                <iframe src={url} width="100%" height="500px"></iframe>
+                <div src={url} width="100%" height="500px"></div>
             </Dialog>
         );
     };
 
+    const fetchDataForKakaoURL = async () => {
+        const data = new FormData();
 
+        console.log("이메일", dataForPayment.u_m_email);
+        console.log("a_r_check_out", location.state.backEndData.a_r_check_out);
+
+        const jsonBlob = new Blob([JSON.stringify({
+            u_m_email: dataForPayment.u_m_email,
+            u_r_name: dataForPayment.u_r_name,
+            u_r_phone: dataForPayment.u_r_phone,
+            a_r_no: location.state.backEndData.a_r_no,
+            u_r_check_in: toBackStartDate,
+            u_r_check_out: toBackEndDate,
+            u_r_stay_yn: u_r_stay_yn,
+            u_r_car_yn: u_r_car_yn,
+            a_r_price: a_r_price,
+            a_acc_name: location.state.accmName.state,
+            a_r_name: location.state.backEndData.a_r_name,
+            a_r_check_in: location.state.backEndData.a_r_check_in,
+            a_r_check_out: location.state.backEndData.a_r_check_out,
+            a_acc_no: location.state.backEndData.a_acc_no,
+            a_acc_name: location.state.accmName.state
+        })], { type: "application/json" });
+        data.append("reservationDto", jsonBlob);
+
+        const response = await api.post('/api/user/reservation', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        // 성공적으로 데이터를 보냈다면 response 변수를 사용할 수 있습니다.
+        console.log("백엔드 url", response.data);
+        setBackEndData(response.data);
+        setNextRedirectPcUrl(response.data.kakaoReadyResponseDto.next_redirect_pc_url);
+
+        // setCid(response.data.kakaoReadyResponseDto.cid);
+        // setPartner_order_id(response.data.kakaoReadyResponseDto.partner_order_id);
+        // setPartner_user_id(response.data.kakaoReadyResponseDto.u_m_email);
+        // setItem_name(response.data.kakaoReadyResponseDto.item_name);
+        // setQuantity(response.data.kakaoReadyResponseDto.quantity);
+        // setTotal_amount(response.data.kakaoReadyResponseDto.total);
+        // setVat_amount(response.data.kakaoReadyResponseDto.tax);
+        // setTax_free_amount(response.data.kakaoReadyResponseDto.tax_free);
+        // // setTid(response.data.kakaoReadyResponseDto.tid);
+        // setCreated_at(response.data.kakaoReadyResponseDto.created_at);
+        // }
+    }
+
+    useEffect(() => {
+
+        if (nextRedirectPcUrl) {
+            const paymentWindow = window.open(nextRedirectPcUrl, '_blank');
+            // const paymentWindow = window.open(nextRedirectPcUrl, '_blank');
+            completePay();
+
+            // 결제 창의 상태를 주기적으로 확인하는 함수
+            const checkPaymentWindowClosed = () => {
+                if (paymentWindow.closed) {
+                    // 새 창이 닫혔을 때 실행할 로직
+                    navigate(`/`, {
+                        state: {
+                            // 필요한 상태 데이터 전달
+                        }
+                    });
+                } else {
+                    // 새 창이 아직 열려 있으면 다시 확인
+                    setTimeout(checkPaymentWindowClosed, 500); // 0.5초 후에 다시 확인
+                }
+            };
+
+            // 최초 실행
+            checkPaymentWindowClosed();
+        }
+
+    }, [nextRedirectPcUrl]);
 
     const handlePaymentClick = () => {
 
-        setOpen(true); // 모달창을 열어줍니다.
+        // setOpen(true); // 모달창을 열어줍니다.
+        console.log("useEffect!@!!!!!");
+        // if (dataForPayment.u_m_email) {
+        // axios를 사용하여 POST 요청을 보냅니다.
+
+        fetchDataForKakaoURL();
 
 
+        // console.log("nextRedirectPcUrl", nextRedirectPcUrl);
 
-        // const timer = setTimeout(() => {
-        //     navigate(`/payment/success`, {
-        //         state: {
-        //             dataForPayment,
-        //             nextRedirectPcUrl,
-        //             tid,
-        //             created_at,
-        //             cid,
-        //             partner_order_id,
-        //             partner_user_id,
-        //             item_name,
-        //             quantity,
-        //             total_amount,
-        //             vat_amount,
-        //             tax_free_amount
-        //         }
-        //     });
-        // }, 1000); // 1초 후에 페이지 이동
-
-        // 타이머를 정리합니다.
-        // return () => clearTimeout(timer);
     }
 
 
