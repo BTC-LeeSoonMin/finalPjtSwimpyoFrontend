@@ -32,7 +32,7 @@ const info = {
 
 export default function MiniResLogList(props) {
     return (
-        <Link style={linkStyle}>
+        <Link style={linkStyle} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>
             <Grid container sx={{ mt: '1rem', mb: '1rem' }}>
                 <Grid item xs={5} sx={{ display: 'flex', alignItems: 'flex-first' }}>
                     {props.a_acc_name}

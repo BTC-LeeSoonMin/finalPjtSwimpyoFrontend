@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const linkStyle = {
     color: 'black',
@@ -42,9 +45,46 @@ const right = {
     width: '100%'
 }
 
+const today = dayjs();
+
 export default function ResLogDetail() {
     const { u_r_no } = useParams();
-    console.log('u_r_no', u_r_no);
+    
+
+    const [resLog, setResLog] = useState([]);
+    const [use, setUse] = useState('');
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    };
+
+    useEffect(() => {
+        api.get("/api/user/mypage/GetRezDetail",{ params: { "u_r_no": u_r_no } },)
+            .then((response) => {
+               
+                if (response.data != null) {
+                    console.log('resLogDetail', response.data);
+                    setResLog(response.data);
+
+                    if(response.data.u_r_check_in > dayjs(today).format("YYYY-MM-DD")) {
+                        console.log('이용전', response.data.u_r_check_in);
+                        setUse('이용전');
+                    } else if(response.data.u_r_check_in == dayjs(today).format("YYYY-MM-DD")) {
+                        console.log('이용일', response.data.u_r_check_in);
+                        setUse('이용일');
+                    } else if(response.data.u_r_check_in < dayjs(today).format("YYYY-MM-DD")) {
+                        console.log('이용완료', response.data.u_r_check_in);
+                        setUse('이용완료');
+                    }
+                }
+            }).catch((error) => {
+                // 실패
+
+            });
+
+    }, []);
 
     return (
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
@@ -58,36 +98,35 @@ export default function ResLogDetail() {
                         {/* <Link to='/user/accommodation/reviewDetail/' style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link> */}
                     </Typography>
                     <Box sx={{ display: 'flex', width: '100%' }}>
-                        <Typography sx={{ ...left, color: '#C8C8C8' }}>주문번호</Typography>
-                        <Typography sx={{ ...right, color: '#C8C8C8' }}>예약한 날</Typography>
+                        <Typography sx={{ ...left, color: '#34A853', fontWeight: "bold" }}>{use}</Typography>
+                        <Typography sx={{ ...right, color: '#C8C8C8' }}>{dayjs(resLog.u_r_reg_date).format("YYYY-MM-DD")}</Typography>
                     </Box>
-                    <Typography sx={{ ...right, fontWeight: 'bold', color: '#C8C8C8' }}>이용여부</Typography>
                 </Box>
                 <Divider sx={{ width: '100%', mt: '1rem' }} />
                 <Typography component="h1" variant="h6" sx={{ mt: 3, fontWeight: "bold" }}>
                     상품 정보
                 </Typography>
-                {/* <Link style={linkStyle} to={`/user/accommodation/detailAccm/${props.a_acc_no}`}> */}
+                {/* <Link style={linkStyle} to={`/user/accommodation/detailAccm/${resLog.a_acc_no}`}> */}
                 <Link style={linkStyle} to="">
-                    <Grid container>
+                    <Grid container sx={{mt: '1rem'}}>
 
-                        <Grid item xs={4}><img src={temp1} style={img} /></Grid>
+                        <Grid item xs={4}><img src={resLog.a_i_image} style={img} /></Grid>
 
                         <Grid item xs={8}>
                             <Typography sx={{ ...font, fontWeight: 'bold', fontSize: '18px', }}>
-                                숙박업소 이름
+                            {resLog.a_acc_name}
                             </Typography>
                             <Typography sx={{ ...font, fontWeight: 'bold', }}>
-                                룸이름 룸소개글
+                            {resLog.a_r_name} {resLog.a_r_content}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
-                                차량유무 N
+                                차량유무 {resLog.u_r_car_yn}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
-                                체크인 날짜 ~ 체크아웃 날짜 | 숙박/대실
+                            {resLog.u_r_check_in} ~ {resLog.u_r_check_out} | {resLog.a_r_state}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
-                                체크인 시간 | 체크아웃 시간
+                            {resLog.u_r_check_in_time} {resLog.a_r_check_in} | {resLog.u_r_check_out_time} {resLog.a_r_check_out}
                             </Typography>
                         </Grid>
 
@@ -100,11 +139,11 @@ export default function ResLogDetail() {
                 <Box sx={{ ...box }}>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>이름</Typography>
-                        <Typography sx={{ ...right }}>은졀미</Typography>
+                        <Typography sx={{ ...right }}>{resLog.u_m_name}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>연락처</Typography>
-                        <Typography sx={{ ...right }}>010-1234-4567</Typography>
+                        <Typography sx={{ ...right }}>{resLog.u_m_phone}</Typography>
                     </Box>
                 </Box>
                 <Divider sx={{ width: '100%', mt: '1rem' }} />
@@ -114,7 +153,7 @@ export default function ResLogDetail() {
                 <Box sx={{ ...box }}>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>가격</Typography>
-                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>80000원</Typography>
+                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{resLog.a_r_price}원</Typography>
                     </Box>
                 </Box>
                 <Button
@@ -123,7 +162,7 @@ export default function ResLogDetail() {
                     sx={{
                         mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
                         '&:hover': {
-                            backgroundColor: 'skyblue', 
+                            backgroundColor: 'skyblue',
                         }
                     }}
                 >

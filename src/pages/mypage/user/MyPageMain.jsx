@@ -101,7 +101,7 @@ export default function MyPageMain() {
             </Typography>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
 
-            {(resLogList.length != 0) && resLogList.slice(0, 3).map((item) => (<MiniResLogList {...item} />))}
+            {(resLogList.length != 0) && resLogList.slice(0, 4).map((item) => (<MiniResLogList {...item} />))}
             {(resLogList.length == 0) &&
               <Typography sx={{mt: '1rem'}}>
                 예약 정보가 없습니다.

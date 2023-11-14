@@ -1,10 +1,13 @@
 import React from 'react';
-import { Divider, Grid } from "@mui/material";
+import { Box, Divider, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import temp3 from '../../../assets/temp3.png';
 import MuiPaper from '@mui/material/Paper';
 import axios from 'axios';
+import KakaoMapForMain from '../../../components/KakaoMapForMain';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const Item = styled(MuiPaper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,6 +26,9 @@ const linkStyle = {
   };
 
 export default function RegionAccm() {
+  const[region, setRegion] = useState('서울');
+
+  console.log('region', region);
 
     const config = {
         headers: {
@@ -32,20 +38,22 @@ export default function RegionAccm() {
 
     const regionAccm = (e, value) => {
         e.preventDefault();
-        const region = value;
-        console.log('region', region);
-        
-        axios.get("/api/user/accm/mapInfoList", JSON.stringify(region), config,)
-        .then((response) => {
-          console.log('searchAccm', response.data);
-          if(response.data === 'emptyMapInfo') {
-            console.log('실패: emptyMapInfo');
-          } else {
-            console.log('성공');
-          }
-        });
+        setRegion(value);
     
       };
+
+      // useEffect(() => {
+        
+      //   axios.get("/api/user/accm/mapInfoList", JSON.stringify(region), config,)
+      //   .then((response) => {
+      //     console.log('MainMap', response.data);
+      //     if(response.data === 'emptyMapInfo') {
+      //       console.log('실패: emptyMapInfo');
+      //     } else {
+      //       console.log('성공');
+      //     }
+      //   });
+      // },[region])
 
     return(
 
@@ -86,7 +94,9 @@ export default function RegionAccm() {
               <Link onClick={(e) => regionAccm(e, '충청')} style={linkStyle}>
                 충청
               </Link>
-              <img src={temp3} style={{ width: '418px', height: 'auto', margin: '1rem' }} />
+              <Box sx={{width: '100%'}}>
+                <KakaoMapForMain/>
+              </Box>
             </Item>
           </Grid>
 
