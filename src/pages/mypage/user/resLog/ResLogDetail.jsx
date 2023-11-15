@@ -91,10 +91,6 @@ export default function ResLogDetail() {
                     <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
                         예약내역 상세
                     </Typography>
-                    <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                        {/* <Link to={`/user/accommodation/reviewDetail/${a_r_no}`} >상세보기</Link> */}
-                        {/* <Link to='/user/accommodation/reviewDetail/' style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link> */}
-                    </Typography>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left, color: '#34A853', fontWeight: "bold" }}>{use}</Typography>
                         <Typography sx={{ ...right, color: '#C8C8C8' }}>{dayjs(resLog.u_r_reg_date).format("YYYY-MM-DD")}</Typography>
@@ -104,8 +100,7 @@ export default function ResLogDetail() {
                 <Typography component="h1" variant="h6" sx={{ mt: 3, fontWeight: "bold" }}>
                     상품 정보
                 </Typography>
-                {/* <Link style={linkStyle} to={`/user/accommodation/detailAccm/${resLog.a_acc_no}`}> */}
-                <Link style={linkStyle} to="">
+                <Link style={linkStyle} to={`/user/accommodation/detailAccm/${resLog.a_acc_no}`}>
                     <Grid container sx={{mt: '1rem'}}>
 
                         <Grid item xs={4}><img src={resLog.a_i_image} style={img} /></Grid>

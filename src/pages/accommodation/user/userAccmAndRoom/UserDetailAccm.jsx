@@ -326,9 +326,9 @@ const UserDetailAccm = () => {
                             fullWidth
                             variant="contained"
                             sx={{
-                                mt: 3, mb: 2, backgroundColor: 'black', color: 'white',
+                                mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                    backgroundColor: 'skyblue',
                                 }
                             }}
                             onClick={(e) => allReview(e)}
