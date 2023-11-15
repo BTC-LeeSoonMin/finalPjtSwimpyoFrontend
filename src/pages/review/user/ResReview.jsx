@@ -2,10 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import KakaoMapForAccm from "../../../components/KaokaoMapForAccm";
 import api from "../../../hooks/RefreshTokenAuto";
 import markerImage from '../../../imgs/markerImage.png'
-import "../../../css/InfoWindow.css";
 import { Box } from "@mui/system";
-import { Button, List, ListItem, ListItemText, Paper, TextField, Typography } from "@mui/material";
+import { Button, List, ListItem, ListItemText, Paper, Rating, TextField, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useLocation } from "react-router";
 
 
 
@@ -13,6 +13,12 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 const ResReview = () => {
 
 
+    // location으로 예약번호, 이메일, 숙박업소 번호, 방 번호
+    const location = useLocation();
+
+    const u_email = "a@a.com";
+
+    console.log("location", location);
 
     // const [longitude, setLongitude] = useState("");
     // const [latitude, setLatitude] = useState("");
@@ -27,8 +33,14 @@ const ResReview = () => {
     // 마커에 따라 TExtField 생성
     const [markerInfo, setMarkerInfo] = useState([]);
 
-    const [a_r_content, setA_r_content] = useState(''); // 방 리뷰 설명
+    const [r_xy_address, setR_xy_address] = useState("");
+    const [r_xy_comment, setR_xy_comment] = useState("");
+
+    const [r_content, setR_content] = useState(''); // 방 리뷰 설명
     const [r_ri_image, setR_ri_image] = useState([]);
+
+    // 별점
+    const [star, setStar] = useState(4);
 
     const accmNum = {
         a_acc_no: 7
@@ -117,7 +129,7 @@ const ResReview = () => {
             id: markerId,
             latlng: latlng,
             address: '', // 초기 주소는 비어 있거나, geocoder를 사용하여 설정할 수 있음
-            additionalInfo: '' // 사용자 입력을 위한 추가 정보
+            r_xy_comment: '' // 사용자 입력을 위한 추가 정보
         }]);
         // 주소를 가져와서 업데이트
         getAddressFromCoords(latlng, markerId);
@@ -243,8 +255,8 @@ const ResReview = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         switch (name) {
-            case 'a_r_content':
-                setA_r_content(value);
+            case 'r_content':
+                setR_content(value);
                 break;
             // 이미지 핸들링은 별도로 처리해야 합니다.
             default:
@@ -267,15 +279,91 @@ const ResReview = () => {
     };
 
 
-
-    const registReview = async () => {
-
+    const registReview = async (e) => {
+        e.preventDefault(e);
         // console.log("markerInfo.address", markerInfo.address);
+        const data = new FormData();
+
+
+        for (let i = 0; i < r_ri_image.length; i++) {
+            data.append('reviewImages', r_ri_image[i]);
+        }
+
+        // for (let i = 0; i < markerInfo.length; i++) {
+        //     data.append('address', markerInfo[i]);
+        // }
+
+
+        // const markerInfoJson = JSON.stringify(markerInfo);
+        // for (let i = 0; i < markerInfo.length; i++) {
+        //     // 각 객체를 JSON 문자열로 변환
+        //     const itemJson = JSON.stringify(markerInfo[i]);
+
+        //     // JSON 문자열을 Blob 객체로 변환
+        //     const itemBlob = new Blob([itemJson], { type: "application/json" });
+
+        //     // Blob 객체를 FormData에 추가
+        //     // 'address' 대신에 'address_' + i와 같은 고유한 이름을 사용할 수 있습니다.
+        //     data.append('address', itemBlob);
+        // }
+
+        // console.log("address", itemBlob);
+
+        const jsonBlobRes = new Blob([JSON.stringify({
+            u_m_email: u_email,
+            u_r_no: location.state,
+        })], { type: "application/json" });
+        data.append("userReservationDto", jsonBlobRes);
+
+        const jsonBlobReview = new Blob([JSON.stringify({
+            u_m_email: u_email,
+            r_content: r_content,
+        })], { type: "application/json" });
+        data.append("userReviewDto", jsonBlobReview);
+
+
+        // markerInfo 배열에서 각 객체의 'address'를 'r_xy_address'로 변경
+        const modifiedMarkerInfo = markerInfo.map(item => ({
+            ...item,
+            r_xy_address: item.address, // 'address'를 'r_xy_address'로 변경
+            u_m_email: u_email,
+            // 필요한 경우 다른 속성도 여기서 추가/변경할 수 있습니다.
+        }));
+
+        console.log("modifiedMarkerInfo", modifiedMarkerInfo);
+
+        // modifiedMarkerInfo 배열을 JSON 문자열로 변환
+        const markerInfoJson = JSON.stringify(modifiedMarkerInfo);
+
+        // JSON 문자열을 Blob 객체로 변환
+        const markerInfoBlob = new Blob([markerInfoJson], { type: "application/json" });
+
+        // Blob 객체를 FormData에 추가
+        data.append('address', markerInfoBlob);
+
+        // for (let i = 0; i < modifiedMarkerInfo.length; i++) {
+        //     const itemJson = JSON.stringify(modifiedMarkerInfo[i]);
+        //     const itemBlob = new Blob([itemJson], { type: "application/json" });
+        //     data.append('address', itemBlob); // 여기서 'address'는 키 이름입니다. 필요에 따라 변경 가능합니다.
+        // }
+
+
+        for (let [key, value] of data.entries()) {
+            console.log("데이터 확인", key, value);
+        }
+
+        console.log("data", data);
+        console.log("data", data);
 
         try {
-            const response = await api.post('/api/user/review/registConfirm', {
-                markerData: markerInfo
+            console.log("들어가지나");
+            const response = await api.post('/api/user/review/registConfirm',
+                data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
+            alert("등록이 되었습니다");
             console.log('Data sent to backend:', response.data);
         } catch (error) {
             console.error('Error sending data to backend:', error);
@@ -302,81 +390,91 @@ const ResReview = () => {
             <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
                 리뷰 등록
             </Typography>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+
+            <form onSubmit={registReview} name='regist_review_confirm' style={{ width: '100%', marginTop: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
 
 
-                <div id="map" style={{
-                    width: "800px",
-                    height: "400px",
-                    borderRadius: '10px', // 모서리 둥글게
-                    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
-                }}></div>
+                    <div id="map" style={{
+                        width: "800px",
+                        height: "400px",
+                        borderRadius: '10px', // 모서리 둥글게
+                        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
+                    }}></div>
 
-            </div>
-            {markerInfo.length === 0 ? (
-                // markerInfo 배열이 비어있을 때 표시할 메시지
-                <Typography sx={{ mt: 2, mb: 2 }}>
-                    마커를 찍어 여행갔던 장소를 등록해주세요.
-                </Typography>
-            ) : (
+                </div>
+                {markerInfo.length === 0 ? (
+                    // markerInfo 배열이 비어있을 때 표시할 메시지
+                    <Typography sx={{ mt: 2, mb: 2 }}>
+                        마커를 찍어 여행갔던 장소를 등록해주세요.
+                    </Typography>
+                ) : (
 
-                markerInfo.map((info, index) => (
-                    <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2, mb: 2 }}>
-                        <Box sx={{ mb: 1, width: '300px' }}>
-                            <span style={{ fontSize: '13px' }}> <span style={{ fontWeight: 'Bold' }}>주소: </span> {info.address || '주소를 설정하세요'}</span>
+                    markerInfo.map((info, index) => (
+                        <Box key={index} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2, mb: 2 }}>
+                            <Box sx={{ mb: 1, width: '300px' }}>
+                                <span style={{ fontSize: '13px' }}> <span style={{ fontWeight: 'Bold' }}>주소: </span> {info.address || '주소를 설정하세요'}</span>
+                            </Box>
+                            <TextField
+                                label="장소 이름"
+                                variant="outlined"
+                                fullWidth
+                                value={info.r_xy_comment}
+                                onChange={(e) => updateMarkerInfo(index, { r_xy_comment: e.target.value })}
+                            />
                         </Box>
-                        <TextField
-                            label="장소 이름"
-                            variant="outlined"
-                            fullWidth
-                            value={info.additionalInfo}
-                            onChange={(e) => updateMarkerInfo(index, { additionalInfo: e.target.value })}
-                        />
-                    </Box>
-                ))
-            )}
+                    ))
+                )}
 
 
-            <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
-            <label htmlFor="fileInput">
-                <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
-                    이미지 업로드
-                </Button>
-            </label>
-            {/* <p style={{ color: imageError ? 'red' : 'transparent' }} ref={errorMessageRef}>
+                <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
+                <label htmlFor="fileInput">
+                    <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                        이미지 업로드
+                    </Button>
+                </label>
+                {/* <p style={{ color: imageError ? 'red' : 'transparent' }} ref={errorMessageRef}>
                 {imageError ? "이미지를 업로드해주세요." : ""}
             </p> */}
-            <List>
-                {selectedFileNames.map((fileName, index) => (
-                    <ListItem key={fileName.key}>
-                        <ListItemText primary={fileName.props.children.props.primary} />
-                        <img src={selectedFileURLs[index]} alt={fileName.props.children.props.primary} style={{ width: '50px', height: '50px', marginLeft: '10px' }} /> {/* 이미지 미리보기 추가 */}
-                        <Button onClick={() => handleRemoveImage(fileName.key)} style={{ marginLeft: '10px' }}>X</Button>
-                    </ListItem>
-                ))}
-            </List>
+                <List>
+                    {selectedFileNames.map((fileName, index) => (
+                        <ListItem key={fileName.key}>
+                            <ListItemText primary={fileName.props.children.props.primary} />
+                            <img src={selectedFileURLs[index]} alt={fileName.props.children.props.primary} style={{ width: '50px', height: '50px', marginLeft: '10px' }} /> {/* 이미지 미리보기 추가 */}
+                            <Button onClick={() => handleRemoveImage(fileName.key)} style={{ marginLeft: '10px' }}>X</Button>
+                        </ListItem>
+                    ))}
+                </List>
+
+                <Rating name="read-only" value={star} readOnly size="small" />
+
+                <TextField
+                    variant="outlined"
+                    name="r_content"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="outlined-multiline-static"
+                    label="리뷰 적기"
+                    multiline
+                    value={r_content}
+                    onChange={handleChange}
+                    rows={5} // 기본적으로 보여줄 행의 수
+                />
 
 
-            <TextField
-                variant="outlined"
-                name="a_r_content"
-                margin="normal"
-                required
-                fullWidth
-                id="outlined-multiline-static"
-                label="리뷰 적기"
-                multiline
-                value={a_r_content}
-                onChange={handleChange}
-                rows={5} // 기본적으로 보여줄 행의 수
-            />
-
-
-
-            <Button variant="contained" color="primary" onClick={registReview}>
-                제출하기
-            </Button>
-        </Paper>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 3, mb: 2, mr: 2 }}
+                // disabled={!setSelectedFileNames[0]}
+                >
+                    등록
+                </Button>
+            </form>
+        </Paper >
 
     );
 }

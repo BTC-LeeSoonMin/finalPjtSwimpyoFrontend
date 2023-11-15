@@ -40,10 +40,11 @@ function Main() {
     navigate(`/user/accommodation/detailAccm/${testNo}`);
   }
 
-  const arNo = 1;
+  const arNo = 9;
+  const urNo = 25;
 
   const testReview = () => {
-    navigate(`/user/review/regist/${testNo}/${arNo}`);
+    navigate(`/user/review/regist/${testNo}/${arNo}`, { state: urNo });
   }
 
   return (
