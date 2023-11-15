@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, Button, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import accmImg from '../../../../assets/temp.jpg';
 import api from '../../../../hooks/RefreshTokenAuto';
 import ResLogFilter from './ResLogFilter';
@@ -37,6 +37,13 @@ const info = {
 }
 
 function ResLogList(props) {
+    const navigate = useNavigate();
+
+    const resReview = (e) => {
+        e.preventDefault();
+        navigate(`/user/review/regist/${props.a_acc_no}/${props.a_r_no}/${props.u_r_no}/${props.u_m_email}`);
+    
+      };
 
     return (
         <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
@@ -69,7 +76,8 @@ function ResLogList(props) {
                 <Grid item xs={3}>
                     <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
-                        <Button variant="contained" sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px', 
+                        <Button variant="contained" onClick={(e) => resReview(e)}
+                        sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px', 
                         '&:hover': { backgroundColor: 'skyblue' } }}>리뷰작성</Button>
                     </Link>
                 </Grid>
