@@ -85,7 +85,7 @@ const UserRoomList = ({ accomNum, requestData, accmName }) => {
         }}>
             <Grid container spacing={0} >
                 {backEndData.roomData.map((room) => {
-                    // 해당 객실에 대응하는 이미지 객체를 찾습니다.
+                    // 해당 객실에 대응하는 이미지 객체를 찾음
                     const imageObj = backEndData.roomImages.find((image, index) => image.a_r_no === room.a_r_no);
                     // 이미지 객체가 존재하지 않는 경우 기본 이미지 경로를 사용합니다.
                     const imageUrl = imageObj ? imageObj.r_i_image : 'defaultImagePath'; // 'defaultImagePath'를 기본 이미지 경로로 교체하세요.

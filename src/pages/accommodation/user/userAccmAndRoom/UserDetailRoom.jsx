@@ -59,6 +59,16 @@ const UserDetailRoom = () => {
         endDate: new Date(),
     });
 
+
+    // 백엔드에서 date타입으로 필요로 하기에 바꿔주는 작업 시작
+    const convertDateToISO = (dateString) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
+    }
+    // 백엔드에서 date타입으로 필요로 하기에 바꿔주는 작업 끝
+
+    const [effectChange, setEffectChange] = useState(false);
+
     const nightsCount = differenceInCalendarDays(dates.endDate, dates.startDate);
 
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -66,6 +76,9 @@ const UserDetailRoom = () => {
 
     const roomNum = useParams();
     const navigate = useNavigate();
+
+
+    const [reservationStatus, setReservationStatus] = useState("");
 
 
     // 수정과 삭제 버튼 클릭 시 모달 창 열기 위한 state
@@ -122,6 +135,8 @@ const UserDetailRoom = () => {
         console.log("sendToResData", sendToResData);
     }
 
+    console.log("effectChange", effectChange);
+
     useEffect(() => {
         if (dates.startDate && dates.endDate) {
             calendarDataChange(dates);
@@ -170,6 +185,7 @@ const UserDetailRoom = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log("sendToResData!!!", sendToResData);
             try {
                 const res = await api.post(`http://localhost:8090/api/user/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
                 //  res -> 서버에서 받아온 데이터
@@ -195,6 +211,75 @@ const UserDetailRoom = () => {
 
         fetchData(); // 비동기 함수 호출
     }, [roomNum]);
+
+
+
+    const fetchDataFromBack = async () => {
+
+        // if (effectChange == true) {
+        try {
+            const toBackStartDate = convertDateToISO(sendToResData.resDates.startDate);
+            const toBackEndDate = convertDateToISO(sendToResData.resDates.endDate);
+            console.log("toBackStartDate", toBackStartDate);
+            console.log("toBackEndDate", toBackEndDate);
+
+
+            // 숙박일 경우 => Y, 대실일 경우 => N 데이터 바꾸기
+            const u_r_stay_yn = sendToResData.backEndData.a_r_state == '숙박' ? 'Y' : 'N';
+            // 숙박일 경우 => Y, 대실일 경우 => N 데이터 바꾸기
+            const data = new FormData();
+
+            console.log("sendToResData!!!!", sendToResData);
+
+
+            const jsonBlob = new Blob([JSON.stringify({
+                // u_m_email: dataForPayment.u_m_email,
+                // u_r_name: dataForPayment.u_r_name,
+                // u_r_phone: dataForPayment.u_r_phone,
+                a_r_no: sendToResData.backEndData.a_r_no,
+                u_r_check_in: toBackStartDate,
+                u_r_check_out: toBackEndDate,
+                u_r_stay_yn: u_r_stay_yn,
+                // u_r_car_yn: u_r_car_yn,
+                // a_r_price: a_r_price,
+                // a_acc_name: location.state.accmName.state,
+                // a_r_name: location.state.backEndData.a_r_name,
+                // a_r_check_in: location.state.backEndData.a_r_check_in,
+                // a_r_check_out: location.state.backEndData.a_r_check_out,
+                a_acc_no: sendToResData.backEndData.a_acc_no,
+                // a_acc_name: location.state.accmName.state
+            })], { type: "application/json" });
+            data.append("reservationDto", jsonBlob);
+
+
+            const res = await api.post(`http://localhost:8090/api/user/reservation/ready`, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            //  res -> 서버에서 받아온 데이터
+            console.log("detail data success");
+            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+            // setReservationStatus(res.data.status);
+            if (res.data.status == "fail") {
+                // alert("이미 마감된 숙소입니다");
+                setReservationStatus("예약마감");
+            } else {
+                setReservationStatus("예약가능");
+            }
+
+        } catch (error) {
+            // setDataLoaded(true);
+            console.error("An error occurred:", error);
+        }
+        // };
+    }
+
+
+
+    useEffect(() => {
+        fetchDataFromBack(); // 비동기 함수 호출
+    }, [sendToResData, dates.endDate]);
 
 
     console.log("roomNum", roomNum);
@@ -295,17 +380,18 @@ const UserDetailRoom = () => {
                                     type="button"
                                     variant="contained"
                                     color="primary"
+                                    disabled={reservationStatus === "예약마감"} // 예약마감일 경우 버튼을 비활성화합니다.
                                     sx={{
-                                        mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: "black",
-                                        borderColor: 'white', // 버튼의 테두리 색상도 검정색으로 설정합니다.
+                                        mt: 3, mb: 2, mr: 2, width: 'auto',
+                                        backgroundColor: reservationStatus === "예약마감" ? 'grey' : "black", // 예약마감일 경우 회색, 아니면 검정색
+                                        borderColor: 'white',
                                         '&:hover': {
-                                            backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                            backgroundColor: reservationStatus === "예약마감" ? 'grey' : 'rgba(0, 0, 0, 0.6)',
                                         },
                                     }}
-
                                     onClick={() => handleMoveToReservation(backEndData.roomData.a_r_no)}
                                 >
-                                    객실 예약하기
+                                    {reservationStatus === "예약마감" ? "예약마감" : "예약하기"}
                                 </Button>
                             </Box>
                         </Grid>
@@ -344,10 +430,12 @@ const UserDetailRoom = () => {
                         <Button
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' ,
-                            '&:hover': {
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
-                            }}} 
+                            sx={{
+                                mt: 3, mb: 2, backgroundColor: 'black', color: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                }
+                            }}
                             onClick={(e) => allReview(e)}
                         >
                             후기 전체보기
