@@ -34,7 +34,7 @@ const KakaoMapForMain = ({ longitude, latitude }) => {
 
     return (
         <div>
-            <div id="map" style={{ width: "418px", height: "366px", margin: '20px' }}></div>
+            <div id="map" style={{ width: "418px", height: "374px", margin: '20px' }}></div>
         </div>
     );
 }
