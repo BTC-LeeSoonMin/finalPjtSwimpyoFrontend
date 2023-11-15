@@ -5,7 +5,7 @@ import markerImage from '../../../imgs/markerImage.png'
 import { Box } from "@mui/system";
 import { Button, List, ListItem, ListItemText, Paper, Rating, TextField, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useLocation } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 
 
 
@@ -14,11 +14,16 @@ const ResReview = () => {
 
 
     // location으로 예약번호, 이메일, 숙박업소 번호, 방 번호
-    const location = useLocation();
+    const params = useParams();
+    const navigate = useNavigate();
 
-    const u_email = "user1@gmail.com";
+    console.log("params", params);
 
-    console.log("location", location);
+    const u_m_email = params.u_m_email;
+    const a_acc_no = params.a_acc_no;
+    const a_r_no = params.a_r_no;
+    const u_r_no = params.u_r_no;
+
 
     // const [longitude, setLongitude] = useState("");
     // const [latitude, setLatitude] = useState("");
@@ -290,38 +295,19 @@ const ResReview = () => {
             data.append('reviewImages', r_ri_image[i]);
         }
 
-        // for (let i = 0; i < markerInfo.length; i++) {
-        //     data.append('address', markerInfo[i]);
-        // }
-
-
-        // const markerInfoJson = JSON.stringify(markerInfo);
-        // for (let i = 0; i < markerInfo.length; i++) {
-        //     // 각 객체를 JSON 문자열로 변환
-        //     const itemJson = JSON.stringify(markerInfo[i]);
-
-        //     // JSON 문자열을 Blob 객체로 변환
-        //     const itemBlob = new Blob([itemJson], { type: "application/json" });
-
-        //     // Blob 객체를 FormData에 추가
-        //     // 'address' 대신에 'address_' + i와 같은 고유한 이름을 사용할 수 있습니다.
-        //     data.append('address', itemBlob);
-        // }
-
-        // console.log("address", itemBlob);
 
         const jsonBlobRes = new Blob([JSON.stringify({
-            a_r_no: 1,
-            a_acc_no: backEndData.accmData.a_acc_no,
-            u_m_email: u_email,
-            u_r_no: 26,
+            a_r_no: a_r_no,
+            a_acc_no: a_acc_no,
+            u_m_email: u_m_email,
+            u_r_no: u_r_no,
         })], { type: "application/json" });
         data.append("userReservationDto", jsonBlobRes);
 
         const jsonBlobReview = new Blob([JSON.stringify({
-            a_r_no: 1,
-            a_acc_no: backEndData.accmData.a_acc_no,
-            u_m_email: u_email,
+            a_r_no: a_r_no,
+            a_acc_no: a_acc_no,
+            u_m_email: u_m_email,
             r_content: r_content,
         })], { type: "application/json" });
         data.append("userReviewDto", jsonBlobReview);
@@ -331,8 +317,8 @@ const ResReview = () => {
         const modifiedMarkerInfo = markerInfo.map(item => ({
             ...item,
             r_xy_address: item.address, // 'address'를 'r_xy_address'로 변경
-            u_m_email: u_email,
-            a_r_no: 1
+            u_m_email: u_m_email,
+            a_r_no: a_r_no
             // 필요한 경우 다른 속성도 여기서 추가/변경할 수 있습니다.
         }));
 
@@ -369,7 +355,13 @@ const ResReview = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            alert("등록이 되었습니다");
+            if (response.data == "success") {
+                alert("등록이 되었습니다");
+                navigate(`/`);
+            } else if (response.data == "fail") {
+                alert("등록에 실패하였습니다");
+            }
+
             console.log('Data sent to backend:', response.data);
         } catch (error) {
             console.error('Error sending data to backend:', error);

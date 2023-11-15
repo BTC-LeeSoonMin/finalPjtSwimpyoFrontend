@@ -180,11 +180,11 @@ function App() {
                         element={<div > <PayResult /></div>}>
                     </Route> */}
                     <Route
-                        path="/user/review/regist/:a_acc_no/:a_r_no"
+                        path="/user/review/regist/:a_acc_no/:a_r_no/:u_r_no/:u_m_email"
                         element={<div > <ResReview /></div>}>
                     </Route>
                     <Route
-                        path="/user/review/detail"
+                        path="/user/review/detail/:u_m_email/:r_no"
                         element={<div > <DetailReview /></div>}>
                     </Route>
 
