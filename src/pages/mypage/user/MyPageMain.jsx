@@ -39,21 +39,12 @@ export default function MyPageMain() {
   const [userEmail, setUserEmail] = useState('');
   const [userNickName, setUserNickName] = useState('');
   const [resLogList, setResLogList] = useState([]);
-  console.log('userName', userName);
-  console.log('userEmail', userEmail);
-  console.log('userNickName', userNickName);
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    }
-  };
+  const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
 
     api.post("/api/user/member/userInfo",)
       .then((response) => {
-        console.log('userInfo', response.data);
         if (response.data != null) {
           setUserName(response.data.u_m_name);
           setUserEmail(response.data.u_m_email);
@@ -62,10 +53,16 @@ export default function MyPageMain() {
       });
 
     api.get("/api/user/mypage/GetRezList", { params: { "period": '24' } })
-      .then((response) => {
-        console.log('GetRezList', response.data);
+      .then((response) => {;
         if (response.data != null) {
           setResLogList(response.data);
+        }
+      });
+
+    api.post("/api/user/mypage/getReviewList",)
+      .then((response) => {
+        if (response.data != null) {
+          setReviewList(response.data);
         }
       });
 
@@ -103,7 +100,7 @@ export default function MyPageMain() {
 
             {(resLogList.length != 0) && resLogList.slice(0, 4).map((item) => (<MiniResLogList {...item} />))}
             {(resLogList.length == 0) &&
-              <Typography sx={{mt: '1rem'}}>
+              <Typography sx={{ mt: '1rem' }}>
                 예약 정보가 없습니다.
               </Typography>}
           </Box>
@@ -114,10 +111,11 @@ export default function MyPageMain() {
               리뷰
             </Typography>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
-            <MiniReviewList />
-            <MiniReviewList />
-            <MiniReviewList />
-            <MiniReviewList />
+            {(reviewList.length != 0) && reviewList.slice(0, 4).map((item) => (<MiniReviewList {...item} />))}
+            {(reviewList.length == 0) &&
+              <Typography sx={{ mt: '1rem' }}>
+                예약 정보가 없습니다.
+              </Typography>}
           </Box>
         </Grid>
 

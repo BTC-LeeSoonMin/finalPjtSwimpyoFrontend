@@ -6,42 +6,18 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-const titleFont = {
-    fontSize: '20px',
-    fontWeight: 'bold',
-};
-
-const list = {
-    bgcolor: 'background.paper',
-    height: '20rem',
-    textAlign: 'center',
-    mt: '2rem',
-    padding: '1rem',
-};
-
-const info = {
-    fontWeight: 'normal',
-    textDecoration: 'none',
-    fontSize: '16px',
-    fontWeight: 'normal',
-    display: 'flex',
-    flexDirection: 'column',
-    // alignItems: 'flex-end',
-    color: 'black'
-}
-
-export default function MiniReviewList() {
+export default function MiniReviewList(props) {
     return (
-        <Link style={linkStyle}>
+        <Link style={linkStyle} to={`/user/review/detail/${props.r_no}`}>
             <Grid container sx={{ mt: '1rem', mb: '1rem' }}>
                 <Grid item xs={5} sx={{ display: 'flex', alignItems: 'flex-first' }}>
-                    숙박업소 이름
+                {props.a_acc_name}
                 </Grid>
                 <Grid item xs={4} sx={{ display: 'flex', alignItems: 'flex-first' }}>
-                    룸 이름
+                {props.a_r_name}
                 </Grid>
                 <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                    작성 날짜
+                {props.r_reg_date}
                 </Grid>
             </Grid>
             <Divider sx={{ width: '100%', mt: '1rem' }} />

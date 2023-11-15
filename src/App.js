@@ -24,7 +24,6 @@ import Modify from './pages/member/user/Modify';
 import RegistRoom from './pages/accommodation/admin/RegistRoom';
 import ChangePw from './pages/member/user/ChangePw';
 import MyPage from './pages/mypage/user/MyPage';
-import ResLogDetail from './pages/mypage/user/ResLogDetail';
 import AdminDetailRoom from './pages/accommodation/admin/AdminDetailRoom';
 import ModifyRoom from './pages/accommodation/admin/ModifyRoom';
 import SearchAccm from './pages/accommodation/user/searchAccm/SearchAccm';
@@ -38,6 +37,7 @@ import AccmReviewList from './pages/review/user/reviewList/AccmReviewList';
 import AccmReview from './pages/review/user/reviewList/AccmReview';
 import RoomReview from './pages/review/user/reviewList/RoomReview';
 import ResReview from './pages/review/user/ResReview';
+import ResLogDetail from './pages/mypage/user/resLog/ResLogDetail';
 
 
 function App() {
@@ -91,7 +91,7 @@ function App() {
                     ></Route>
                     <Route
                         path="/user/myPage/resLogDetail/:u_r_no"
-                        element={<ResLogDetail />}
+                        element={<ResLogDetail/>}
                     ></Route>
                     <Route
                         path="/user/searchAccm"

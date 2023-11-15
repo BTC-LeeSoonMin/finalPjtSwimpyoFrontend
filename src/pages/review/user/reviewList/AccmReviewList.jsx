@@ -27,7 +27,7 @@ const img = {
     marginRight: '10px', // 이미지 간 간격 설정
 };
 
-export default function AccmReviewList() {
+export default function AccmReviewList(props) {
     const [hidden, setHidden] = useState(true);
 
     console.log('hidden', hidden);
@@ -45,8 +45,8 @@ export default function AccmReviewList() {
             mt: '1rem',
         }}>
             <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                {/* <Link to={`/user/accommodation/reviewDetail/${a_r_no}`} >상세보기</Link> */}
-                <Link to='/user/accommodation/reviewDetail/' style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link>
+                {/* <Link to={`/user/accommodation/reviewDetail/${r_no}`} >상세보기</Link> */}
+                <Link to={`/user/review/detail/${props.r_no}`} style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link>
             </Typography>
             <Box sx={{ display: 'flex', width: '100%' }}>
                 <Typography
@@ -58,7 +58,7 @@ export default function AccmReviewList() {
                         justifyContent: 'flex-first',
                         width: '100%'
                     }}
-                >진범냐</Typography>
+                >{props.u_m_nickname}</Typography>
                 <Typography
                     noWrap
                     component="div"
@@ -68,7 +68,7 @@ export default function AccmReviewList() {
                         justifyContent: 'flex-end',
                         width: '100%'
                     }}
-                >2023-11-14</Typography>
+                >{props.r_reg_date}</Typography>
             </Box>
             <Typography
                 noWrap
@@ -81,14 +81,14 @@ export default function AccmReviewList() {
                     width: '100%', 
                     mb: '1rem',
                 }}
-            >디럭스</Typography>
+            >{props.a_r_name}</Typography>
             
             {hidden &&
                 <Typography
                     noWrap
                     component="div"
                     sx={{ ...textHidden }}
-                >리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용</Typography>
+                >{props.r_content}</Typography>
             } <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                 {hidden && <Link onClick={(e) => moreClick(e)} style={{color: 'black'}}>더보기</Link>}</Typography>
             {!hidden &&
@@ -97,12 +97,9 @@ export default function AccmReviewList() {
                     sx={{
                         width: '100%'
                     }}
-                >더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기</Typography>}
+                >{props.r_content}</Typography>}
                 <Box sx={{...imgSlide}}>
-                <img src={temp1} style={img} />
-                <img src={temp2} style={img} />
-                <img src={temp1} style={img} />
-                <img src={temp2} style={img} />
+                <img src={props.r_ri_image} style={img} />
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
         </Box>

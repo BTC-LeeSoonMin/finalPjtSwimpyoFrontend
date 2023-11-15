@@ -6,30 +6,6 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-const titleFont = {
-    fontSize: '20px',
-    fontWeight: 'bold',
-};
-
-const list = {
-    bgcolor: 'background.paper',
-    height: '20rem',
-    textAlign: 'center',
-    mt: '2rem',
-    padding: '1rem',
-};
-
-const info = {
-    fontWeight: 'normal',
-    textDecoration: 'none',
-    fontSize: '16px',
-    fontWeight: 'normal',
-    display: 'flex',
-    flexDirection: 'column',
-    // alignItems: 'flex-end',
-    color: 'black'
-}
-
 export default function MiniResLogList(props) {
     return (
         <Link style={linkStyle} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>
