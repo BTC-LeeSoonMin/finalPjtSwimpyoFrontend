@@ -16,7 +16,7 @@ const ResReview = () => {
     // location으로 예약번호, 이메일, 숙박업소 번호, 방 번호
     const location = useLocation();
 
-    const u_email = "a@a.com";
+    const u_email = "user1@gmail.com";
 
     console.log("location", location);
 
@@ -81,7 +81,8 @@ const ResReview = () => {
     }, []);
 
     console.log("accAddress", accAddress);
-
+    console.log("backEndData", backEndData);
+    console.log("왜 안나오지");
 
 
 
@@ -310,12 +311,16 @@ const ResReview = () => {
         // console.log("address", itemBlob);
 
         const jsonBlobRes = new Blob([JSON.stringify({
+            a_r_no: 1,
+            a_acc_no: backEndData.accmData.a_acc_no,
             u_m_email: u_email,
-            u_r_no: location.state,
+            u_r_no: 26,
         })], { type: "application/json" });
         data.append("userReservationDto", jsonBlobRes);
 
         const jsonBlobReview = new Blob([JSON.stringify({
+            a_r_no: 1,
+            a_acc_no: backEndData.accmData.a_acc_no,
             u_m_email: u_email,
             r_content: r_content,
         })], { type: "application/json" });
@@ -327,6 +332,7 @@ const ResReview = () => {
             ...item,
             r_xy_address: item.address, // 'address'를 'r_xy_address'로 변경
             u_m_email: u_email,
+            a_r_no: 1
             // 필요한 경우 다른 속성도 여기서 추가/변경할 수 있습니다.
         }));
 

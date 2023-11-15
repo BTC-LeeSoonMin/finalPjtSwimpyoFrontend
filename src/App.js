@@ -38,6 +38,7 @@ import AccmReviewList from './pages/review/user/reviewList/AccmReviewList';
 import AccmReview from './pages/review/user/reviewList/AccmReview';
 import RoomReview from './pages/review/user/reviewList/RoomReview';
 import ResReview from './pages/review/user/ResReview';
+import DetailReview from './pages/review/user/DetailReview';
 
 
 function App() {
@@ -181,6 +182,10 @@ function App() {
                     <Route
                         path="/user/review/regist/:a_acc_no/:a_r_no"
                         element={<div > <ResReview /></div>}>
+                    </Route>
+                    <Route
+                        path="/user/review/detail"
+                        element={<div > <DetailReview /></div>}>
                     </Route>
 
                 </Routes>
