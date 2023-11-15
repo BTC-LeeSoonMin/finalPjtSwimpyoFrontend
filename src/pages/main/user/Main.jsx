@@ -44,6 +44,11 @@ function Main() {
     navigate(`/user/review/regist/${testNo}/${arNo}`, { state: urNo });
   }
 
+
+  const testReviewDetail = () => {
+    navigate(`/user/review/detail`);
+  }
+
   useEffect(() => {
 
     api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '호텔/리조트' } },)
@@ -73,6 +78,7 @@ function Main() {
       </Box>
       <button onClick={test}>숙소가기테스트</button>
       <button onClick={testReview}>리뷰테스트</button>
+      <button onClick={testReviewDetail}>리뷰상세보기테스트</button>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           <RegionAccm />
