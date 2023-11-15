@@ -16,8 +16,6 @@ function ResLog() {
     const [period, setPeriod ] = useState('6');
     const [resLogList, setResLogList] = useState([]);
 
-    console.log('resLogList', resLogList);
-
     const config = {
         headers: {
           'Content-Type': 'application/json; charset=utf-8'
@@ -26,11 +24,8 @@ function ResLog() {
 
     useEffect(() => {
     
-        console.log('period', period);
-    
         api.get("/api/user/mypage/GetRezList", JSON.stringify(period), config,)
           .then((response) => {
-            console.log('response.data', response.data);
             if(response.data != null) {
                 setResLogList(response.data);
             } 

@@ -40,21 +40,11 @@ export default function MyPageMain() {
   const [userNickName, setUserNickName] = useState('');
   const [resLogList, setResLogList] = useState([]);
   const [reviewList, setReviewList] = useState([]);
-  console.log('userName', userName);
-  console.log('userEmail', userEmail);
-  console.log('userNickName', userNickName);
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8'
-    }
-  };
 
   useEffect(() => {
 
     api.post("/api/user/member/userInfo",)
       .then((response) => {
-        console.log('userInfo', response.data);
         if (response.data != null) {
           setUserName(response.data.u_m_name);
           setUserEmail(response.data.u_m_email);
@@ -63,8 +53,7 @@ export default function MyPageMain() {
       });
 
     api.get("/api/user/mypage/GetRezList", { params: { "period": '24' } })
-      .then((response) => {
-        console.log('GetRezList', response.data);
+      .then((response) => {;
         if (response.data != null) {
           setResLogList(response.data);
         }
@@ -72,7 +61,6 @@ export default function MyPageMain() {
 
     api.post("/api/user/mypage/getReviewList",)
       .then((response) => {
-        console.log('reviewList', response.data);
         if (response.data != null) {
           setReviewList(response.data);
         }

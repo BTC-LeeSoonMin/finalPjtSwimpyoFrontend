@@ -19,7 +19,6 @@ export default function MyReview() {
     useEffect(() => {
         api.post("/api/user/mypage/getReviewList",)
             .then((response) => {
-                console.log('reviewList', response.data);
                 if (response.data != null) {
                     setReviewList(response.data);
                 }
