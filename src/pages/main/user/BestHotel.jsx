@@ -1,11 +1,20 @@
 import React from 'react';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function BestHotel(props) {
+    const navigate = useNavigate();
+
+    const bestAccm = (e) => {
+        e.preventDefault();
+        navigate(`/user/accommodation/detailAccm/${props.a_acc_no}`);
+    
+      };
 
     return (
         <Card sx={{ width: 200, m: '5px' }}>
-            <CardActionArea>
+            <CardActionArea onClick={(e) => bestAccm(e)}>
                 <CardMedia
                     component="img"
                     height="100"
