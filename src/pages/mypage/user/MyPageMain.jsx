@@ -61,7 +61,7 @@ export default function MyPageMain() {
         }
       });
 
-    api.get("/api/user/mypage/GetRezList", JSON.stringify('24'), config,)
+    api.get("/api/user/mypage/GetRezList", { params: { "period": '24' } })
       .then((response) => {
         console.log('GetRezList', response.data);
         if (response.data != null) {

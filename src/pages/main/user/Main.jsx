@@ -15,6 +15,9 @@ import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
 import { useNavigate } from 'react-router-dom';
 import RegionAccm from './RegionAccm';
+import BestHotel from './BestHotel';
+import { useEffect } from 'react';
+import api from '../../../hooks/RefreshTokenAuto';
 
 const Item = styled(MuiPaper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -24,15 +27,9 @@ const Item = styled(MuiPaper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const slide = {
-  display: 'flex',
-  width: '100%',
-  overflowX: 'auto',
-  flexWrap: 'nowrap',
-  mt: '8px',
-};
-
 function Main() {
+  const [bestHotel, setBestHotel] = useState([]);
+  const [bestPension, setBestPension] = useState([]);
 
   const navigate = useNavigate();
   const testNo = 7;
@@ -45,6 +42,25 @@ function Main() {
   const testReview = () => {
     navigate(`/user/review/regist/${testNo}/${arNo}`);
   }
+
+  useEffect(() => {
+
+    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '호텔/리조트' } },)
+      .then((response) => {
+        console.log('bestHotel', response.data);
+        if (response.data != null) {
+          setBestHotel(response.data);
+        }
+      });
+
+    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '모텔' } },)
+      .then((response) => {
+        console.log('bestPension', response.data);
+        if (response.data != null) {
+          setBestPension(response.data);
+        }
+      });
+  }, [])
 
   return (
     <Container component="main">
@@ -69,25 +85,8 @@ function Main() {
                   <Divider variant="middle" />
                 </Grid>
               </Grid>
-              <Box sx={{ ...slide }}>
-                <Card sx={{ maxWidth: 200, mt: '6px' }}>
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height="100"
-                      image={temp1}
-                      alt="green iguana"
-                    />
-                    <CardContent>
-                      <Typography gutterBottom component="div">
-                        호텔 이름
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        평점
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+              <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap', width: '100%', }}>
+                {bestHotel.slice(0, 3).map((item) => (<BestHotel {...item} />))}
               </Box>
 
             </Item>
@@ -100,24 +99,9 @@ function Main() {
                   <Divider variant="middle" />
                 </Grid>
               </Grid>
-              <Card sx={{ maxWidth: 200, mt: '6px' }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="100"
-                    image={temp1}
-                    alt="green iguana"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom component="div">
-                      펜션 이름
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      평점
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap', width: '100%', }}>
+                {bestPension.slice(0, 3).map((item) => (<BestHotel {...item} />))}
+              </Box>
             </Item>
           </Grid>
         </Grid>
