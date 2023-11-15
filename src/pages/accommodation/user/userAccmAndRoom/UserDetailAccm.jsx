@@ -325,10 +325,12 @@ const UserDetailAccm = () => {
                         <Button
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' ,
-                            '&:hover': {
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
-                            }}} 
+                            sx={{
+                                mt: 3, mb: 2, backgroundColor: 'black', color: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                }
+                            }}
                             onClick={(e) => allReview(e)}
                         >
                             후기 전체보기
