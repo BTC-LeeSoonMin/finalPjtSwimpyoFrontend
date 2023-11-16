@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, Container, Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import accmImg from '../../../../assets/temp.jpg';
-import Rating from '@mui/material/Rating';
-import api from '../../../../hooks/RefreshTokenAuto';
 
 const linkStyle = {
   color: 'black',
@@ -21,11 +18,19 @@ const list = {
 const font = {
   fontSize: '15px',
   fontWeight: 'normal',
+  width: '100%',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis'
 };
 
 const titleFont = {
   fontSize: '16px',
   fontWeight: 'bold',
+  width: '100%',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis'
 };
 
 const info = {
@@ -35,7 +40,6 @@ const info = {
 }
 
 function SearchAccmList(props) {
-  const [star, setStar] = useState(4);
 
   return (
 
@@ -49,18 +53,17 @@ function SearchAccmList(props) {
               </div>
             </Grid>
             <Grid item xs={8}>
-              <Box sx={{ borderRadius: '13px', mr: '1rem' }}>
+              <Box sx={{ borderRadius: '13px', mr: '1rem', mt: '10px' }}>
                 <Typography sx={{ ...titleFont }}>
                   {props.a_acc_name}
                 </Typography>
-                <Rating name="read-only" value={star} readOnly size="small" />
                 <Typography sx={{ ...font }} >
                   {props.a_acc_kind}
                 </Typography>
                 <Typography sx={{ ...font }} >
                   {props.a_acc_address}
                 </Typography>
-                <Typography sx={{ ...info, mt: '10px' }} >
+                <Typography sx={{ ...info, mt: '1rem' }} >
                   {props.a_r_state} {props.a_r_check_in} |  {props.a_r_price}원~
                 </Typography>
               </Box>
