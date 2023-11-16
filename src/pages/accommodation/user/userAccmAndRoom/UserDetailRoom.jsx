@@ -15,6 +15,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CalendarForRes from '../../../../components/CalendarForRes';
 import { useSelector } from 'react-redux';
 import { differenceInCalendarDays } from 'date-fns';
+import dayjs from 'dayjs';
 
 const UserDetailRoom = () => {
 
@@ -218,8 +219,10 @@ const UserDetailRoom = () => {
 
         // if (effectChange == true) {
         try {
-            const toBackStartDate = convertDateToISO(sendToResData.resDates.startDate);
-            const toBackEndDate = convertDateToISO(sendToResData.resDates.endDate);
+            // const toBackStartDate = convertDateToISO(sendToResData.resDates.startDate);
+            // const toBackEndDate = convertDateToISO(sendToResData.resDates.endDate);
+            const toBackStartDate = dayjs(sendToResData.resDates.startDate).format("YYYY-MM-DD");
+            const toBackEndDate = dayjs(sendToResData.resDates.endDate).format("YYYY-MM-DD");
             console.log("toBackStartDate", toBackStartDate);
             console.log("toBackEndDate", toBackEndDate);
 
@@ -233,21 +236,14 @@ const UserDetailRoom = () => {
 
 
             const jsonBlob = new Blob([JSON.stringify({
-                // u_m_email: dataForPayment.u_m_email,
-                // u_r_name: dataForPayment.u_r_name,
-                // u_r_phone: dataForPayment.u_r_phone,
+
                 a_r_no: sendToResData.backEndData.a_r_no,
                 u_r_check_in: toBackStartDate,
                 u_r_check_out: toBackEndDate,
                 u_r_stay_yn: u_r_stay_yn,
-                // u_r_car_yn: u_r_car_yn,
-                // a_r_price: a_r_price,
-                // a_acc_name: location.state.accmName.state,
-                // a_r_name: location.state.backEndData.a_r_name,
-                // a_r_check_in: location.state.backEndData.a_r_check_in,
-                // a_r_check_out: location.state.backEndData.a_r_check_out,
+
                 a_acc_no: sendToResData.backEndData.a_acc_no,
-                // a_acc_name: location.state.accmName.state
+
             })], { type: "application/json" });
             data.append("reservationDto", jsonBlob);
 
@@ -259,8 +255,7 @@ const UserDetailRoom = () => {
             });
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
-            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-            // setReservationStatus(res.data.status);
+
             if (res.data.status == "fail") {
                 // alert("이미 마감된 숙소입니다");
                 setReservationStatus("예약마감");
@@ -269,7 +264,6 @@ const UserDetailRoom = () => {
             }
 
         } catch (error) {
-            // setDataLoaded(true);
             console.error("An error occurred:", error);
         }
         // };
@@ -295,13 +289,12 @@ const UserDetailRoom = () => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // This ensures that the Box takes the full viewport height
+                minHeight="100vh"
                 sx={{
-                    backgroundColor: 'background.default', // Use theme background color
-                    color: 'text.primary', // Use theme text color
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
                 }}
             >
-                {/* You can include a CircularProgress component to indicate loading status */}
                 <CircularProgress color="inherit" />
                 <Typography variant="h3" component="h1">
                     Loading...
@@ -404,7 +397,7 @@ const UserDetailRoom = () => {
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
-                    {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
+
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         업소 정보
 
@@ -433,7 +426,7 @@ const UserDetailRoom = () => {
                             sx={{
                                 mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: 'skyblue', 
+                                    backgroundColor: 'skyblue',
                                 }
                             }}
                             onClick={(e) => allReview(e)}

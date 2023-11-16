@@ -13,9 +13,6 @@ const ModifyAccm = () => {
     const { a_m_no } = useParams();
 
 
-    // 다시 넘어온 json data받기 위한 state
-    // const [formData, setFormData] = useState([]);
-
     const [formData, setFormData] = useState({
         a_i_no: [], // 이미지 고유 번호 받기 위함(어느 이미지 제거했는지 알기 위해)
         a_acc_no: '',
@@ -41,7 +38,7 @@ const ModifyAccm = () => {
     });
 
     // 기존에 백엔드에서 받아온 이미지와 새로 업로드된 이미지를 분리해서 관리해야 합니다. 
-    // 현재 selectedFileNames와 selectedFileURLs 배열에는 새로 업로드된 파일의 이름과 URL만 저장되므로, 기존 이미지에 대한 정보를 포함하지 않습니다
+    // 현재 selectedFileNames와 selectedFileURLs 배열에는 새로 업로드된 파일의 이름과 URL만 저장되므로, 기존 이미지에 대한 정보를 포함하지 않는다
     const [newImages, setNewImages] = useState([]);
 
     // 파일 업로드를 위한 상태
@@ -131,11 +128,6 @@ const ModifyAccm = () => {
 
     console.log("selectedFileURLs", selectedFileURLs);
     console.log("selectedFileNames", selectedFileNames);
-    // console.log("formData.a_i_no", formData.a_i_no);
-
-    // console.log("formData.a_i_image", formData.a_i_image);
-    // console.log("selectedFileURLs", selectedFileURLs);
-    // console.log("selectedFileNames", selectedFileNames);
 
 
     // 이미지 파일 업로드 버튼 누른 후 실행
@@ -170,13 +162,7 @@ const ModifyAccm = () => {
 
     const handleRemoveImage = (keyToRemove) => {
         // 선택된 이미지를 제거합니다.
-        // const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        // const updatedImages = formData.a_i_image.filter((_, index) => index !== indexToRemove);
-        // setFormData(prevState => ({
-        //     ...prevState,
-        //     a_i_image: updatedImages
-        // }));
 
         // 수정한 코드
         // 선택된 이미지를 제거합니다.
@@ -253,18 +239,11 @@ const ModifyAccm = () => {
         for (const key in formData) {
             if (key === "a_i_image") {
                 formData[key].forEach((file) => {
-                    //     data.append("a_i_image", file);
-                    // });
-                    // if (file instanceof File) {
+
                     data.append("a_i_image", file);
-                    // }
+
                 });
-                // selectedFileURLs.forEach((url) => {
-                //     // URL 형태인 경우에만 'a_i_image_existing'로 추가합니다.
-                //     if (typeof url === 'string' && !url.startsWith("blob:")) {
-                //         data.append("a_i_image", url);
-                //     }
-                // });
+
             } else if (key === "a_acc_address") { // a_acc_address 객체를 처리하는 부분
                 data.append("a_acc_address", formData[key].combinedAddress);
             }
@@ -273,17 +252,10 @@ const ModifyAccm = () => {
             }
         }
 
-        // if (deleteImage.length > 0) {
-        //     // data.append("a_i_image[]", JSON.stringify(deleteImage));
-        //     for (let i = 0; i < deleteImage.length; i++) {
-        //         const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
-        //         data.append("deleteImg", deleteImageBlob);
-        //     }
-        // }
+
         if (deleteImage.length > 0) {
             data.append("deleteImg", deleteImage);
-            // const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
-            // data.append("deleteImg", deleteImageBlob);
+
         }
         console.log("deleteImg", data.deleteImageBlob);
 

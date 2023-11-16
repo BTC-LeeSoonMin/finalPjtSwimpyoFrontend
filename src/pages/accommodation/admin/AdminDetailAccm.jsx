@@ -35,8 +35,7 @@ const AdminDetailAccm = () => {
 
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    // const [accmData, setAccmData] = useState({}); // 백엔드에서 넘어온 데이터 넣는곳
-    // const [images, setImages] = useState([]);
+
     const [backEndData, setBackEndData] = useState({
         accmData: {},
         accmImages: []
@@ -100,13 +99,6 @@ const AdminDetailAccm = () => {
     };
 
 
-
-    // console.log("accmData", accmData);
-
-
-
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -121,9 +113,7 @@ const AdminDetailAccm = () => {
                     accmImages: res.data.a_i_images
                 });
                 setDataLoaded(true);
-                // setImages(res.data.a_i_images);
-                // const imageUrls = images.a_i_images;
-                // setImages(imageUrls);
+
 
 
             } catch (error) {
@@ -136,20 +126,6 @@ const AdminDetailAccm = () => {
     }, [requestData]);
 
 
-    // console.log("accmData", accmData);
-    // console.log("image", images);
-
-    // useEffect(() => {
-    //     if (Array.isArray(images)) {
-    // console.log(images)
-    // // const imageUrls = images.map(item => item.imageUrl);
-    // const imageUrls = res.data.a_i_images
-    // setImages(imageUrls);
-    //     } else {
-    //         console.error("images 상태가 배열 형식이 아닙니다:", images);
-    //     }
-    // }, [images]);
-
     if (!dataLoaded) {
 
         return (
@@ -157,13 +133,12 @@ const AdminDetailAccm = () => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // This ensures that the Box takes the full viewport height
+                minHeight="100vh"
                 sx={{
-                    backgroundColor: 'background.default', // Use theme background color
-                    color: 'text.primary', // Use theme text color
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
                 }}
             >
-                {/* You can include a CircularProgress component to indicate loading status */}
                 <CircularProgress color="inherit" />
                 <Typography variant="h3" component="h1">
                     Loading...
@@ -186,11 +161,10 @@ const AdminDetailAccm = () => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontSize: '10rem', // Adjust size as needed
-                            color: 'rgba(0, 0, 0, 0.8)' // Adjust color as needed
+                            fontSize: '10rem',
+                            color: 'rgba(0, 0, 0, 0.8)'
                         }}
                     >
-                        × {/* This is a multiplication sign, which resembles an X mark. */}
                     </Typography>
                     <Typography component="h2" variant="h6" align="center">
                         현재 등록된 숙박시설이 없습니다. 숙박시설을 등록해주세요.
@@ -200,11 +174,11 @@ const AdminDetailAccm = () => {
                         size="small"
                         sx={{
                             mt: 3,
-                            width: 150, // 버튼의 넓이를 150픽셀로 설정
+                            width: 150,
                             backgroundColor: "black",
-                            borderColor: 'white', // 버튼의 테두리 색상도 검정색으로 설정합니다.
+                            borderColor: 'white',
                             '&:hover': {
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
                             },
                         }}
                         onClick={handleRegistAccm}
@@ -302,7 +276,7 @@ const AdminDetailAccm = () => {
                     </Item>
 
                     <Item sx={{ marginTop: '1rem' }}>
-                        {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
+
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                             업소 정보
                         </Grid>

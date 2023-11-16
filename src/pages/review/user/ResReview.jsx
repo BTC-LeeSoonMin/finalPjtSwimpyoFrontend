@@ -24,10 +24,6 @@ const ResReview = () => {
     const a_r_no = params.a_r_no;
     const u_r_no = params.u_r_no;
 
-
-    // const [longitude, setLongitude] = useState("");
-    // const [latitude, setLatitude] = useState("");
-
     const [accAddress, setAccAddress] = useState("");
     const [convertedAddress, setConvertedAddress] = useState("");
     const [inputAndMarker, setInputAndMarker] = useState({});
@@ -49,7 +45,10 @@ const ResReview = () => {
 
     const handleRatingChange = (event, newValue) => {
         setRating(newValue); // 사용자가 선택한 평점으로 상태 업데이트
+
     };
+    console.log("value", rating);
+    // 별점
 
     const handleBack = () => {
         navigate(`/user/myPage`);
@@ -69,15 +68,14 @@ const ResReview = () => {
             const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
-            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
 
             setBackEndData({
                 accmData: res.data.adminAccmDto,
-                // accmImages: res.data.a_i_images
+
             });
 
             setAccAddress(res.data.adminAccmDto?.a_acc_address);
-            // setLatitude(res.data.adminAccmDto.a_acc_address);
+
 
         } catch (error) {
 
@@ -169,8 +167,7 @@ const ResReview = () => {
 
         geocoder.coord2Address(coords.getLng(), coords.getLat(), function (result, status) {
             if (status === window.kakao.maps.services.Status.OK) {
-                // let address = result[0].address.address_name;
-                // setConvertedAddress(result[0].address.address_name);
+
                 let address = result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
                 updateMarkerInfoWithAddress(markerId, address);
             }
@@ -190,15 +187,15 @@ const ResReview = () => {
             // 카카오맵 Geocoder 객체 생성
             let geocoder = new window.kakao.maps.services.Geocoder();
 
-            // 주소로 좌표를 검색합니다
+            // 주소로 좌표를 검색
             geocoder.addressSearch(address, function (result, status) {
-                // 정상적으로 검색이 완료됐으면 
+
                 if (status === window.kakao.maps.services.Status.OK) {
                     let coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
                     displayMarker(coords);
                 }
             });
-            // let markerPosition = new window.kakao.maps.LatLng(geocodeAddress(accAddress)); // latitude 위도, longitude 경도
+
 
         };
 
@@ -238,25 +235,20 @@ const ResReview = () => {
 
         e.target.value = null;
 
-        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
-        // if (e.target.files.length >= 0) {
-        //     setImageError(false);
-        // }
-        // 이미지 에러 글을 지우기 위해 상태변화를 false를 준다.
     };
 
 
     const handleRemoveImage = (keyToRemove) => {
-        // 선택된 이미지를 제거합니다.
+        // 선택된 이미지를 제거
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
         setR_ri_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
 
-        // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
+        // 선택된 파일 이름 목록에서 해당 항목을 제거
         const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
         setSelectedFileNames(updatedFileNames);
 
-        // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
+        // 선택된 파일 URL 목록에서 해당 항목을 제거
         const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
         setSelectedFileURLs(updatedFileURLs);
     };
@@ -272,20 +264,6 @@ const ResReview = () => {
             default:
                 break;
         }
-        // 에러 필드를 나타내기 위한 코드 //
-        // if (value === '') {
-        //     setFieldErrors({
-        //         ...fieldErrors,
-        //         [name]: true
-        //     });
-        // } else {
-        //     setFieldErrors({
-        //         ...fieldErrors,
-        //         [name]: false
-        //     });
-        // }
-        // 에러 필드를 나타내기 위한 코드 //
-
     };
 
 
@@ -313,6 +291,7 @@ const ResReview = () => {
             a_acc_no: a_acc_no,
             u_m_email: u_m_email,
             r_content: r_content,
+            r_sa_point: rating
         })], { type: "application/json" });
         data.append("userReviewDto", jsonBlobReview);
 
@@ -336,12 +315,6 @@ const ResReview = () => {
 
         // Blob 객체를 FormData에 추가
         data.append('address', markerInfoBlob);
-
-        // for (let i = 0; i < modifiedMarkerInfo.length; i++) {
-        //     const itemJson = JSON.stringify(modifiedMarkerInfo[i]);
-        //     const itemBlob = new Blob([itemJson], { type: "application/json" });
-        //     data.append('address', itemBlob); // 여기서 'address'는 키 이름입니다. 필요에 따라 변경 가능합니다.
-        // }
 
 
         for (let [key, value] of data.entries()) {
@@ -436,9 +409,7 @@ const ResReview = () => {
                         이미지 업로드
                     </Button>
                 </label>
-                {/* <p style={{ color: imageError ? 'red' : 'transparent' }} ref={errorMessageRef}>
-                {imageError ? "이미지를 업로드해주세요." : ""}
-            </p> */}
+
                 <List>
                     {selectedFileNames.map((fileName, index) => (
                         <ListItem key={fileName.key}>
@@ -478,7 +449,6 @@ const ResReview = () => {
                     variant="contained"
                     color="primary"
                     sx={{ mt: 3, mb: 2, mr: 2 }}
-                // disabled={!setSelectedFileNames[0]}
                 >
                     등록
                 </Button>

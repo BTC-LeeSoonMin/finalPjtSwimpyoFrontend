@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
@@ -20,6 +20,8 @@ import KakaoMapForAccm from '../../../../components/KaokaoMapForAccm';
 import '../../../../css/MapModal.css';
 import CloseIcon from '@mui/icons-material/Close';
 import markerForMap from '../../../../imgs/markerForMap.png';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 
@@ -28,13 +30,11 @@ const UserDetailAccm = () => {
     const allReview = (e) => {
         e.preventDefault();
         console.log("click allReview");
-        // navigate('/user/accommodation/reviewList', { state: a_acc_no } );
         navigate('/user/accommodation/detailAccm/reviewList');
     }
 
     const accmNum = useParams();
 
-    // const accmNumTest = 7;
 
     const Item = styled(MuiPaper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -45,8 +45,7 @@ const UserDetailAccm = () => {
 
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    // const [accmData, setAccmData] = useState({}); // 백엔드에서 넘어온 데이터 넣는곳
-    // const [images, setImages] = useState([]);
+
     const [backEndData, setBackEndData] = useState({
         accmData: {},
         accmImages: []
@@ -70,6 +69,25 @@ const UserDetailAccm = () => {
     // 등록에 보내기 위한 Props
     const accomNum = backEndData.accmData;
 
+
+    // 사진 MUI를 위한 코드시작
+    const [activeStep, setActiveStep] = useState(0);
+    const images = backEndData.accmImages; // 여기서는 accmImages 배열이 이미 준비되어 있다고 가정합니다.
+
+    const handleThumbnailClick = (index) => {
+        setActiveStep(index);
+    };
+    const thumbnailContainerRef = useRef();
+
+    const scrollLeft = () => {
+        thumbnailContainerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    };
+
+    const scrollRight = () => {
+        thumbnailContainerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    };
+
+    // 사진 MUI를 위한 코드끝
 
     /* 지도 모달을 위한 함수 시작 */
 
@@ -109,17 +127,13 @@ const UserDetailAccm = () => {
             const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${accmNum.a_acc_no}`);
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
-            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
 
-            // setAccmData(res.data.adminAccmDto);
             setBackEndData({
                 accmData: res.data.adminAccmDto,
                 accmImages: res.data.a_i_images
             });
             setDataLoaded(true);
-            // setImages(res.data.a_i_images);
-            // const imageUrls = images.a_i_images;
-            // setImages(imageUrls);
+
 
 
         } catch (error) {
@@ -145,13 +159,13 @@ const UserDetailAccm = () => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // This ensures that the Box takes the full viewport height
+                minHeight="100vh"
                 sx={{
-                    backgroundColor: 'background.default', // Use theme background color
-                    color: 'text.primary', // Use theme text color
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
                 }}
             >
-                {/* You can include a CircularProgress component to indicate loading status */}
+
                 <CircularProgress color="inherit" />
                 <Typography variant="h3" component="h1">
                     Loading...
@@ -171,8 +185,58 @@ const UserDetailAccm = () => {
                     alignItems: 'center',
                 }}>
                     <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
-                        나의 업소 관리
+                        숙박업소 상세보기
                     </Typography>
+                </Box>
+
+
+
+                <Box sx={{ position: 'relative', width: '100%', height: '100%', mt: 3 }}>
+                    {/* 큰 이미지 */}
+                    <Card>
+                        <CardMedia
+                            component="img"
+                            image={images[activeStep].a_i_image}
+                            alt={`Image ${activeStep}`}
+                            sx={{ height: 400 }} // 큰 이미지의 높이 설정
+                        />
+                    </Card>
+
+                    <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                    <IconButton onClick={scrollRight} sx={{ position: 'absolute', right: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowForwardIcon />
+                    </IconButton>
+
+                    {/* 썸네일 이미지들 */}
+                    <Box
+                        ref={thumbnailContainerRef}
+                        sx={{
+                            display: 'flex',
+                            overflowX: 'scroll',
+                            justifyContent: 'center',
+                            mt: 2,
+                            '&::-webkit-scrollbar': { display: 'none' } // 스크롤바 숨김
+                        }}
+                    >
+                        {images.map((img, index) => (
+                            <IconButton
+                                key={img.a_i_image}
+                                onClick={() => handleThumbnailClick(index)}
+                                sx={{ ml: index !== 0 ? 1 : 0 }} // 첫 번째 이미지를 제외하고 마진 적용
+                            >
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        src={img.a_i_image}
+                                        alt={`Thumbnail ${index}`}
+                                        sx={{ width: 100, height: 100 }} // 썸네일 이미지의 크기 설정
+                                    />
+                                </Card>
+                            </IconButton>
+                        ))}
+                    </Box>
                 </Box>
 
 
@@ -204,19 +268,19 @@ const UserDetailAccm = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                position: 'fixed', // 모달을 화면에 고정합니다.
+                                position: 'fixed', // 모달을 화면에 고정
                                 top: 0,
                                 left: 0,
-                                width: '100vw', // 모달의 너비를 뷰포트 너비의 100%로 설정합니다.
-                                height: '100vh', // 모달의 높이를 뷰포트 높이의 100%로 설정합니다.
+                                width: '100vw', // 모달의 너비를 뷰포트 너비의 100%
+                                height: '100vh', // 모달의 높이를 뷰포트 높이의 100%
                                 bgcolor: 'background.paper',
                                 boxShadow: 24,
                                 p: 4,
-                                overflowY: 'auto', // 내용이 많을 경우 스크롤을 허용합니다.
+                                overflowY: 'auto', // 내용이 많을 경우 스크롤을 허용
                                 transform: open ? 'translateY(0)' : 'translateY(100%)',
                                 transition: 'transform 0.3s ease-in-out'
                             }}
-                            className={open ? 'modal-slide-up-enter' : 'modal-slide-down-exit'} // 애니메이션 클래스를 적용합니다.
+                            className={open ? 'modal-slide-up-enter' : 'modal-slide-down-exit'} // 애니메이션 클래스 적용
                         >
                             <Grid container justifyContent="center" alignItems="center" spacing={2}>
                                 <Grid item sx={{ margin: 0 }}>
@@ -294,7 +358,6 @@ const UserDetailAccm = () => {
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
-                    {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         업소 정보
                     </Grid>
