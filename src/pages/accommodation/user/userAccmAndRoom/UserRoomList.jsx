@@ -94,22 +94,20 @@ const UserRoomList = ({ accomNum, requestData, accmName }) => {
                             display: 'flex', justifyContent: 'center', border: 1,
                             borderColor: 'grey.500',
                             borderRadius: 'borderRadius',
+                            mb: 2,
                         }}>
                             <Box sx={{
                                 maxWidth: 400,
                                 width: '100%',
-                                m: 3
+                                m: 3,
                             }}>
                                 <Card sx={{ maxWidth: 400, elevation: 3 }}>
-                                    <Carousel sx={{ zIndex: 0 }}>
-                                        <CardMedia
-                                            component="img"
-                                            height="300"
-                                            image={imageUrl} // imageUrl을 src 속성에 사용
+                                    <CardMedia
+                                        component="img"
+                                        height="250"
+                                        image={imageUrl} // imageUrl을 src 속성에 사용
 
-                                        />
-                                    </Carousel>
-
+                                    />
                                     <CardContent
                                         sx={{
                                             paddingBottom: '10px',
@@ -146,13 +144,11 @@ const UserRoomList = ({ accomNum, requestData, accmName }) => {
                                             variant="contained"
                                             color="primary"
                                             sx={{
-                                                mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: "black",
-                                                borderColor: 'white',
+                                                mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: 'lemonchiffon', color: 'black', fontWeight: 'bold',
                                                 '&:hover': {
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                                    backgroundColor: 'lemonchiffon',
                                                 },
                                             }}
-
                                             onClick={() => handleMoveToDetailRoom(room.a_r_no)}
                                         >
                                             객실 상세보기

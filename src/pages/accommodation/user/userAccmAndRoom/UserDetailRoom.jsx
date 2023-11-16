@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
+import { Backdrop, Card, CardMedia, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Paper, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -16,6 +16,7 @@ import CalendarForRes from '../../../../components/CalendarForRes';
 import { useSelector } from 'react-redux';
 import { differenceInCalendarDays } from 'date-fns';
 import dayjs from 'dayjs';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const UserDetailRoom = () => {
 
@@ -80,6 +81,25 @@ const UserDetailRoom = () => {
 
 
     const [reservationStatus, setReservationStatus] = useState("");
+
+    // 사진 MUI를 위한 코드시작
+    const [activeStep, setActiveStep] = useState(0);
+    const images = backEndData.roomImages; // 여기서는 roomImages 배열이 이미 준비
+
+    const handleThumbnailClick = (index) => {
+        setActiveStep(index);
+    };
+    const thumbnailContainerRef = useRef();
+
+    const scrollLeft = () => {
+        thumbnailContainerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    };
+
+    const scrollRight = () => {
+        thumbnailContainerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    };
+    // 사진 MUI를 위한 코드 끝
+
 
 
     // 수정과 삭제 버튼 클릭 시 모달 창 열기 위한 state
@@ -317,39 +337,74 @@ const UserDetailRoom = () => {
                 </Box>
 
 
-                <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                    <Carousel sx={{ zIndex: 0 }}>
-                        {backEndData.roomImages.map((imageUrl, index) => (
-                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
-                                <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </Paper>
+                <Box sx={{ position: 'relative', width: '100%', height: '100%', mt: 3 }}>
+                    {/* 큰 이미지 */}
+                    <Card>
+                        <CardMedia
+                            component="img"
+                            image={images[activeStep]}
+                            alt={`Image ${activeStep}`}
+                            sx={{ height: 400 }} // 큰 이미지의 높이 설정
+                        />
+                    </Card>
+
+                    <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                    <IconButton onClick={scrollRight} sx={{ position: 'absolute', right: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowForwardIcon />
+                    </IconButton>
+
+                    {/* 썸네일 이미지들 */}
+                    <Box
+                        ref={thumbnailContainerRef}
+                        sx={{
+                            display: 'flex',
+                            overflowX: 'scroll',
+                            justifyContent: 'center',
+                            mt: 2,
+                            '&::-webkit-scrollbar': { height: '10px' },
+                            '&::-webkit-scrollbar-thumb': { backgroundColor: 'grey' },
+                            '&::-webkit-scrollbar-track': { backgroundColor: 'white' }
+                        }}
+                    >
+                        {images.map((img, index) => (
+                            <IconButton
+                                key={img}
+                                onClick={() => handleThumbnailClick(index)}
+                                sx={{ ml: index !== 0 ? 1 : 0 }} // 첫 번째 이미지를 제외하고 마진 적용
+                            >
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        src={img}
+                                        alt={`Thumbnail ${index}`}
+                                        sx={{ width: 100, height: 100 }} // 썸네일 이미지의 크기 설정
+                                    />
+                                </Card>
+                            </IconButton>
                         ))}
-                    </Carousel>
+                    </Box>
                 </Box>
 
-
-                <Item sx={{ marginTop: '1rem' }}>
+                <Item sx={{ marginTop: '1rem', mb: '1rem' }}>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
                         <CalendarForRes startDate={dates.startDate}
                             endDate={dates.endDate}
                             setDates={setDates} />
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
-                        </Grid>
+
                     </Grid>
                 </Item>
 
 
-                <Item sx={{ marginTop: '1rem' }}>
+                <Item sx={{ marginTop: '1rem', mb: '1rem' }}>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
                         {backEndData.roomData.a_r_name}
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
-                        </Grid>
                     </Grid>
                 </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
+                <Box sx={{ p: 2, borderRadius: '5px', backgroundColor: '#f5f5f5' }}>
+
                     <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Grid item xs={6}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
@@ -365,10 +420,10 @@ const UserDetailRoom = () => {
                         </Grid>
 
                         <Grid item xs={6} sx={{ margin: 0 }}>
-                            <Box sx={{ fontSize: '22px', textAlign: 'left', marginBottom: 0, fontWeight: "Bold", ml: "20px", mt: "5px" }}>
+                            <Box sx={{ fontSize: '22px', textAlign: 'right', marginBottom: 0, fontWeight: "Bold", ml: "20px", mt: "5px" }}>
                                 {backEndData.roomData.a_r_price.toLocaleString('ko-KR')} 원
                             </Box>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', margin: 0 }}>
+                            <Box sx={{ fontSize: '15px', textAlign: 'left', margin: 0, textAlign: 'right' }}>
                                 <Button
                                     type="button"
                                     variant="contained"
@@ -376,27 +431,28 @@ const UserDetailRoom = () => {
                                     disabled={reservationStatus === "예약마감"} // 예약마감일 경우 버튼을 비활성화합니다.
                                     sx={{
                                         mt: 3, mb: 2, mr: 2, width: 'auto',
-                                        backgroundColor: reservationStatus === "예약마감" ? 'grey' : "black", // 예약마감일 경우 회색, 아니면 검정색
+                                        backgroundColor: reservationStatus === "예약마감" ? 'grey' : "#F7323F", // 예약마감일 경우 회색, 아니면 검정색
                                         borderColor: 'white',
                                         '&:hover': {
-                                            backgroundColor: reservationStatus === "예약마감" ? 'grey' : 'rgba(0, 0, 0, 0.6)',
+                                            backgroundColor: reservationStatus === "예약마감" ? 'grey' : '#F7323F',
                                         },
                                     }}
                                     onClick={() => handleMoveToReservation(backEndData.roomData.a_r_no)}
                                 >
+
+
                                     {reservationStatus === "예약마감" ? "예약마감" : "예약하기"}
                                 </Button>
                             </Box>
                         </Grid>
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                            <Grid item xs={10} sx={{ mt: '10px' }}>
-                                <Divider variant="left" sx={{ width: '100%' }} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
+                    </Grid>
+
+                </Box>
+
+
+
+                <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5', mt: 2 }}>
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         업소 정보
@@ -409,14 +465,7 @@ const UserDetailRoom = () => {
                             </Box>
                         </Grid>
                     </Grid>
-
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
-                        </Grid>
-                    </Grid>
-
-                </Item>
+                </Box>
 
                 <Item sx={{ marginTop: '1rem' }}>
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
@@ -424,9 +473,9 @@ const UserDetailRoom = () => {
                             fullWidth
                             variant="contained"
                             sx={{
-                                mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
+                                mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: 'skyblue',
+                                    backgroundColor: '#F7323F',
                                 }
                             }}
                             onClick={(e) => allReview(e)}

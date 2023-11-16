@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { setAccessToken } from '../../../commons/rtk/slice/SignInSlice';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../hooks/RefreshTokenAuto';
 import logo from '../../../assets/logo.png';
@@ -12,20 +12,20 @@ import SearchBar from '../../../pages/accommodation/user/searchAccm/SearchBar';
 
 
 const linkStyle = {
-  color: 'black',
+  color: 'white',
   textDecoration: 'none',
   fontSize: '18px',
 };
 
 const separatorStyle = {
   margin: '0 8px',
-  color: 'black',
+  color: 'white',
   fontWeight: '300',
 };
 
 export default function Header() {
 
-  const token = useSelector((store)=> store.accessToken.value);
+  const token = useSelector((store) => store.accessToken.value);
   console.log('토큰 값', token);
 
   const navigate = useNavigate();
@@ -43,12 +43,12 @@ export default function Header() {
 
     api.post("/api/user/member/logout", config,)
       .then((response) => {
-        if(response.data !== null) {
+        if (response.data !== null) {
           dispatch(setAccessToken.setAccessToken(''));
           navigate('/');
 
-        } 
-        
+        }
+
       })
       .catch();
   };
@@ -57,7 +57,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none' }}
+        sx={{ backgroundColor: '#F7323F', boxShadow: 'none' }}
       >
         {' '}
         <Toolbar>
@@ -71,27 +71,29 @@ export default function Header() {
             }}
           >
             <Link to="/" style={linkStyle}>
-              <img style={{maxHeight: '80px'}} src={logo} alt="logo Image" />
+              <img style={{ maxHeight: '80px' }} src={logo} alt="logo Image" />
             </Link>
           </Box>
-          <Box sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
-              display: 'flex', 
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%' }}>
+          <Box sx={{
+            fontWeight: 'bold',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%'
+          }}>
             <SearchBar />
           </Box>
           {!token && <Typography
             noWrap
             component="div"
-            sx={{ 
-              fontFamily: 'GangwonEdu_OTFBoldA', 
-              width: '100%', 
-              display: 'flex', 
+            sx={{
+              fontFamily: 'GangwonEdu_OTFBoldA',
+              width: '100%',
+              display: 'flex',
               justifyContent: 'flex-end', // 오른쪽 정렬
-              alignItems: 'center' }}
+              alignItems: 'center'
+            }}
           >
             <Link to="/user/member/signUp" style={linkStyle}>
               회원가입
@@ -104,15 +106,16 @@ export default function Header() {
           {token && <Typography
             noWrap
             component="div"
-            sx={{ 
+            sx={{
               fontFamily: 'GangwonEdu_OTFBoldA',
-              width: '100%', 
-              display: 'flex', 
+              width: '100%',
+              display: 'flex',
               justifyContent: 'flex-end', // 오른쪽 정렬
-              alignItems: 'center' }}
+              alignItems: 'center'
+            }}
           >
             <Link onClick={(e) => logout(e)} style={linkStyle}>
-              로그아웃 
+              로그아웃
             </Link>
           </Typography>}
         </Toolbar>

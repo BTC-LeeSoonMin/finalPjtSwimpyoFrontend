@@ -45,7 +45,7 @@ function App() {
 
     return (
 
-        <div style={{ backgroundColor: '#C0E2FF', height: '100vh', overflow: 'auto' }}>
+        <div style={{ backgroundColor: '#F2F2F2', height: '100vh', overflow: 'auto' }}>
             <BrowserRouter>
                 <Routes>
                     <Route
