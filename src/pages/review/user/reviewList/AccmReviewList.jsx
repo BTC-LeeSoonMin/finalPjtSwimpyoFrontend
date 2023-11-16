@@ -1,11 +1,8 @@
 import React from 'react';
-import { Box, Container, Divider, Grid, Paper, Toolbar, Typography } from "@mui/material";
-import temp1 from '../../../../assets/temp.jpg';
-import temp2 from '../../../../assets/temp2.jpg';
+import { Box, Divider, Typography } from "@mui/material";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import ReviewImgList from './ReviewImgList';
 
 const textHidden = {
     width: '100%',
@@ -30,7 +27,7 @@ const img = {
     objectFit: 'cover'
 };
 
-export default function AccmReviewList( { r_no, u_m_email, u_m_nickname, r_reg_date, a_r_name, r_content,  reviewImg} ) {
+export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_date, a_r_name, r_content, reviewImg }) {
     const [hidden, setHidden] = useState(true);
 
     console.log('reviewImg', reviewImg);
@@ -39,9 +36,6 @@ export default function AccmReviewList( { r_no, u_m_email, u_m_nickname, r_reg_d
         e.preventDefault();
         setHidden(false);
     };
-
-    const imgObj = reviewImg.find((img, index) => img.r_no === r_no);
-    const imageUrl = imgObj ? imgObj.r_ri_image : 'defaultImagePath';
 
     return (
         <Box sx={{
@@ -104,8 +98,16 @@ export default function AccmReviewList( { r_no, u_m_email, u_m_nickname, r_reg_d
                     }}
                 >{r_content}</Typography>}
             <Box sx={{ ...imgSlide }}>
-                {/* { reviewImg.map((item) => (<ReviewImgList/>))} */}
-                {imageUrl != 'defaultImagePath' && <img src={imageUrl} style={img} />}
+                {reviewImg.map((item, index) => {
+
+                    const imgObj = reviewImg.find((img, index) => img.r_no === r_no);
+
+                    return (
+                        <div key={index}>
+                           {imgObj && <img src={item.r_ri_image} style={img} />}
+                        </div>
+                    )
+                })}
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
         </Box>
