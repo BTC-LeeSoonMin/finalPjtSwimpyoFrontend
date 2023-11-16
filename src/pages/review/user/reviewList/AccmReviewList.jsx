@@ -1,7 +1,5 @@
 import React from 'react';
-import { Box, Container, Divider, Grid, Paper, Toolbar, Typography } from "@mui/material";
-import temp1 from '../../../../assets/temp.jpg';
-import temp2 from '../../../../assets/temp2.jpg';
+import { Box, Divider, Typography } from "@mui/material";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -16,23 +14,23 @@ const textHidden = {
 const imgSlide = {
     display: 'flex',
     width: '100%',
-    overflowX: 'auto', 
-    flexWrap: 'nowrap', 
+    overflowX: 'auto',
+    flexWrap: 'nowrap',
     mt: '8px',
 };
 
 const img = {
-    flex: '0 0 auto', 
-    width: '200px', 
-    height: '125px', 
-    marginRight: '10px', 
+    flex: '0 0 auto',
+    width: '200px',
+    height: '125px',
+    marginRight: '10px',
     objectFit: 'cover'
 };
 
-export default function AccmReviewList(props) {
+export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_date, a_r_name, r_content, reviewImg }) {
     const [hidden, setHidden] = useState(true);
 
-    console.log('hidden', hidden);
+    console.log('reviewImg', reviewImg);
 
     const moreClick = (e) => {
         e.preventDefault();
@@ -47,8 +45,7 @@ export default function AccmReviewList(props) {
             mt: '1rem',
         }}>
             <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                {/* <Link to={`/user/accommodation/reviewDetail/${r_no}`} >상세보기</Link> */}
-                <Link to={`/user/review/detail/${props.u_m_email}/${props.r_no}`} style={{ textDecoration: 'none', color: 'black' }}>상세보기 &gt;</Link>
+                <Link to={`/user/review/detail/${u_m_email}/${r_no}`} style={{ textDecoration: 'none', color: 'black' }}>상세보기 &gt;</Link>
             </Typography>
             <Box sx={{ display: 'flex', width: '100%' }}>
                 <Typography
@@ -60,7 +57,7 @@ export default function AccmReviewList(props) {
                         justifyContent: 'flex-first',
                         width: '100%'
                     }}
-                >{props.u_m_nickname}</Typography>
+                >{u_m_nickname}</Typography>
                 <Typography
                     noWrap
                     component="div"
@@ -70,7 +67,7 @@ export default function AccmReviewList(props) {
                         justifyContent: 'flex-end',
                         width: '100%'
                     }}
-                >{dayjs(props.r_reg_date).format("YYYY-MM-DD")}</Typography>
+                >{dayjs(r_reg_date).format("YYYY-MM-DD")}</Typography>
             </Box>
             <Typography
                 noWrap
@@ -83,14 +80,14 @@ export default function AccmReviewList(props) {
                     width: '100%',
                     mb: '1rem',
                 }}
-            >{props.a_r_name}</Typography>
+            >{a_r_name}</Typography>
 
             {hidden &&
                 <Typography
                     noWrap
                     component="div"
                     sx={{ ...textHidden }}
-                >{props.r_content}</Typography>
+                >{r_content}</Typography>
             } <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                 {hidden && <Link onClick={(e) => moreClick(e)} style={{ color: 'black' }}>더보기</Link>}</Typography>
             {!hidden &&
@@ -99,9 +96,18 @@ export default function AccmReviewList(props) {
                     sx={{
                         width: '100%'
                     }}
-                >{props.r_content}</Typography>}
+                >{r_content}</Typography>}
             <Box sx={{ ...imgSlide }}>
-                <img src={props.r_ri_image} style={img} />
+                {reviewImg.map((item, index) => {
+
+                    const imgObj = reviewImg.find((img, index) => img.r_no === r_no);
+
+                    return (
+                        <div key={index}>
+                           {imgObj && <img src={item.r_ri_image} style={img} />}
+                        </div>
+                    )
+                })}
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
         </Box>
