@@ -114,7 +114,7 @@ export default function MyPageMain() {
             {(reviewList.length != 0) && reviewList.slice(0, 4).map((item) => (<MiniReviewList {...item} />))}
             {(reviewList.length == 0) &&
               <Typography sx={{ mt: '1rem' }}>
-                예약 정보가 없습니다.
+                작성한 리뷰가 없습니다.
               </Typography>}
           </Box>
         </Grid>

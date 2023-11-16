@@ -39,6 +39,7 @@ export default function RoomReview() {
                 {(reviewData.length !== 0) && reviewData.map((item, index) => (
                     <AccmReviewList key={index} {...item} reviewImg={reviewImg} />
                 ))}
+                {(reviewData.length === 0) && <Box sx={{ display: 'flex',flexDirection: 'column',alignItems: 'center', mt: '1rem' }}>작성된 리뷰가 없습니다.</Box>}
             </Paper>
         </Container>
     );

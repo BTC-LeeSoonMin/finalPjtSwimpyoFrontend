@@ -56,24 +56,24 @@ export default function ResLogDetail() {
     const resReview = (e) => {
         e.preventDefault();
         navigate(`/user/review/regist/${resLog.a_acc_no}/${resLog.a_r_no}/${u_r_no}/${resLog.u_m_email}`);
-    
-      };
+
+    };
 
     useEffect(() => {
-        api.get("/api/user/mypage/GetRezDetail",{ params: { "u_r_no": u_r_no } },)
+        api.get("/api/user/mypage/GetRezDetail", { params: { "u_r_no": u_r_no } },)
             .then((response) => {
-                
+
                 if (response.data != null) {
                     console.log('resLogDetail', response.data[0]);
                     setResLog(response.data[0]);
                     setStayDay(response.data.length);
-                    if(response.data.u_r_check_in > dayjs(today).format("YYYY-MM-DD")) {
+                    if (response.data.u_r_check_in > dayjs(today).format("YYYY-MM-DD")) {
                         console.log('이용전', response.data.u_r_check_in);
                         setUse('이용전');
-                    } else if(response.data.u_r_check_in == dayjs(today).format("YYYY-MM-DD")) {
+                    } else if (response.data.u_r_check_in == dayjs(today).format("YYYY-MM-DD")) {
                         console.log('이용일', response.data.u_r_check_in);
                         setUse('이용일');
-                    } else if(response.data.u_r_check_in < dayjs(today).format("YYYY-MM-DD")) {
+                    } else if (response.data.u_r_check_in < dayjs(today).format("YYYY-MM-DD")) {
                         console.log('이용완료', response.data.u_r_check_in);
                         setUse('이용완료');
                     }
@@ -102,25 +102,25 @@ export default function ResLogDetail() {
                     상품 정보
                 </Typography>
                 <Link style={linkStyle} to={`/user/accommodation/detailAccm/${resLog.a_acc_no}`}>
-                    <Grid container sx={{mt: '1rem'}}>
+                    <Grid container sx={{ mt: '1rem' }}>
 
                         <Grid item xs={4}><img src={resLog.a_i_image} style={img} /></Grid>
 
                         <Grid item xs={8}>
                             <Typography sx={{ ...font, fontWeight: 'bold', fontSize: '18px', }}>
-                            {resLog.a_acc_name}
+                                {resLog.a_acc_name}
                             </Typography>
                             <Typography sx={{ ...font, fontWeight: 'bold', }}>
-                            {resLog.a_r_name} {resLog.a_r_content}
+                                {resLog.a_r_name} {resLog.a_r_content}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
                                 차량유무 {resLog.u_r_car_yn}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
-                            {resLog.u_r_check_in} ~ {resLog.u_r_check_out} | {resLog.a_r_state}
+                                {resLog.u_r_check_in} ~ {resLog.u_r_check_out} | {resLog.a_r_state}
                             </Typography>
                             <Typography sx={{ ...font }} noWrap>
-                            {resLog.u_r_check_in_time} {resLog.a_r_check_in} | {resLog.u_r_check_out_time} {resLog.a_r_check_out}
+                                {resLog.u_r_check_in_time} {resLog.a_r_check_in} | {resLog.u_r_check_out_time} {resLog.a_r_check_out}
                             </Typography>
                         </Grid>
 
@@ -147,22 +147,23 @@ export default function ResLogDetail() {
                 <Box sx={{ ...box }}>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>가격</Typography>
-                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{(resLog.a_r_price)*stayDay}원</Typography>
+                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{(resLog.a_r_price) * stayDay}원</Typography>
                     </Box>
                 </Box>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{
-                        mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
-                        '&:hover': {
-                            backgroundColor: 'skyblue',
-                        }
-                    }}
-                    onClick={(e) => resReview(e)}
-                >
-                    후기 작성하기
-                </Button>
+                {resLog.u_r_check_in < today &&
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#F7323F',
+                            }
+                        }}
+                        onClick={(e) => resReview(e)}
+                    >
+                        후기 작성하기
+                    </Button>}
             </Paper>
         </Container>
     );

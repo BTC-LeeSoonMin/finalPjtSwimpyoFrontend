@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import accmImg from '../../../../assets/temp.jpg';
 import api from '../../../../hooks/RefreshTokenAuto';
 import ResLogFilter from './ResLogFilter';
+import dayjs from 'dayjs';
 
 const list = {
     bgcolor: 'background.paper',
@@ -35,6 +36,8 @@ const info = {
     alignItems: 'flex-end',
     color: 'black'
 }
+
+const today = dayjs();
 
 function ResLogList(props) {
     const navigate = useNavigate();
@@ -76,11 +79,11 @@ function ResLogList(props) {
                 <Grid item xs={3}>
                     <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
-                        <Button variant="contained" onClick={(e) => resReview(e)}
+                        {props.u_r_check_in < today && <Button variant="contained" onClick={(e) => resReview(e)}
                             sx={{
                                 color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
                                 '&:hover': { backgroundColor: '#F7323F' }
-                            }}>리뷰작성</Button>
+                            }}>리뷰작성</Button>}
                     </Link>
                 </Grid>
             </Grid>
