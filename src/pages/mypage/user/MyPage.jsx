@@ -30,6 +30,15 @@ export default function ClippedDrawer() {
   const [resLogListPage, setResLogListPage] = useState(false);
   const [reviewListPage, setReviewListPage] = useState(false);
 
+  const home = (e) => {
+    e.preventDefault();
+    
+    setModifyPage(false);
+    setMainPage(true);
+    setResLogListPage(false);
+    setReviewListPage(false);
+  };
+
   const modify = (e) => {
     e.preventDefault();
     
@@ -75,12 +84,10 @@ export default function ClippedDrawer() {
       >
         <Toolbar sx={{height: "160px"}}/>
         <Box sx={{ overflow: 'auto' }}>
+          <Button fullWidth style={linkStyle} onClick={(e) => home(e)}>홈</Button>
           <Button fullWidth style={linkStyle} onClick={(e) => modify(e)}>회원정보수정</Button>
-          {/* <Button fullWidth style={linkStyle}>찜</Button>
-          <Button fullWidth style={linkStyle}>쿠폰</Button> */}
           <Button fullWidth style={linkStyle} onClick={(e) => resLogList(e)} >예약리스트</Button>
           <Button fullWidth style={linkStyle} onClick={(e) => reviewList(e)} >리뷰리스트</Button>
-          {/* <Button fullWidth style={linkStyle}>문의</Button> */}
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

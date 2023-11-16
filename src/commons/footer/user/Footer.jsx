@@ -11,7 +11,7 @@ const Footer = () => {
     return(
         <footer>
             <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="static" sx={{ backgroundColor: '#C0E2FF', boxShadow: 'none' }}>
+                <AppBar position="static" sx={{ backgroundColor: '#F7323F', boxShadow: 'none' }}>
                     <Toolbar>
                        
                         <Typography variant="body2" component="div" align="center" sx={{ flexGrow: 1, color: 'black' }}>

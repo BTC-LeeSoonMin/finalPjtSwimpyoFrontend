@@ -167,7 +167,7 @@ function Modify() {
           <Link to="/user/member/changePw" style={linkStyle}>
             <Button
               variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: 'skyblue', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }}
+              sx={{ ml: 2, mt: 3, backgroundColor: '#F7323F', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }}
             >
               비밀번호 변경
             </Button>
@@ -210,7 +210,7 @@ function Modify() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }} 
+            sx={{ mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', '&:hover': { backgroundColor: '#F7323F' } }} 
           >
             회원 정보 수정
           </Button>
@@ -218,7 +218,7 @@ function Modify() {
       </Paper>
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: 'skyblue', '&:hover': { backgroundColor: 'skyblue' } }}
+        sx={{ mt: 3, backgroundColor: '#F7323F', '&:hover': { backgroundColor: '#F7323F' } }}
         onClick={(e) => signOut(e)}
       >
         회원탈퇴

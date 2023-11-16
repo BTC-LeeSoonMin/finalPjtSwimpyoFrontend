@@ -12,7 +12,7 @@ import MiniReviewList from './MiniReviewList';
 
 const button = {
   width: '20rem',
-  bgcolor: 'lemonchiffon',
+  bgcolor: '#F7323F',
   height: '7rem',
   textAlign: 'center',
   padding: '2rem',
@@ -80,10 +80,10 @@ export default function MyPageMain() {
         <Grid container>
           <Grid item xs={4}><img src={user_icon} style={{ width: '100%', maxWidth: '100px' }} /></Grid>
           <Grid item xs={8}>
-            <Typography sx={{ fontWeight: 'bold', mt: '1rem' }}>
+            <Typography sx={{ fontWeight: 'bold', mt: '1rem', color: 'white' }}>
               {userNickName}님
             </Typography>
-            <Typography>
+            <Typography sx={{ color: 'white' }}>
               {userEmail}
             </Typography>
           </Grid>

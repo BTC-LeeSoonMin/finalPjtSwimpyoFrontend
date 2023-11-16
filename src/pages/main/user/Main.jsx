@@ -6,11 +6,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiPaper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -76,9 +71,6 @@ function Main() {
           <Paper sx={{ height: '180px' }}><img src={temp2} /></Paper>
         </Carousel>
       </Box>
-      <button onClick={test}>숙소가기테스트</button>
-      <button onClick={testReview}>리뷰테스트</button>
-      <button onClick={testReviewDetail}>리뷰상세보기테스트</button>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1}>
           <RegionAccm />

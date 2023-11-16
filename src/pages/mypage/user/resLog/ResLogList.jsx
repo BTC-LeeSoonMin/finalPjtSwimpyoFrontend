@@ -78,8 +78,8 @@ function ResLogList(props) {
                     <Link style={{ ...info }}>
                         <Button variant="contained" onClick={(e) => resReview(e)}
                             sx={{
-                                color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px',
-                                '&:hover': { backgroundColor: 'skyblue' }
+                                color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
+                                '&:hover': { backgroundColor: '#F7323F' }
                             }}>리뷰작성</Button>
                     </Link>
                 </Grid>

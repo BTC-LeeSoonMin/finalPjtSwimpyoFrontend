@@ -106,7 +106,7 @@ function SignIn() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }} 
+            sx={{ mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', '&:hover': { backgroundColor: '#F7323F' } }} 
           >
             로그인
           </Button>
