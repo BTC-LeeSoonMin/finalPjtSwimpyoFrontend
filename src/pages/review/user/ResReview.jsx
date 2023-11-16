@@ -275,6 +275,7 @@ const ResReview = () => {
 
         for (let i = 0; i < r_ri_image.length; i++) {
             data.append('reviewImages', r_ri_image[i]);
+            console.log("r_ri_image", r_ri_image[i]);
         }
 
 

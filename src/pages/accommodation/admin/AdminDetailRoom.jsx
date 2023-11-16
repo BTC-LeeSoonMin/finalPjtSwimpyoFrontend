@@ -84,8 +84,9 @@ const AdminDetailRoom = () => {
         // 삭제 버튼 클릭 시
     }
 
+    console.log("backEndData.roomData.a_acc_no", backEndData.roomData.a_acc_no);
     const handleBack = () => {
-        navigate(`/admin/accommodation/detailAccm/${backEndData.roomData.a_acc_no}`)
+        navigate(`/admin/accommodation/detailAccm/${backEndData.roomData.a_m_no}`)
     }
 
     /* 수정과 삭제 상세페이지 가기를 위한 함수 끝 */
