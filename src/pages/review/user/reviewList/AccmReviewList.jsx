@@ -4,6 +4,7 @@ import temp1 from '../../../../assets/temp.jpg';
 import temp2 from '../../../../assets/temp2.jpg';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const textHidden = {
     width: '100%',
@@ -15,16 +16,17 @@ const textHidden = {
 const imgSlide = {
     display: 'flex',
     width: '100%',
-    overflowX: 'auto', // 이미지가 넘칠 때 가로 스크롤바 표시
-    flexWrap: 'nowrap', // 이미지들이 가로로 한 줄에 나열되도록 설정
+    overflowX: 'auto', 
+    flexWrap: 'nowrap', 
     mt: '8px',
 };
 
 const img = {
-    flex: '0 0 auto', // 이미지들이 크기를 유지하도록 설정
-    width: '200px', // 각 이미지의 너비 설정
-    height: '125px', // 각 이미지의 높이 설정
-    marginRight: '10px', // 이미지 간 간격 설정
+    flex: '0 0 auto', 
+    width: '200px', 
+    height: '125px', 
+    marginRight: '10px', 
+    objectFit: 'cover'
 };
 
 export default function AccmReviewList(props) {
@@ -68,7 +70,7 @@ export default function AccmReviewList(props) {
                         justifyContent: 'flex-end',
                         width: '100%'
                     }}
-                >{props.r_reg_date}</Typography>
+                >{dayjs(props.r_reg_date).format("YYYY-MM-DD")}</Typography>
             </Box>
             <Typography
                 noWrap
