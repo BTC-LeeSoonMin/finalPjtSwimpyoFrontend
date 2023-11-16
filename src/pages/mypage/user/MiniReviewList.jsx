@@ -1,4 +1,5 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
 const linkStyle = {
@@ -17,7 +18,7 @@ export default function MiniReviewList(props) {
                 {props.a_r_name}
                 </Grid>
                 <Grid item xs={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                {props.r_reg_date}
+                {dayjs(props.r_reg_date).format("YYYY-MM-DD")}
                 </Grid>
             </Grid>
             <Divider sx={{ width: '100%', mt: '1rem' }} />

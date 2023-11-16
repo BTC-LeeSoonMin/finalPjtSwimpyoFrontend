@@ -42,8 +42,8 @@ function ResLogList(props) {
     const resReview = (e) => {
         e.preventDefault();
         navigate(`/user/review/regist/${props.a_acc_no}/${props.a_r_no}/${props.u_r_no}/${props.u_m_email}`);
-    
-      };
+
+    };
 
     return (
         <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
@@ -77,8 +77,10 @@ function ResLogList(props) {
                     <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
                         <Button variant="contained" onClick={(e) => resReview(e)}
-                        sx={{ color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px', 
-                        '&:hover': { backgroundColor: 'skyblue' } }}>리뷰작성</Button>
+                            sx={{
+                                color: 'white', bgcolor: 'skyblue', fontWeight: 'bold', mt: '65px',
+                                '&:hover': { backgroundColor: 'skyblue' }
+                            }}>리뷰작성</Button>
                     </Link>
                 </Grid>
             </Grid>

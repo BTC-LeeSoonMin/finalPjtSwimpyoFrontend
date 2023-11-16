@@ -1,17 +1,16 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import api from "../../../hooks/RefreshTokenAuto";
 import temp1 from '../../../assets/temp.jpg';
 import temp2 from '../../../assets/temp2.jpg';
 import markerImage from '../../../imgs/markerImage.png'
+import { useNavigate, useParams } from "react-router";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import ConfirmOrClose from "../../../components/ConfirmOrClose";
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-
-const textHidden = {
-    width: '100%',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-};
 
 const imgSlide = {
     display: 'flex',
@@ -21,7 +20,7 @@ const imgSlide = {
     mt: '8px',
 };
 
-const img = {
+const imgStyle = {
     flex: '0 0 auto', // 이미지들이 크기를 유지하도록 설정
     width: '200px', // 각 이미지의 너비 설정
     height: '125px', // 각 이미지의 높이 설정
@@ -31,69 +30,158 @@ const img = {
 
 const DetailReview = () => {
 
+    const token = useSelector((store) => store.accessToken.value);
+    console.log('토큰 값', token);
+    const params = useParams();
+    const navigate = useNavigate();
 
-    const [hidden, setHidden] = useState(true);
+    console.log("params", params);
 
-    console.log('hidden', hidden);
+    const [openDelete, setOpenDelete] = useState(false);
 
-    const moreClick = (e) => {
-        e.preventDefault();
-        setHidden(false);
+    const [userMemberEmail, setUserMemberEmail] = useState("");
+    const [reviewInfoFromBackEnd, setReviewInfoFromBackEnd] = useState({
+        reviewDto: {},
+        r_ri_images: [],
+        r_xy_address: []
+    });
+
+
+    const handleClickOpen = (type) => {
+        // 수정과 삭제 버튼 클릭 시 실행
+        if (type === 'delete') {
+            setOpenDelete(true); // 삭제 버튼 클릭 시 삭제 모달을 열도록
+        }
+    }
+
+    const close = (type) => {
+        if (type === 'delete') {
+            setOpenDelete(false);
+        }
     };
 
+    const handleDeleteConfirmation = () => {
+        // 삭제 버튼 클릭 시
+    }
 
-    // const fetchData = async () => {
+    const handleBack = () => {
+        navigate(``);
+    }
 
-    //     try {
-    //         const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${accmNum?.a_acc_no}`);
-    //         //  res -> 서버에서 받아온 데이터
-    //         console.log("detail data success");
-    //         // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+    const userInfoEmail = async () => {
+        if (token) {
+            try {
+                const res = await api.post(`/api/user/member/userInfo`);
 
-    //         setBackEndData({
-    //             accmData: res.data.adminAccmDto,
-    //             // accmImages: res.data.a_i_images
-    //         });
+                console.log(res.data);
+                setUserMemberEmail(res.data.u_m_email);
 
-    //         setAccAddress(res.data.adminAccmDto?.a_acc_address);
-    //         // setLatitude(res.data.adminAccmDto.a_acc_address);
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        }
+    }
 
-    //     } catch (error) {
+    const reviewInfo = async () => {
+        try {
+            const res = await api.get("/api/user/review/showDetail", { params: { "r_no": params.r_no } },)
+            console.log(res.data);
+            setReviewInfoFromBackEnd({
+                reviewDto: res.data.reviewDto,
+                r_ri_images: res.data.r_ri_images,
+                r_xy_address: res.data.r_xy_address
+            });
 
-    //         console.error("An error occurred:", error);
-    //     }
-    // }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+
+
+    useEffect(() => {
+        userInfoEmail();
+        reviewInfo();
+    }, [params]);
+
+    console.log("userMemberEmail", userMemberEmail);
+    console.log("reviewInfoFromBackEnd", reviewInfoFromBackEnd);
+
 
     // useEffect(() => {
     //     fetchData(); // 비동기 함수 호출
     // }, []);
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     let container = document.getElementById('map');
-    //     let options = { //지도를 생성할 때 필요한 기본 옵션
-    //         center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-    //         level: 3 //지도의 레벨(확대, 축소 정도)
-    //     };
+        let container = document.getElementById('map');
+        let options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+            level: 3 //지도의 레벨(확대, 축소 정도)
+        };
 
-    //     let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-
-    //     let imageSrc = markerImage;
-    //     let imageSize = new window.kakao.maps.Size(50, 50);
-    //     let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
-    //     // let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+        let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
 
-    //     // let markerPosition = new window.kakao.maps.LatLng(latitude, longitude); // latitude 위도, longitude 경도
-    //     let marker = new window.kakao.maps.Marker({
-    //         // position: markerPosition,
-    //         image: markerComplete
-    //     });
+        // let imageSrc = markerImage;
+        // let imageSize = new window.kakao.maps.Size(50, 50);
+        // let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
+        // let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-    //     marker.setMap(map);
-    //     map.setCenter(markerPosition);
-    // }, [])
+
+        // let markerPosition = new window.kakao.maps.LatLng(latitude, longitude); // latitude 위도, longitude 경도
+        // let marker = new window.kakao.maps.Marker({
+        //     position: markerPosition,
+        //     image: markerComplete
+        // });
+
+        // marker.setMap(map);
+        // map.setCenter(markerPosition);
+
+        new window.kakao.maps.services.Geocoder().addressSearch(reviewInfoFromBackEnd.reviewDto.a_acc_address, function (result, status) {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 여기에 커스텀 마커 이미지 사용하려면 아래 주석을 해제하고 적절한 값으로 설정하세요.
+                let imageSrc = markerImage; // 마커 이미지 경로
+                let imageSize = new window.kakao.maps.Size(50, 50);
+                let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
+                let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+                let marker = new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                    image: markerComplete // 커스텀 마커 이미지 사용
+                });
+
+                map.setCenter(coords);
+
+                marker.setMap(map);
+                // infowindow.open(map, marker);
+            }
+        });
+
+
+
+        reviewInfoFromBackEnd.r_xy_address.forEach(addressObj => {
+            new window.kakao.maps.services.Geocoder().addressSearch(addressObj.r_xy_address, function (result, status) {
+                if (status === window.kakao.maps.services.Status.OK) {
+                    const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    const marker = new window.kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    const infowindow = new window.kakao.maps.InfoWindow({
+                        content: `<div style="padding:5px;">${addressObj.r_xy_comment}</div>` // 정보 창에 표시될 내용
+                    });
+
+                    infowindow.open(map, marker);
+                    // map.setCenter(coords);
+                }
+            });
+        });
+    }, [reviewInfoFromBackEnd]);
 
 
 
@@ -119,7 +207,33 @@ const DetailReview = () => {
                 {/* <Link to={`/user/accommodation/reviewDetail/${a_r_no}`} >상세보기</Link> */}
                 {/* <Link to='/user/accommodation/reviewDetail/' style={{ textDecoration: 'none', color: 'black' }}>상세보기 &gt;</Link> */}
             </Typography>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <IconButton aria-label="뒤로 가기" onClick={handleBack}>
+                    <ArrowBackIcon />
+                </IconButton>
+                <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
+                    <DeleteIcon />
+                </IconButton>
+                <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
+            </Box>
+            <Box sx={{ display: 'flex', width: '100%', mt: '1rem' }}>
+                <Typography
+                    noWrap
+                    component="div"
+                    sx={{
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        color: 'black',
+                        display: 'flex',
+                        justifyContent: 'flex-first',
+                        width: '100%',
+                        mb: '1rem',
+                    }}
+                >{reviewInfoFromBackEnd.reviewDto.a_acc_name}</Typography>
+
+            </Box>
             <Box sx={{ display: 'flex', width: '100%' }}>
+
                 <Typography
                     noWrap
                     component="div"
@@ -129,7 +243,7 @@ const DetailReview = () => {
                         justifyContent: 'flex-first',
                         width: '100%'
                     }}
-                >진범냐</Typography>
+                >{reviewInfoFromBackEnd.reviewDto.u_m_nickname}</Typography>
                 <Typography
                     noWrap
                     component="div"
@@ -139,7 +253,7 @@ const DetailReview = () => {
                         justifyContent: 'flex-end',
                         width: '100%'
                     }}
-                >2023-11-14</Typography>
+                >{reviewInfoFromBackEnd.reviewDto.r_reg_date}</Typography>
             </Box>
             <Typography
                 noWrap
@@ -152,35 +266,32 @@ const DetailReview = () => {
                     width: '100%',
                     mb: '1rem',
                 }}
-            >디럭스</Typography>
-            {/* 
-            <div>
-                <div id="map" style={{ width: "800px", height: "400px" }}></div>
-            </div> */}
+            >{reviewInfoFromBackEnd.reviewDto.a_r_name}</Typography>
 
-            {hidden &&
-                <Typography
-                    noWrap
-                    component="div"
-                    sx={{ ...textHidden }}
-                >리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용</Typography>
-            }
-            {/* <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}> */}
-            {/* {hidden && <Link onClick={(e) => moreClick(e)} style={{ color: 'black' }}>더보기</Link>}</Typography> */}
-            {!hidden &&
-                <Typography
-                    component="div"
-                    sx={{
-                        width: '100%'
-                    }}
-                >더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기더보기</Typography>}
+            <div>
+                <div id="map" style={{ width: "700px", height: "400px" }}></div>
+            </div>
+
+            <Typography
+                component="div"
+                sx={{
+                    color: 'black',
+                    display: 'flex',
+                    justifyContent: 'flex-first',
+                    width: '100%',
+                    mt: '2rem',
+                    mb: '1rem',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                }}
+            >{reviewInfoFromBackEnd.reviewDto.r_content}</Typography>
+
             <Box sx={{ ...imgSlide }}>
-                <img src={temp1} style={img} />
-                <img src={temp2} style={img} />
-                <img src={temp1} style={img} />
-                <img src={temp2} style={img} />
+                {reviewInfoFromBackEnd.r_ri_images.map((image, index) => (
+                    <img key={index} src={image.r_ri_image} style={imgStyle} />
+                ))}
             </Box>
-            <Divider sx={{ width: '100%', mt: '1rem' }} />
             {/* </Box> */}
         </Paper>
 

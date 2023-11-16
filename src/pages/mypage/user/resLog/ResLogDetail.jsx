@@ -49,6 +49,7 @@ export default function ResLogDetail() {
     const { u_r_no } = useParams();
     const [resLog, setResLog] = useState([]);
     const [use, setUse] = useState('');
+    const [stayDay, setStayDay] = useState('');
 
     const navigate = useNavigate();
 
@@ -61,11 +62,11 @@ export default function ResLogDetail() {
     useEffect(() => {
         api.get("/api/user/mypage/GetRezDetail",{ params: { "u_r_no": u_r_no } },)
             .then((response) => {
-               
+                
                 if (response.data != null) {
-                    console.log('resLogDetail', response.data);
-                    setResLog(response.data);
-
+                    console.log('resLogDetail', response.data[0]);
+                    setResLog(response.data[0]);
+                    setStayDay(response.data.length);
                     if(response.data.u_r_check_in > dayjs(today).format("YYYY-MM-DD")) {
                         console.log('이용전', response.data.u_r_check_in);
                         setUse('이용전');
@@ -146,7 +147,7 @@ export default function ResLogDetail() {
                 <Box sx={{ ...box }}>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>가격</Typography>
-                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{resLog.a_r_price}원</Typography>
+                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{(resLog.a_r_price)*stayDay}원</Typography>
                     </Box>
                 </Box>
                 <Button
