@@ -30,7 +30,7 @@ const UserDetailAccm = () => {
     const allReview = (e) => {
         e.preventDefault();
         console.log("click allReview");
-        navigate('/user/accommodation/detailAccm/reviewList');
+        navigate(`/user/accommodation/detailAccm/reviewList/${accmNum.a_acc_no}`);
     }
 
     const accmNum = useParams();

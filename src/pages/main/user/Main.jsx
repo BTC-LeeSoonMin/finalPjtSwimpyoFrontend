@@ -59,7 +59,7 @@ function Main() {
         }
       });
 
-    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '모텔' } },)
+    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '펜션/풀빌라' } },)
       .then((response) => {
         console.log('bestPension', response.data);
         if (response.data != null) {

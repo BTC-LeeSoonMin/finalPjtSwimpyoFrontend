@@ -156,7 +156,7 @@ function App() {
                         element={<UserDetailAccm />}>
                     </Route>
                     <Route
-                        path="/user/accommodation/detailAccm/reviewList"
+                        path="/user/accommodation/detailAccm/reviewList/:a_acc_no"
                         element={<AccmReview />}>
                     </Route>
                     <Route
@@ -164,7 +164,7 @@ function App() {
                         element={<UserDetailRoom />}>
                     </Route>
                     <Route
-                        path="/user/accommodation/detailRoom/reviewList"
+                        path="/user/accommodation/detailRoom/reviewList/:a_acc_no/:a_r_no"
                         element={<RoomReview />}>
                     </Route>
                     <Route
