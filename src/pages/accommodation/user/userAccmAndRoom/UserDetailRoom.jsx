@@ -24,7 +24,7 @@ const UserDetailRoom = () => {
         e.preventDefault();
         console.log("click allReview");
         // navigate('/user/room/reviewList', { state: a_r_no } );
-        navigate('/user/accommodation/detailRoom/reviewList');
+        navigate(`/user/accommodation/detailRoom/reviewList/${backEndData.roomData.a_acc_no}/${roomNum.a_r_no}`);
     }
 
     // 리덕스 툴킷에서 로그인 확인을 위한 코드 시작
