@@ -27,8 +27,7 @@ export default function AdminNav() {
   const [a_m_no, setA_m_no] = useState('');
   const [checkAccm, setCheckAccm] = useState('');
 
-  console.log('a_m_no', a_m_no);
-  console.log('checkAccm', checkAccm);
+  console.log('AdminNav a_m_no', a_m_no);
 
   const token = useSelector((store) => store.accessToken.value);
 
@@ -46,7 +45,7 @@ export default function AdminNav() {
         .catch();
     }
 
-    if (a_m_no != null) {
+    if (a_m_no > 0) {
       api.get("/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
         .then((response) => {
           if (response.data != null) {
@@ -60,7 +59,7 @@ export default function AdminNav() {
         });
     }
 
-  }, [token]);
+  }, [token, a_m_no]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

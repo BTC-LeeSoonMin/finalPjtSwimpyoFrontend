@@ -93,14 +93,6 @@ const AdminDetailAccm = () => {
 
 
 
-
-    const handleRegistAccm = () => {
-        navigate(`/admin/accommodation/registAccm`);
-        alert("숙박시설 등록 페이지로 이동합니다");
-    };
-
-
-
     // console.log("accmData", accmData);
 
 
@@ -170,51 +162,6 @@ const AdminDetailAccm = () => {
                 </Typography>
             </Box>
         );
-    }
-    else if (!backEndData.accmData.a_acc_no) {
-
-        return (
-
-            <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
-                <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography
-                        variant="h1"
-                        component="div"
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '10rem', // Adjust size as needed
-                            color: 'rgba(0, 0, 0, 0.8)' // Adjust color as needed
-                        }}
-                    >
-                        × {/* This is a multiplication sign, which resembles an X mark. */}
-                    </Typography>
-                    <Typography component="h2" variant="h6" align="center">
-                        현재 등록된 숙박시설이 없습니다. 숙박시설을 등록해주세요.
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        size="small"
-                        sx={{
-                            mt: 3,
-                            width: 150, // 버튼의 넓이를 150픽셀로 설정
-                            backgroundColor: "black",
-                            borderColor: 'white', // 버튼의 테두리 색상도 검정색으로 설정합니다.
-                            '&:hover': {
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
-                            },
-                        }}
-                        onClick={handleRegistAccm}
-                    >
-                        숙박시설 등록
-                    </Button>
-                </Paper>
-            </Container >
-        );
-
     }
 
     else

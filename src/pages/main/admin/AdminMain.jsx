@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import api from '../../../hooks/RefreshTokenAuto';
+import EmptyAccm from './EmptyAccm';
 
 const list = {
   textAlign: 'center',
@@ -16,12 +17,15 @@ const list = {
 };
 
 export default function AdminMain() {
-  const [a_m_no, setA_m_no] = useState('');
+  const [a_m_no, setA_m_no] = useState(0);
   const [checkAccm, setCheckAccm] = useState('');
 
   const token = useSelector((store) => store.accessToken.value);
 
+  console.log('AdminMain a_m_no', a_m_no);
+
   useEffect(() => {
+    console.log('AdminMain');
     if (token) {
 
       api.post("/api/admin/member/adminInfo",)
@@ -35,7 +39,7 @@ export default function AdminMain() {
         .catch();
     }
 
-    if (a_m_no != null) {
+    if (a_m_no > 0) {
       api.get("/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
         .then((response) => {
           if (response.data != null) {
@@ -49,7 +53,7 @@ export default function AdminMain() {
         });
     }
 
-  }, [token]);
+  }, [token, a_m_no]);
 
   return (
     <Container component="main" sx={{
@@ -60,7 +64,7 @@ export default function AdminMain() {
       mt: '3rem'
     }}>
       {checkAccm == 1 && <ReservationStatus a_m_no={a_m_no} />}
-      {checkAccm == 0 && <Box sx={{ ...list }}> 숙박시설을 등록해보세요! </Box>}
+      {checkAccm == 0 && <EmptyAccm />}
     </Container>
   );
 }

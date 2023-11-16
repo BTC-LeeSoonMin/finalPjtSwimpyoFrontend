@@ -9,6 +9,8 @@ import ReservationStatusList from './ReservationStatusList';
 import { useEffect } from 'react';
 import api from '../../../hooks/RefreshTokenAuto';
 import { useState } from 'react';
+import ResStatusDateFilter from './ResStatusDateFilter';
+import dayjs from 'dayjs';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -31,7 +33,10 @@ const right = {
   margin: '1rem'
 }
 
+const today = dayjs();
+
 export default function ReservationStatus({a_m_no}) {
+  const [date, setDate] = useState(dayjs(today).format("YYYY-MM-DD"));
     const [resList, setResList] = useState([]);
 
     const config = {
@@ -42,7 +47,7 @@ export default function ReservationStatus({a_m_no}) {
 
     useEffect(() => {
     
-        api.get("/api/admin/accm/rezList", { params: { "a_m_no": parseInt(a_m_no) } }, )
+        api.get("/api/admin/accm/rezList", { params: { "a_m_no": parseInt(a_m_no), "date": date } }, )
           .then((response) => {
             if(response.data != null) {
                 console.log('resList', response.data);
@@ -61,6 +66,7 @@ export default function ReservationStatus({a_m_no}) {
       mt: '3rem'
     }}>
       <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', margin: 'auto' }}>
+        <ResStatusDateFilter setDate={setDate}/>
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Typography variant="h6" sx={{ ...left, fontWeight: "bold" }}>예약 현황</Typography>
           <Typography sx={{ ...right }}>현재 예약 건수: {resList.length}</Typography>
