@@ -174,14 +174,11 @@ const DetailReview = () => {
             padding: 2,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            // alignItems: 'center',
             margin: 'auto', // This centers the Paper component
             marginTop: 3,
         }}>
 
-            <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-
-            </Typography>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
                 <IconButton aria-label="뒤로 가기" onClick={handleBack}>
                     <ArrowBackIcon />
@@ -243,39 +240,48 @@ const DetailReview = () => {
                     display: 'flex',
                     justifyContent: 'flex-first',
                     width: '100%',
-                    mb: '1rem',
+
                 }}
             >{reviewInfoFromBackEnd.reviewDto.a_r_name}</Typography>
 
-            <div id="map" style={{
-                width: "800px",
-                height: "400px",
-                borderRadius: '10px', // 모서리 둥글게
-                boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
-            }}></div>
+            <Divider sx={{ width: '100%', mt: '1rem' }} />
+            <Box sx={{ mt: 3, alignItems: 'center', }}>
+                <div id="map" style={{
+                    width: "700px",
+                    height: "400px",
+                    borderRadius: '10px', // 모서리 둥글게
+                    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
+                }}></div>
+            </Box>
 
-            <Typography
-                component="div"
-                sx={{
-                    color: 'black',
-                    display: 'flex',
-                    justifyContent: 'flex-first',
-                    width: '100%',
-                    mt: '2rem',
-                    mb: '1rem',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                }}
-            >{reviewInfoFromBackEnd.reviewDto.r_content}</Typography>
-
+            <Divider sx={{ width: '100%', mt: '2rem' }} />
+            <Box sx={{ mt: 2, p: 2, borderRadius: '5px', backgroundColor: '#f5f5f5' }}>
+                <Typography component="h1" variant="h6" sx={{ mt: 1, fontWeight: "bold", flexGrow: 1, }}>
+                    리뷰
+                </Typography>
+                <Typography
+                    component="div"
+                    sx={{
+                        color: 'black',
+                        display: 'flex',
+                        justifyContent: 'flex-first',
+                        width: '100%',
+                        mt: '1rem',
+                        mb: '1rem',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    }}
+                >"{reviewInfoFromBackEnd.reviewDto.r_content}"</Typography>
+            </Box>
+            <Divider sx={{ width: '100%', mt: '1rem', mb: '1rem' }} />
             <Box sx={{ ...imgSlide }}>
                 {reviewInfoFromBackEnd.r_ri_images.map((image, index) => (
-                    <img key={index} src={image.r_ri_image} style={imgStyle} />
+                    <img key={index} src={image.r_ri_image} style={imgStyle} sx={{ objectFit: 'cover' }} />
                 ))}
             </Box>
             {/* </Box> */}
-        </Paper>
+        </Paper >
 
     );
 

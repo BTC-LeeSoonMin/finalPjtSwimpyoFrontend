@@ -430,7 +430,7 @@ const UserDetailRoom = () => {
                                     color="primary"
                                     disabled={reservationStatus === "예약마감"} // 예약마감일 경우 버튼을 비활성화합니다.
                                     sx={{
-                                        mt: 3, mb: 2, mr: 2, width: 'auto',
+                                        mt: 3, mb: 2, width: 'auto', fontWeight: 'bold',
                                         backgroundColor: reservationStatus === "예약마감" ? 'grey' : "#F7323F", // 예약마감일 경우 회색, 아니면 검정색
                                         borderColor: 'white',
                                         '&:hover': {

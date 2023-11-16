@@ -91,6 +91,7 @@ const UserDetailAccm = () => {
     // 사진 MUI를 위한 코드끝
 
     const handleBackClick = () => {
+        alert("예약페이지에서 벗어납니다");
         navigate(-1); // 현재 페이지에서 뒤로 이동
     };
 
@@ -378,9 +379,9 @@ const UserDetailAccm = () => {
                             fullWidth
                             variant="contained"
                             sx={{
-                                mt: 3, mb: 2, backgroundColor: 'skyblue', color: 'white', fontWeight: 'bold',
+                                mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
                                 '&:hover': {
-                                    backgroundColor: 'skyblue',
+                                    backgroundColor: '#F7323F',
                                 }
                             }}
                             onClick={(e) => allReview(e)}

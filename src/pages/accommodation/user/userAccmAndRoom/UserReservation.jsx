@@ -485,7 +485,12 @@ const UserReservation = () => {
                             fullWidth
                             variant="contained"
                             color="primary"
-                            sx={{ mt: 3, mb: 2, mr: 2 }}
+                            sx={{
+                                mt: 3, mb: 2, backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: '#F7323F',
+                                }
+                            }}
 
                             onClick={handlePaymentClick}
                         >
