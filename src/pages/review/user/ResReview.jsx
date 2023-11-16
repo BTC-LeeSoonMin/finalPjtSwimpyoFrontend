@@ -302,7 +302,7 @@ const ResReview = () => {
             r_xy_address: item.address, // 'address'를 'r_xy_address'로 변경
             u_m_email: u_m_email,
             a_r_no: a_r_no
-            // 필요한 경우 다른 속성도 여기서 추가/변경할 수 있습니다.
+
         }));
 
         console.log("modifiedMarkerInfo", modifiedMarkerInfo);

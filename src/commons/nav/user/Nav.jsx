@@ -7,20 +7,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const linkStyle = {
-  color: 'black',
+  color: 'white',
   textDecoration: 'none',
-  fontSize: '18px',
+  fontSize: '20px',
 };
 
 const separatorStyle = {
   margin: '0 8px',
-  color: 'black',
+  color: 'white',
   fontWeight: 'normal',
 };
 
 export default function Nav() {
 
-  const token = useSelector((store)=> store.accessToken.value);
+  const token = useSelector((store) => store.accessToken.value);
   console.log('토큰 값', token);
 
   const notSignIn = (e) => {
@@ -42,30 +42,32 @@ export default function Nav() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: 'lemonchiffon', boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ backgroundColor: '#F7323F', boxShadow: 'none', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         {' '}
         <Toolbar>
-        <Typography
+          <Typography
             noWrap
             component="div"
-            sx={{ 
-              fontWeight: 'bold', 
-              color: 'white', 
-              display: 'flex', 
+            sx={{
+              fontWeight: 'bold',
+              color: 'white',
+              display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              width: '100%' }}
+              width: '100%'
+            }}
           ></Typography>
           <Typography
             noWrap
             component="div"
-            sx={{  
+            sx={{
               fontFamily: 'GangwonEdu_OTFBoldA',
-              display: 'flex', 
+              display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              width: '100%' }}
+              width: '100%'
+            }}
           >
             <Link onClick={(e) => categoryAccm(e, '호텔/리조트')} style={linkStyle}>
               호텔/리조트
@@ -90,11 +92,12 @@ export default function Nav() {
           <Typography
             noWrap
             component="div"
-            sx={{ 
+            sx={{
               fontFamily: 'GangwonEdu_OTFBoldA',
-              display: 'flex', 
+              display: 'flex',
               justifyContent: 'flex-end',
-              width: '100%' }}
+              width: '100%'
+            }}
           >
             {token && <Link to={"/user/myPage"} style={linkStyle}>
               마이페이지
