@@ -144,9 +144,9 @@ const UserRoomList = ({ accomNum, requestData, accmName }) => {
                                             variant="contained"
                                             color="primary"
                                             sx={{
-                                                mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: 'lemonchiffon', color: 'black', fontWeight: 'bold',
+                                                mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
                                                 '&:hover': {
-                                                    backgroundColor: 'lemonchiffon',
+                                                    backgroundColor: '#F7323F',
                                                 },
                                             }}
                                             onClick={() => handleMoveToDetailRoom(room.a_r_no)}

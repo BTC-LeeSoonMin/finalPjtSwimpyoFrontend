@@ -70,7 +70,7 @@ export default function RegionAccm() {
 
   return (
 
-    <Grid item xs={5}>
+    <Grid item xs={5} sx={{ mb: '3rem' }}>
       <Item>
         <Grid container>
           <Grid item xs={3}>
@@ -108,7 +108,7 @@ export default function RegionAccm() {
           충청
         </Link>
         <Box sx={{ width: '100%' }}>
-          {dataLoaded === true ? <KakaoMapForMain accmAddress={accmAddress} dataLoaded={dataLoaded} /> : <Box
+          {dataLoaded === true ? <KakaoMapForMain accmAddress={accmAddress} /> : <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
