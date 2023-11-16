@@ -3,10 +3,10 @@ import KakaoMapForAccm from "../../../components/KaokaoMapForAccm";
 import api from "../../../hooks/RefreshTokenAuto";
 import markerImage from '../../../imgs/markerImage.png'
 import { Box } from "@mui/system";
-import { Button, List, ListItem, ListItemText, Paper, Rating, TextField, Typography } from "@mui/material";
+import { Button, Divider, IconButton, List, ListItem, ListItemText, Paper, Rating, TextField, Typography } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useLocation, useNavigate, useParams } from "react-router";
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -45,11 +45,15 @@ const ResReview = () => {
     const [r_ri_image, setR_ri_image] = useState([]);
 
     // 별점
-    const [star, setStar] = useState(4);
+    const [rating, setRating] = useState(0);
 
-    // const accmNum = {
-    //     a_acc_no: 7
-    // }
+    const handleRatingChange = (event, newValue) => {
+        setRating(newValue); // 사용자가 선택한 평점으로 상태 업데이트
+    };
+
+    const handleBack = () => {
+        navigate(`/user/myPage`);
+    }
 
     const [backEndData, setBackEndData] = useState({
         accmData: {}
@@ -356,10 +360,10 @@ const ResReview = () => {
                 }
             });
             if (response.data == "success") {
-                alert("등록이 되었습니다");
-                navigate(`/`);
+                alert("리뷰등록이 완료 되었습니다");
+                navigate(`/user/myPage`);
             } else if (response.data == "fail") {
-                alert("등록에 실패하였습니다");
+                alert("리뷰등록에 실패하였습니다");
             }
 
             console.log('Data sent to backend:', response.data);
@@ -379,7 +383,11 @@ const ResReview = () => {
             margin: 'auto', // This centers the Paper component
             marginTop: 3,
         }}>
-
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <IconButton aria-label="뒤로 가기" onClick={handleBack}>
+                    <ArrowBackIcon />
+                </IconButton>
+            </Box>
             <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
                 리뷰 등록
             </Typography>
@@ -396,9 +404,11 @@ const ResReview = () => {
                     }}></div>
 
                 </div>
+
+                <Divider sx={{ my: 2 }} />
                 {markerInfo.length === 0 ? (
                     // markerInfo 배열이 비어있을 때 표시할 메시지
-                    <Typography sx={{ mt: 2, mb: 2 }}>
+                    <Typography sx={{ mt: 2, mb: 2, color: 'green' }}>
                         마커를 찍어 여행갔던 장소를 등록해주세요.
                     </Typography>
                 ) : (
@@ -418,7 +428,7 @@ const ResReview = () => {
                         </Box>
                     ))
                 )}
-
+                <Divider sx={{ my: 2 }} />
 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
                 <label htmlFor="fileInput">
@@ -438,8 +448,14 @@ const ResReview = () => {
                         </ListItem>
                     ))}
                 </List>
-
-                <Rating name="read-only" value={star} readOnly size="small" />
+                <Divider sx={{ my: 2 }} />
+                <Rating
+                    name="user-rating"
+                    value={rating}
+                    onChange={handleRatingChange} // 평점 변경 핸들러
+                    size="medium"
+                />
+                <Typography component="legend">숙박업소는 어떠셨나요?</Typography>
 
                 <TextField
                     variant="outlined"

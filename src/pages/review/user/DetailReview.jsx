@@ -62,10 +62,11 @@ const DetailReview = () => {
 
     const handleDeleteConfirmation = () => {
         // 삭제 버튼 클릭 시
+
     }
 
     const handleBack = () => {
-        navigate(``);
+        navigate(-1);
     }
 
     const userInfoEmail = async () => {
@@ -211,9 +212,13 @@ const DetailReview = () => {
                 <IconButton aria-label="뒤로 가기" onClick={handleBack}>
                     <ArrowBackIcon />
                 </IconButton>
-                <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
-                    <DeleteIcon />
-                </IconButton>
+                {
+                    params.u_m_email === userMemberEmail && (
+                        <IconButton aria-label="삭제" onClick={() => handleClickOpen('delete')}>
+                            <DeleteIcon />
+                        </IconButton>
+                    )
+                }
                 <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
             </Box>
             <Box sx={{ display: 'flex', width: '100%', mt: '1rem' }}>
@@ -268,9 +273,12 @@ const DetailReview = () => {
                 }}
             >{reviewInfoFromBackEnd.reviewDto.a_r_name}</Typography>
 
-            <div>
-                <div id="map" style={{ width: "700px", height: "400px" }}></div>
-            </div>
+            <div id="map" style={{
+                width: "800px",
+                height: "400px",
+                borderRadius: '10px', // 모서리 둥글게
+                boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
+            }}></div>
 
             <Typography
                 component="div"
