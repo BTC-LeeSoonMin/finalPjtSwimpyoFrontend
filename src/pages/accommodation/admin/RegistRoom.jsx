@@ -408,7 +408,7 @@ const RegistRoom = () => {
 
 
 
-                        <TextField
+                        {/* <TextField
                             variant="outlined"
                             margin="normal"
                             required
@@ -427,7 +427,7 @@ const RegistRoom = () => {
                             value={a_r_count}
                             onChange={handleChange}
 
-                        />
+                        /> */}
 
                         <TextField
                             variant="outlined"
