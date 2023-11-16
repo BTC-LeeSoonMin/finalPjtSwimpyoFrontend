@@ -59,12 +59,12 @@ export default function MyPageMain() {
         }
       });
 
-    api.post("/api/user/mypage/getReviewList",)
-      .then((response) => {
-        if (response.data != null) {
-          setReviewList(response.data);
-        }
-      });
+    // api.post("/api/user/mypage/getReviewList",)
+    //   .then((response) => {
+    //     if (response.data != null) {
+    //       setReviewList(response.data);
+    //     }
+    //   });
 
   }, []);
 

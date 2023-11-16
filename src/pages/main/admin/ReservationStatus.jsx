@@ -55,7 +55,7 @@ export default function ReservationStatus({a_m_no}) {
             } 
         });
     
-      }, []);
+      }, [date]);
 
   return (
     <Container component="main" sx={{

@@ -20,7 +20,8 @@ export default function MyReview() {
         api.post("/api/user/mypage/getReviewList",)
             .then((response) => {
                 if (response.data != null) {
-                    setReviewList(response.data);
+                    console.log('MyReview', response.data);
+                    // setReviewList(response.data);
                 }
             });
     }, []);
