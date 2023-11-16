@@ -3,6 +3,13 @@ import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/m
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const textHidden = {
+    width: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+};
+
 export default function BestHotel(props) {
     const navigate = useNavigate();
 
@@ -22,10 +29,10 @@ export default function BestHotel(props) {
                     alt="a_i_image"
                 />
                 <CardContent>
-                    <Typography gutterBottom component="div">
+                    <Typography gutterBottom component="div" sx={{...textHidden}}>
                         {props.a_acc_name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{...textHidden}}>
                         누적예약건수{props.예약수}
                     </Typography>
                 </CardContent>
