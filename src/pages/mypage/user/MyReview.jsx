@@ -14,7 +14,8 @@ const list = {
 };
 
 export default function MyReview() {
-    const [reviewList, setReviewList] = useState([]);
+    const [reviewData, setReviewData] = useState([]);
+    const [reviewImg, setReviewImg] = useState([]);
 
     useEffect(() => {
         api.post("/api/user/mypage/getReviewList",)
@@ -22,6 +23,8 @@ export default function MyReview() {
                 if (response.data != null) {
                     console.log('MyReview', response.data);
                     // setReviewList(response.data);
+                    setReviewData(response.data.userReviewList);
+                    setReviewImg(response.data.userReviewImgList);
                 }
             });
     }, []);
@@ -32,9 +35,13 @@ export default function MyReview() {
                 <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
                     내가 작성한 리뷰
                 </Typography>
-                {(reviewList.length != 0) && reviewList.map((item) => (<AccmReviewList {...item} />))}
+                {/* {(reviewList.length != 0) && reviewList.reviewData.map((item) => (<AccmReviewList {...item} reviewImg={reviewList.reviewImg} />))} */}
+                {(reviewData.length !== 0) && reviewData.map((item, index) => (
+                    <AccmReviewList key={index} {...item} reviewImg={reviewImg} />
+                ))}
+
                 <Box sx={{ ...list, borderRadius: '10px' }}>
-                    {(reviewList.length == 0) &&
+                    {(reviewData.length == 0) &&
                         <Typography sx={{ mt: '1rem', textAlign: 'center' }}>
                             작성한 리뷰가 없습니다.
                         </Typography>}
