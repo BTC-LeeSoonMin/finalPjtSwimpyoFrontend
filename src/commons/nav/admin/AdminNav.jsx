@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import api from '../../../hooks/RefreshTokenAuto';
-import { CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const linkStyle = {
   color: 'white',
@@ -24,32 +24,42 @@ const separatorStyle = {
 
 export default function AdminNav() {
 
-  const [a_m_no, setA_m_no] = React.useState("");
-  const [dataLoaded, setDataLoaded] = React.useState(false);
+  const [a_m_no, setA_m_no] = useState('');
+  const [checkAccm, setCheckAccm] = useState('');
 
+  console.log('AdminNav a_m_no', a_m_no);
 
   const token = useSelector((store) => store.accessToken.value);
-  console.log('토큰 값', token);
 
-  const fetchData = async () => {
-    try {
-      const res = await api.post("/api/admin/member/adminInfo");
+  useEffect(() => {
+    if (token) {
 
-      console.log(res.data);
-      setA_m_no(res.data.a_m_no);
-    } catch (error) {
+      api.post("/api/admin/member/adminInfo",)
+        .then((response) => {
+          if (response.data != null) {
+            console.log('adminInfo', response.data.a_m_no);
+            setA_m_no(response.data.a_m_no);
+          }
 
-      console.error("An error occurred:", error);
+        })
+        .catch();
     }
-  }
 
+    if (a_m_no > 0) {
+      api.get("/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
+        .then((response) => {
+          if (response.data != null) {
+            console.log('checkAccm', response.data);
+            setCheckAccm(response.data);
+          }
 
-  React.useEffect(() => {
-    fetchData();
-  }, [token]);
+        }).catch((error) => {
+          // 실패
 
+        });
+    }
 
-
+  }, [token, a_m_no]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,21 +80,19 @@ export default function AdminNav() {
               width: '100%'
             }}
           >
-            <Link to="/admin/accommodation/registAccm" style={linkStyle}>
+            {checkAccm == 0 && <Link to="/admin/accommodation/registAccm" style={linkStyle}>
               숙박 시설 등록
-            </Link>
-            <span style={separatorStyle}>|</span>
-            <Link to="/" style={linkStyle}>
-              리뷰관리
-            </Link>
-            <span style={separatorStyle}>|</span>
+            </Link>}
+            {checkAccm == 0 && <span style={separatorStyle}>|</span>}
+
+            {checkAccm == 1 && <Link to={`/admin/accommodation/detailAccm/${a_m_no}`} style={linkStyle}>
+              나의 업소 관리
+            </Link>}
+            {checkAccm == 1 && <span style={separatorStyle}>|</span>}
             <Link to="/admin/member/modify" style={linkStyle}>
               계정 수정
             </Link>
-            <span style={separatorStyle}>|</span>
-            <Link to={`/admin/accommodation/detailAccm/${a_m_no}`} style={linkStyle}>
-              나의 업소 관리
-            </Link>
+
           </Typography>}
         </Toolbar>
       </AppBar>

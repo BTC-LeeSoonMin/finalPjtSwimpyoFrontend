@@ -83,15 +83,15 @@ api.interceptors.response.use(
 
           if(response.data === "RefTokenNullInCookie") {
             alert("로그인해주세요.");
-            window.location.href ="/admin/member/signIn";
+            window.location.href ="/user/member/signIn";
             
           } else if(response.data === "RefTokenNullInDB") {
             alert("정보가 없습니다. 로그인해주세요.");
-            window.location.href ="/admin/member/signIn";
+            window.location.href ="/user/member/signIn";
             
           } else if(response.data === "RefTokenExpired") {
             alert("로그인 시간 만료. 다시 로그인해주세요.");
-            window.location.href ="/admin/member/signIn";
+            window.location.href ="/user/member/signIn";
 
           } else {
             // 새로운 토큰 저장 
