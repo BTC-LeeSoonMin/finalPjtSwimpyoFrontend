@@ -47,9 +47,9 @@ const ResReview = () => {
     // 별점
     const [star, setStar] = useState(4);
 
-    const accmNum = {
-        a_acc_no: 7
-    }
+    // const accmNum = {
+    //     a_acc_no: 7
+    // }
 
     const [backEndData, setBackEndData] = useState({
         accmData: {}
@@ -62,7 +62,7 @@ const ResReview = () => {
 
 
         try {
-            const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${accmNum?.a_acc_no}`);
+            const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
             // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
@@ -367,11 +367,6 @@ const ResReview = () => {
             console.error('Error sending data to backend:', error);
         }
     };
-
-
-
-
-
 
     return (
 

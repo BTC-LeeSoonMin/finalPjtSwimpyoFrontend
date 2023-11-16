@@ -46,7 +46,7 @@ export default function AccmReviewList(props) {
         }}>
             <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                 {/* <Link to={`/user/accommodation/reviewDetail/${r_no}`} >상세보기</Link> */}
-                <Link to={`/user/review/detail/${props.r_no}`} style={{textDecoration: 'none', color: 'black'}}>상세보기 &gt;</Link>
+                <Link to={`/user/review/detail/${props.u_m_email}/${props.r_no}`} style={{ textDecoration: 'none', color: 'black' }}>상세보기 &gt;</Link>
             </Typography>
             <Box sx={{ display: 'flex', width: '100%' }}>
                 <Typography
@@ -78,11 +78,11 @@ export default function AccmReviewList(props) {
                     color: 'black',
                     display: 'flex',
                     justifyContent: 'flex-first',
-                    width: '100%', 
+                    width: '100%',
                     mb: '1rem',
                 }}
             >{props.a_r_name}</Typography>
-            
+
             {hidden &&
                 <Typography
                     noWrap
@@ -90,7 +90,7 @@ export default function AccmReviewList(props) {
                     sx={{ ...textHidden }}
                 >{props.r_content}</Typography>
             } <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                {hidden && <Link onClick={(e) => moreClick(e)} style={{color: 'black'}}>더보기</Link>}</Typography>
+                {hidden && <Link onClick={(e) => moreClick(e)} style={{ color: 'black' }}>더보기</Link>}</Typography>
             {!hidden &&
                 <Typography
                     component="div"
@@ -98,7 +98,7 @@ export default function AccmReviewList(props) {
                         width: '100%'
                     }}
                 >{props.r_content}</Typography>}
-                <Box sx={{...imgSlide}}>
+            <Box sx={{ ...imgSlide }}>
                 <img src={props.r_ri_image} style={img} />
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />

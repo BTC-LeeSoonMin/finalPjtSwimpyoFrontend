@@ -35,6 +35,8 @@ const DetailReview = () => {
     const params = useParams();
     const navigate = useNavigate();
 
+    console.log("params", params);
+
     const [openDelete, setOpenDelete] = useState(false);
 
     const [userMemberEmail, setUserMemberEmail] = useState("");
@@ -82,7 +84,7 @@ const DetailReview = () => {
 
     const reviewInfo = async () => {
         try {
-            const res = await api.get("/api/user/review/showDetail", { params: { "r_no": 123 } },)
+            const res = await api.get("/api/user/review/showDetail", { params: { "r_no": params.r_no } },)
             console.log(res.data);
             setReviewInfoFromBackEnd({
                 reviewDto: res.data.reviewDto,
@@ -134,6 +136,32 @@ const DetailReview = () => {
 
         // marker.setMap(map);
         // map.setCenter(markerPosition);
+
+        new window.kakao.maps.services.Geocoder().addressSearch(reviewInfoFromBackEnd.reviewDto.a_acc_address, function (result, status) {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                // 여기에 커스텀 마커 이미지 사용하려면 아래 주석을 해제하고 적절한 값으로 설정하세요.
+                let imageSrc = markerImage; // 마커 이미지 경로
+                let imageSize = new window.kakao.maps.Size(50, 50);
+                let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
+                let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+                let marker = new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                    image: markerComplete // 커스텀 마커 이미지 사용
+                });
+
+                map.setCenter(coords);
+
+                marker.setMap(map);
+                // infowindow.open(map, marker);
+            }
+        });
+
+
+
         reviewInfoFromBackEnd.r_xy_address.forEach(addressObj => {
             new window.kakao.maps.services.Geocoder().addressSearch(addressObj.r_xy_address, function (result, status) {
                 if (status === window.kakao.maps.services.Status.OK) {
@@ -149,11 +177,11 @@ const DetailReview = () => {
                     });
 
                     infowindow.open(map, marker);
-                    map.setCenter(coords);
+                    // map.setCenter(coords);
                 }
             });
         });
-    }, [reviewInfoFromBackEnd])
+    }, [reviewInfoFromBackEnd]);
 
 
 
@@ -243,7 +271,6 @@ const DetailReview = () => {
             <div>
                 <div id="map" style={{ width: "700px", height: "400px" }}></div>
             </div>
-
 
             <Typography
                 component="div"
