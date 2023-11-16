@@ -21,8 +21,6 @@ export default function MyReview() {
         api.post("/api/user/mypage/getReviewList",)
             .then((response) => {
                 if (response.data != null) {
-                    console.log('MyReview', response.data);
-                    // setReviewList(response.data);
                     setReviewData(response.data.userReviewList);
                     setReviewImg(response.data.userReviewImgList);
                 }
