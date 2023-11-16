@@ -100,19 +100,17 @@ const ModifyRoom = () => {
 
 
     const handleRemoveImage = (keyToRemove) => {
-        // 선택된 이미지를 제거합니다.
+        // 선택된 이미지를 제거
         const indexToRemove = selectedFileNames.findIndex(fileName => fileName.key === keyToRemove);
 
-        // setR_i_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
 
-
-        // 이미지의 a_i_no 값을 찾습니다.
+        // 이미지의 a_i_no 값을 찾음
         const imageNoToRemove = selectedFileNames[indexToRemove]?.key;  // key = a_i_no
         console.log("키 번호", imageNoToRemove);
         console.log("키 번호 타입", typeof (imageNoToRemove));
         console.log("ffffffffffffffffff", Array.isArray(r_i_image));
 
-        // 이미지 고유 번호(a_i_no)를 deleteImage 배열에 추가합니다.
+        // 이미지 고유 번호(a_i_no)를 deleteImage 배열에 추가
         if (!imageNoToRemove.includes('.')) {
             setDeleteImage(prevDeleteImage => [...prevDeleteImage, imageNoToRemove]);
         }
@@ -120,11 +118,11 @@ const ModifyRoom = () => {
         setR_i_image(prevImages => prevImages.filter((_, index) => index !== indexToRemove));
         //
 
-        // 선택된 파일 이름 목록에서 해당 항목을 제거합니다.
+        // 선택된 파일 이름 목록에서 해당 항목을 제거
         const updatedFileNames = selectedFileNames.filter(fileName => fileName.key !== keyToRemove);
         setSelectedFileNames(updatedFileNames);
 
-        // 선택된 파일 URL 목록에서 해당 항목을 제거합니다.
+        // 선택된 파일 URL 목록에서 해당 항목을 제거
         const updatedFileURLs = selectedFileURLs.filter((_, index) => index !== indexToRemove);
         setSelectedFileURLs(updatedFileURLs);
     };
@@ -146,7 +144,7 @@ const ModifyRoom = () => {
                 break;
             case 'a_r_price':
                 const onlyNumber = value.replace(/[^0-9]/g, '');
-                // 숫자를 포맷하여 상태를 업데이트합니다.
+                // 숫자를 포맷하여 상태를 업데이트함
                 const pricePerThousand = onlyNumber ? parseInt(onlyNumber, 10).toLocaleString() : '';
                 setA_r_price(pricePerThousand);
                 break;
@@ -162,7 +160,7 @@ const ModifyRoom = () => {
             case 'a_r_content':
                 setA_r_content(value);
                 break;
-            // 이미지 핸들링은 별도로 처리해야 합니다.
+            // 이미지 핸들링은 별도로 처리해야 함
             default:
                 break;
         }
@@ -206,18 +204,6 @@ const ModifyRoom = () => {
         }
         // 이미지 업로드 에러 메시지 끝
 
-
-        // 에러 메시지 띄우기 위한 로직 시작
-        // for (const field in fieldErrors) {
-        //     if (a_r_state === '' && a_r_check_in === '' && a_r_check_out == '') {
-        //         newErrors[field] = true;
-        //         allFieldsValid = false;
-        //         errorMessageRef.current.scrollIntoView({
-        //             behavior: 'smooth',
-        //             block: 'center'
-        //         });
-        //     }
-        // }
         if (!a_r_state) {
             newErrors['a_r_state'] = 'State is required';
             allFieldsValid = false;
@@ -291,8 +277,7 @@ const ModifyRoom = () => {
                 console.log("확인 : ", response.data);
                 setBackEndData(response.data.adminRoomDto);
                 console.log("accmData", backEndData);
-                // const imageUrls = images.a_i_images;
-                // setImages(imageUrls);
+
 
                 setBackEndData({
                     ...response.data.adminRoomDto,
@@ -368,8 +353,7 @@ const ModifyRoom = () => {
 
         if (deleteImage.length > 0) {
             data.append("deleteNo", deleteImage);
-            // const deleteImageBlob = new Blob([JSON.stringify(deleteImage)], { type: "application/json" });
-            // data.append("deleteImg", deleteImageBlob);
+
         }
         console.log("deleteNo", data.deleteImageBlob);
 
@@ -440,8 +424,6 @@ const ModifyRoom = () => {
                             }}
                             value={backEndData.a_acc_no || ''}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
                         />
 
                         <TextField
@@ -460,8 +442,7 @@ const ModifyRoom = () => {
                             }}
                             value={backEndData.a_m_no || ''}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
+
                         />
 
                         <TextField
@@ -476,8 +457,7 @@ const ModifyRoom = () => {
                             autoFocus
                             value={a_r_name}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
+
                         />
 
 
@@ -552,8 +532,7 @@ const ModifyRoom = () => {
                             autoComplete="off"
                             value={a_r_count}
                             onChange={handleChange}
-                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
-                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+
                         />
 
                         <TextField
@@ -571,8 +550,7 @@ const ModifyRoom = () => {
                             autoComplete="off"
                             value={a_r_price}
                             onChange={handleChange}
-                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
-                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+
                         />
 
                         <TextField
@@ -642,7 +620,7 @@ const ModifyRoom = () => {
                                 variant="contained"
                                 color="primary"
                                 sx={{ mt: 3, mb: 2, mr: 2 }}
-                            // disabled={!setSelectedFileNames[0]}
+
                             >
                                 수정
                             </Button>

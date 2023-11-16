@@ -219,11 +219,6 @@ const RegistAccm = () => {
         // 에러 메시지 띄우기 위한 로직 끝
 
 
-        // if (selectedFileNames.length === 0) {
-        //     alert("이미지를 업로드 해주세요");
-        //     return;
-        // }
-
         // adminAccmDto 객체에 모든 데이터를 담아서 보내기
         const jsonBlob = new Blob([JSON.stringify({
             a_acc_name: formData.a_acc_name,
@@ -279,8 +274,7 @@ const RegistAccm = () => {
                     <Typography component="h1" variant="h5" sx={{ mt: 3, fontWeight: "bold" }}>
                         숙박 업소 등록
                     </Typography>
-                    {/* <Box component="form" onSubmit={registAccmConfirm} noValidate sx={{ mt: 1 }}> */}
-                    {/* <Box> */}
+
                     <form onSubmit={registAccmConfirm} name='regist_accm_confirm' style={{ width: '100%', marginTop: 1 }}>
                         <TextField
                             variant="outlined"

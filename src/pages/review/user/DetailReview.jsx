@@ -108,10 +108,6 @@ const DetailReview = () => {
     console.log("reviewInfoFromBackEnd", reviewInfoFromBackEnd);
 
 
-    // useEffect(() => {
-    //     fetchData(); // 비동기 함수 호출
-    // }, []);
-
     useEffect(() => {
 
         let container = document.getElementById('map');
@@ -123,26 +119,10 @@ const DetailReview = () => {
         let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
 
-        // let imageSrc = markerImage;
-        // let imageSize = new window.kakao.maps.Size(50, 50);
-        // let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
-        // let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-
-        // let markerPosition = new window.kakao.maps.LatLng(latitude, longitude); // latitude 위도, longitude 경도
-        // let marker = new window.kakao.maps.Marker({
-        //     position: markerPosition,
-        //     image: markerComplete
-        // });
-
-        // marker.setMap(map);
-        // map.setCenter(markerPosition);
-
         new window.kakao.maps.services.Geocoder().addressSearch(reviewInfoFromBackEnd.reviewDto.a_acc_address, function (result, status) {
             if (status === window.kakao.maps.services.Status.OK) {
                 const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
-                // 여기에 커스텀 마커 이미지 사용하려면 아래 주석을 해제하고 적절한 값으로 설정하세요.
                 let imageSrc = markerImage; // 마커 이미지 경로
                 let imageSize = new window.kakao.maps.Size(50, 50);
                 let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
@@ -157,7 +137,7 @@ const DetailReview = () => {
                 map.setCenter(coords);
 
                 marker.setMap(map);
-                // infowindow.open(map, marker);
+
             }
         });
 
@@ -178,7 +158,7 @@ const DetailReview = () => {
                     });
 
                     infowindow.open(map, marker);
-                    // map.setCenter(coords);
+
                 }
             });
         });
@@ -198,15 +178,9 @@ const DetailReview = () => {
             margin: 'auto', // This centers the Paper component
             marginTop: 3,
         }}>
-            {/* <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                mt: '1rem',
-            }}> */}
+
             <Typography sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-                {/* <Link to={`/user/accommodation/reviewDetail/${a_r_no}`} >상세보기</Link> */}
-                {/* <Link to='/user/accommodation/reviewDetail/' style={{ textDecoration: 'none', color: 'black' }}>상세보기 &gt;</Link> */}
+
             </Typography>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
                 <IconButton aria-label="뒤로 가기" onClick={handleBack}>

@@ -121,10 +121,6 @@ const AdminDetailRoom = () => {
                     roomImages: res.data.r_i_images
                 });
                 setDataLoaded(true);
-                // setImages(res.data.a_i_images);
-                // const imageUrls = images.a_i_images;
-                // setImages(imageUrls);
-
 
             } catch (error) {
                 setDataLoaded(true);
@@ -145,13 +141,13 @@ const AdminDetailRoom = () => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // This ensures that the Box takes the full viewport height
+                minHeight="100vh"
                 sx={{
-                    backgroundColor: 'background.default', // Use theme background color
-                    color: 'text.primary', // Use theme text color
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
                 }}
             >
-                {/* You can include a CircularProgress component to indicate loading status */}
+
                 <CircularProgress color="inherit" />
                 <Typography variant="h3" component="h1">
                     Loading...
@@ -241,7 +237,6 @@ const AdminDetailRoom = () => {
                 </Item>
 
                 <Item sx={{ marginTop: '1rem' }}>
-                    {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         업소 정보
 

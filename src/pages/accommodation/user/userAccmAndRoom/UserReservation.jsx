@@ -25,13 +25,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import api from "../../../../hooks/RefreshTokenAuto";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import dayjs from "dayjs";
 
-
-
-// 슬라이드 애니메이션 주기위한 것
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 
 const UserReservation = () => {
@@ -85,7 +80,13 @@ const UserReservation = () => {
 
     const toBackStartDate = convertDateToISO(startDate);
     const toBackEndDate = convertDateToISO(endDate);
+
+    const toBackStartDateStringType = dayjs(startDate).format("YYYY-MM-DD");
+    const toBackEndDateStringType = dayjs(endDate).format("YYYY-MM-DD");
+
+    // dayjs(toBackEndDate).format("YYYY-MM-DD")
     // 백엔드에서 date타입으로 필요로 하기에 바꿔주는 작업 끝
+    console.log("toBackStartDateStringType", toBackStartDateStringType);
 
     // 날짜 -1일 전 무료취소 가능 시작
     const forCancelDate = new Date(startDate);
@@ -173,28 +174,10 @@ const UserReservation = () => {
     // 결제를 위해 카카오 테스트 코드, 주문 요청번호
 
     const [nextRedirectPcUrl, setNextRedirectPcUrl] = useState("");
-    // const [tid, setTid] = useState("");
-    const [tid, setTid] = useState("");
-    const [created_at, setCreated_at] = useState("");
-    const [cid, setCid] = useState("");
-    const [partner_order_id, setPartner_order_id] = useState("");
-    const [partner_user_id, setPartner_user_id] = useState("");
-    const [item_name, setItem_name] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [total_amount, setTotal_amount] = useState(0);
-    const [vat_amount, setVat_amount] = useState(0);
-    const [tax_free_amount, setTax_free_amount] = useState(0);
-
-
 
     console.log("dataForPayment", userMemberInfo.u_m_email);
     console.log("dataForPayment", dataForPayment);
 
-    const [dataCheckFromBack, setDataCheckFromBack] = useState({
-        kakaoReadyResponseDto: {},
-        kakaoApproveInfo: {},
-        amountDto: {}
-    });
 
     useEffect(() => {
 
@@ -219,27 +202,6 @@ const UserReservation = () => {
 
     }, [userMemberInfo]);
 
-
-    // const completePay = async () => {
-    //     try {
-    //         console.log("useEffect 결제 성공완료");
-    //         const response = await api.get(`/api/user/reservation/success`);
-    //         console.log("response.data", response.data);
-    //         if (response.data == "success") {
-    //             return (
-    //                 <h2>
-    //                     결제 완료 성공
-    //                 </h2>
-    //             );
-    //         }
-    //     } catch (error) {
-    //         console.error('주문 처리 중 오류 발생:', error);
-    //     }
-    // }
-
-
-
-
     const fetchDataForKakaoURL = async () => {
         const data = new FormData();
 
@@ -262,8 +224,8 @@ const UserReservation = () => {
             u_r_name: resName,
             u_r_phone: resPhone,
             a_r_no: location.state.backEndData.a_r_no,
-            u_r_check_in: toBackStartDate,
-            u_r_check_out: toBackEndDate,
+            u_r_check_in: toBackStartDateStringType,
+            u_r_check_out: toBackEndDateStringType,
             u_r_stay_yn: u_r_stay_yn,
             u_r_car_yn: u_r_car_yn,
             a_r_price: a_r_price,
@@ -293,14 +255,13 @@ const UserReservation = () => {
 
         if (nextRedirectPcUrl) {
             const paymentWindow = window.open(nextRedirectPcUrl, '_blank');
-            // const paymentWindow = window.open(nextRedirectPcUrl, '_blank');
-            // completePay();
+
 
             // 결제 창의 상태를 주기적으로 확인하는 함수
             const checkPaymentWindowClosed = () => {
                 if (paymentWindow.closed) {
                     // 새 창이 닫혔을 때 실행할 로직
-                    navigate(`/`, {
+                    navigate(`/user/myPage`, {
                         state: {
                             // 필요한 상태 데이터 전달
                         }
@@ -318,17 +279,8 @@ const UserReservation = () => {
     }, [nextRedirectPcUrl]);
 
     const handlePaymentClick = () => {
-
-        // setOpen(true); // 모달창을 열어줍니다.
         console.log("useEffect!@!!!!!");
-        // if (dataForPayment.u_m_email) {
-        // axios를 사용하여 POST 요청을 보냅니다.
-
         fetchDataForKakaoURL();
-
-
-        // console.log("nextRedirectPcUrl", nextRedirectPcUrl);
-
     }
 
 
@@ -408,7 +360,7 @@ const UserReservation = () => {
                                 </FormControl>
                             </Box>
                         </Paper>
-                        {/* 다른 정보 및 버튼 등이 여기에 올 수 있습니다. */}
+
                     </CardContent>
                 </Card>
 
@@ -498,32 +450,7 @@ const UserReservation = () => {
                                 },
                             }}
                         />
-                        {/* <TextField
-                            required
-                            label="휴대폰 번호"
-                            fullWidth
-                            variant="outlined"
-                            margin="normal"
-                            value={isChecked ? userMemberInfo.u_m_phone : ''}
-                            onChange={(e) => setUserMemberInfo({ ...userMemberInfo, u_m_phone: e.target.value })}
-                            InputLabelProps={{
-                                shrink: true, // 항상 레이블을 축소 상태로 유지
-                            }}
-                            sx={{
-                                backgroundColor: isChecked ? 'action.disabledBackground' : '', // 체크됐을 때 배경색 변경
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'action.disabled', // 테두리 색상 변경
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'primary.main', // 호버 시 테두리 색상 변경
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'primary.main', // 포커스 시 테두리 색상 변경
-                                    },
-                                },
-                            }}
-                        /> */}
+
                         <Typography color="textSecondary" sx={{ mt: 2, mb: 2, fontSize: 10 }}>
                             입실하시는 분의 이름과 휴대전화 번호를 입력해주세요. 본인 확인 및 안전한 거래를 위해 필수정보로 게스트 정보 등에는 공개되지 않습니다.
                         </Typography>
@@ -543,7 +470,7 @@ const UserReservation = () => {
                                 {a_r_price}원
                             </Typography>
                         </Box>
-                        {/* 추가 비용에 대한 항목을 여기에 추가할 수 있습니다. */}
+
                         <Divider sx={{ my: 2 }} />
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                             <Typography variant="body2">
@@ -559,12 +486,12 @@ const UserReservation = () => {
                             variant="contained"
                             color="primary"
                             sx={{ mt: 3, mb: 2, mr: 2 }}
-                            // disabled={!setSelectedFileNames[0]}
+
                             onClick={handlePaymentClick}
                         >
                             결제
                         </Button>
-                        {/* <PaymentModal open={open} onClose={() => setOpen(false)} url={nextRedirectPcUrl} /> */}
+
                     </CardContent>
                 </Card>
 

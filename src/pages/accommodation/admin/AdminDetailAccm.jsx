@@ -35,8 +35,7 @@ const AdminDetailAccm = () => {
 
     const [dataLoaded, setDataLoaded] = useState(false);
 
-    // const [accmData, setAccmData] = useState({}); // 백엔드에서 넘어온 데이터 넣는곳
-    // const [images, setImages] = useState([]);
+
     const [backEndData, setBackEndData] = useState({
         accmData: {},
         accmImages: []
@@ -113,9 +112,7 @@ const AdminDetailAccm = () => {
                     accmImages: res.data.a_i_images
                 });
                 setDataLoaded(true);
-                // setImages(res.data.a_i_images);
-                // const imageUrls = images.a_i_images;
-                // setImages(imageUrls);
+
 
 
             } catch (error) {
@@ -128,20 +125,6 @@ const AdminDetailAccm = () => {
     }, [requestData]);
 
 
-    // console.log("accmData", accmData);
-    // console.log("image", images);
-
-    // useEffect(() => {
-    //     if (Array.isArray(images)) {
-    // console.log(images)
-    // // const imageUrls = images.map(item => item.imageUrl);
-    // const imageUrls = res.data.a_i_images
-    // setImages(imageUrls);
-    //     } else {
-    //         console.error("images 상태가 배열 형식이 아닙니다:", images);
-    //     }
-    // }, [images]);
-
     if (!dataLoaded) {
 
         return (
@@ -149,13 +132,12 @@ const AdminDetailAccm = () => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh" // This ensures that the Box takes the full viewport height
+                minHeight="100vh"
                 sx={{
-                    backgroundColor: 'background.default', // Use theme background color
-                    color: 'text.primary', // Use theme text color
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
                 }}
             >
-                {/* You can include a CircularProgress component to indicate loading status */}
                 <CircularProgress color="inherit" />
                 <Typography variant="h3" component="h1">
                     Loading...
@@ -249,7 +231,7 @@ const AdminDetailAccm = () => {
                     </Item>
 
                     <Item sx={{ marginTop: '1rem' }}>
-                        {/* <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}> */}
+
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                             업소 정보
                         </Grid>

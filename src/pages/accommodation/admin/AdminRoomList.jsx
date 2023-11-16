@@ -106,12 +106,11 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                     const imageObj = backEndData.roomImages.find((image, index) => image.a_r_no === room.a_r_no);
                     // 이미지 객체가 존재하지 않는 경우 기본 이미지 경로를 사용합니다.
                     const imageUrl = imageObj ? imageObj.r_i_image : 'defaultImagePath'; // 'defaultImagePath'를 기본 이미지 경로로 교체하세요.
-                    // const imageNum = imageObj.r_i_no;
 
                     return (
                         <Grid item xs={12} sm={6} key={room.a_r_no} sx={{
-                            display: 'flex', justifyContent: 'center', border: 1,  // 1px solid border
-                            borderColor: 'grey.500', // Border color
+                            display: 'flex', justifyContent: 'center', border: 1,
+                            borderColor: 'grey.500',
                             borderRadius: 'borderRadius',
                         }}>
                             <Box sx={{
@@ -131,9 +130,9 @@ const AdminRoomList = ({ accomNum, requestData }) => {
 
                                     <CardContent
                                         sx={{
-                                            paddingBottom: '10px', // 이 값을 원하는 크기로 조절할 수 있습니다.
+                                            paddingBottom: '10px',
                                             '&:last-child': {
-                                                paddingBottom: '16px',  // CardContent가 Card의 마지막 자식일 때 적용됩니다.
+                                                paddingBottom: '16px',  // CardContent가 Card의 마지막 자식일 때 적용
                                             },
                                         }}>
                                         <Typography
@@ -151,8 +150,8 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" align="right"
                                             sx={{
-                                                fontWeight: 'bold', // 글자를 굵게 만듭니다.
-                                                fontSize: '1.1rem' // 기본 크기보다 크게 설정합니다. 필요한 크기로 조절 가능합니다.
+                                                fontWeight: 'bold',
+                                                fontSize: '1.1rem'
                                             }}
                                         >
                                             가격: {room.a_r_price.toLocaleString('ko-KR')}원
@@ -166,9 +165,9 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                                             color="primary"
                                             sx={{
                                                 mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: "black",
-                                                borderColor: 'white', // 버튼의 테두리 색상도 검정색으로 설정합니다.
+                                                borderColor: 'white',
                                                 '&:hover': {
-                                                    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 호버 상태일 때의 배경색을 조금 더 투명한 검정색으로 설정합니다.
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
                                                 },
                                             }}
 
@@ -186,11 +185,11 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                 {backEndData.roomData.length === 0 || backEndData.roomData.length % 2 !== 0 ? (
                     <Grid item xs={12} sm={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
                         <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{
-                            minWidth: 140, // Set both minWidth and height to ensure a square
-                            height: 140,   // You can adjust the size (140 here) as needed
-                            maxWidth: '100%', // Ensure that button is not bigger than its container
+                            minWidth: 140,
+                            height: 140,
+                            maxWidth: '100%',
                             maxHeight: '100%',
-                            fontSize: '3rem' // Adjust font size if needed
+                            fontSize: '3rem'
                         }}>
                             +
                         </Button>
@@ -200,11 +199,11 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                 {backEndData.roomData.length > 0 && backEndData.roomData.length % 2 === 0 ? (
                     <Grid item xs={12} sm={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
                         <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{
-                            minWidth: 140, // Set both minWidth and height to ensure a square
-                            height: 140,   // You can adjust the size (140 here) as needed
-                            maxWidth: '100%', // Ensure that button is not bigger than its container
+                            minWidth: 140,
+                            height: 140,
+                            maxWidth: '100%',
                             maxHeight: '100%',
-                            fontSize: '3rem' // Adjust font size if needed
+                            fontSize: '3rem'
                         }}>
                             +
                         </Button>

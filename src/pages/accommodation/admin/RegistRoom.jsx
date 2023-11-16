@@ -74,8 +74,6 @@ const RegistRoom = () => {
             console.log("확인 : ", res.data);
             setBackEndData(res.data.adminAccmDto);
             console.log("accmData", backEndData);
-            // const imageUrls = images.a_i_images;
-            // setImages(imageUrls);
 
         } catch (error) {
             console.error("An error occurred:", error);
@@ -203,17 +201,6 @@ const RegistRoom = () => {
         // 이미지 업로드 에러 메시지 끝
 
 
-        // 에러 메시지 띄우기 위한 로직 시작
-        // for (const field in fieldErrors) {
-        //     if (a_r_state === '' && a_r_check_in === '' && a_r_check_out == '') {
-        //         newErrors[field] = true;
-        //         allFieldsValid = false;
-        //         errorMessageRef.current.scrollIntoView({
-        //             behavior: 'smooth',
-        //             block: 'center'
-        //         });
-        //     }
-        // }
         if (!a_r_state) {
             newErrors['a_r_state'] = 'State is required';
             allFieldsValid = false;
@@ -330,8 +317,7 @@ const RegistRoom = () => {
                             }}
                             value={backEndData.a_acc_no || ''}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
+
                         />
 
                         <TextField
@@ -350,8 +336,7 @@ const RegistRoom = () => {
                             }}
                             value={backEndData.a_m_no || ''}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
+
                         />
 
                         <TextField
@@ -366,8 +351,7 @@ const RegistRoom = () => {
                             autoFocus
                             value={a_r_name}
                             onChange={handleChange}
-                        // helperText={fieldErrors.a_r_name ? "이 입력란을 작성하세요." : ""}
-                        // error={a_r_name}
+
                         />
 
 
@@ -442,8 +426,7 @@ const RegistRoom = () => {
                             autoComplete="off"
                             value={a_r_count}
                             onChange={handleChange}
-                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
-                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+
                         />
 
                         <TextField
@@ -461,8 +444,7 @@ const RegistRoom = () => {
                             autoComplete="off"
                             value={a_r_price}
                             onChange={handleChange}
-                        // helperText={fieldErrors.price ? "올바른 가격을 입력하세요." : ""}
-                        // error={Boolean(fieldErrors.price)} // fieldErrors.price가 존재하면 true로 변환하여 error props에 전달
+
                         />
 
                         <TextField
