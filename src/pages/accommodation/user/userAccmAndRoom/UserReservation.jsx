@@ -110,7 +110,6 @@ const UserReservation = () => {
     console.log(u_r_stay_yn);
 
     const handleBackClick = () => {
-        alert("예약페이지에서 벗어납니다");
         navigate(-1); // 현재 페이지에서 뒤로 이동
     };
 
