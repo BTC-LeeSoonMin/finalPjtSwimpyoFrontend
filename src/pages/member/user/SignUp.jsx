@@ -55,13 +55,6 @@ function SignUp() {;
 
   const createAccountConfirm = (e) => {
     e.preventDefault();
-    console.log("click SignUp");
-    console.log("email : ", email);
-    console.log("PW : ", pw);
-    console.log("name : ", name);
-    console.log("birth : ", birth);
-    console.log("nickname : ", nickname);
-    console.log("phone : ", phone);
 
     let data = {};
 
@@ -78,7 +71,6 @@ function SignUp() {;
 
       axios.post("/api/user/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data)
           if (response.data === "MemberUserDup") {
             alert("사용중인 아이디입니다. 다른 아이디를 입력하세요.");
 
@@ -90,12 +82,10 @@ function SignUp() {;
 
           } else if (response.data === "MemberUserSignUpFail") {
             //DB 에러
-            console.log('DB 통신 에러');
             alert("통신 에러 다시 시도해주세요.");
 
           } else {
             //실패 
-            console.log('fail');
             alert("통신 에러 다시 시도해주세요.");
 
           }
@@ -105,11 +95,9 @@ function SignUp() {;
         });
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
 
     } else if (!regExpEmail.test(email)) {
       alert("메일 형식이 틀립니다.");
-      console.log("메일 형식이 틀립니다.")
 
     } 
 

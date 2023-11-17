@@ -98,7 +98,7 @@ export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_da
                     }}
                 >{r_content}</Typography>}
             <Box sx={{ ...imgSlide }}>
-                {reviewImg.map((item, index) => {
+                {/* {reviewImg.map((item, index) => {
 
                     const imgObj = reviewImg.find((img, index) => img.r_no === r_no);
 
@@ -107,6 +107,15 @@ export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_da
                            {imgObj && <img src={item.r_ri_image} style={img} />}
                         </div>
                     )
+                })} */}
+                {reviewImg.forEach( (item) => {
+                   console.log("review foreath",item)
+                   return (
+                    <div key={item.r_no}>
+                       {item && <img src={item.r_ri_image} style={img} />}
+                      
+                    </div>
+                )
                 })}
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />

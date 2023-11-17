@@ -26,7 +26,6 @@ const separatorStyle = {
 export default function Header() {
 
   const token = useSelector((store) => store.accessToken.value);
-  console.log('토큰 값', token);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,8 +37,6 @@ export default function Header() {
   };
 
   const logout = (e) => {
-
-    console.log("logout");
 
     api.post("/api/user/member/logout", config,)
       .then((response) => {

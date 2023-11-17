@@ -24,7 +24,7 @@ function AdminModify() {
   const [email, setEmail] = useState('');
 
   const dispatch = useDispatch();
-  const token = useSelector((store)=> store.accessToken.value);
+  const token = useSelector((store) => store.accessToken.value);
 
   const config = {
     headers: {
@@ -33,13 +33,11 @@ function AdminModify() {
   };
 
   useEffect(() => {
-    console.log('adminModify start');
 
     api.post("/api/admin/member/adminInfo",
       config,
     )
       .then(response => {
-        console.log(response.data);
         setEmail(response.data.a_m_email);
         setPw(response.data.a_m_pw);
         setName(response.data.a_m_name);
@@ -54,9 +52,6 @@ function AdminModify() {
 
   const modify = (e) => {
     e.preventDefault();
-    console.log("click Modify");
-    console.log("name : ", name);
-    console.log("phone : ", phone);
 
     let data = {};
 
@@ -70,29 +65,19 @@ function AdminModify() {
 
       api.post("/api/admin/member/modify", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data)
           if (response.data === "MemberAdminModifySuccess") {
-            console.log('성공');
             navigate('/admin');
 
           } else if (response.data === "MemberAdminModifyFail") {
-            console.log('실패');
-
+            alert('다시 시도해주세요.');
           } else if (response.data === -1) {
-            console.log('-1');
-
-          } else {
-            console.log('fail');
-
-
+            alert('다시 시도해주세요.');
           }
         }).catch((error) => {
-          // 실패 힝힝 속상하다리 ㅠ
 
         });
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
 
     }
 
@@ -100,21 +85,19 @@ function AdminModify() {
 
   const signOut = (e) => {
     e.preventDefault();
-    console.log("click SignOut");
 
-    if(window.confirm("정말 탈퇴하시겠습니까?")) {
+    if (window.confirm("정말 탈퇴하시겠습니까?")) {
       api.post("/api/admin/member/signout", config,)
         .then((response) => {
-          console.log('response.data ===', response.data);
-          if(response.data === "signOutSuccess") {
+          if (response.data === "signOutSuccess") {
             //탈퇴 성공
             dispatch(setAccessToken.setAccessToken(''));
             alert('탈퇴되었습니다.');
             navigate('/admin/member/signIn');
-          } else if(response.data === "signOutFail") {
+          } else if (response.data === "signOutFail") {
             //실패 
             alert('탈퇴 실패. 다시 시도해주세요.');
-          } else if(response.data === "signOutFail") {
+          } else if (response.data === "signOutFail") {
             //실패 
             alert('탈퇴 실패. 다시 시도해주세요.');
           } else {
@@ -196,7 +179,7 @@ function AdminModify() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }} 
+            sx={{ mt: 2, mb: 2, backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'black' } }}
           >
             회원 정보 수정
           </Button>
@@ -204,7 +187,7 @@ function AdminModify() {
       </Paper>
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: 'black', '&:hover': { backgroundColor: 'black' } }} 
+        sx={{ mt: 3, backgroundColor: 'black', '&:hover': { backgroundColor: 'black' } }}
         onClick={(e) => signOut(e)}
       >
         회원탈퇴

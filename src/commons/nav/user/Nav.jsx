@@ -21,7 +21,6 @@ const separatorStyle = {
 export default function Nav() {
 
   const token = useSelector((store) => store.accessToken.value);
-  console.log('토큰 값', token);
 
   const notSignIn = (e) => {
     alert('로그인 후 사용 가능합니다.');
@@ -33,7 +32,6 @@ export default function Nav() {
   const categoryAccm = (e, value) => {
     e.preventDefault();
     const category = value;
-    console.log('category', category);
     navigate('/user/categoryAccm', { state: category });
 
   };

@@ -34,13 +34,11 @@ function Modify() {
   };
 
   useEffect(() => {
-    console.log('userModify start');
 
     api.post("/api/user/member/userInfo",
       config,
     )
       .then(response => {
-        console.log(response.data);
         setEmail(response.data.u_m_email);
         setPw(response.data.u_m_pw);
         setNickname(response.data.u_m_nickname);
@@ -57,10 +55,6 @@ function Modify() {
 
   const modify = (e) => {
     e.preventDefault();
-    console.log("click Modify");
-    console.log("u_m_nickname : ", nickname);
-    console.log("u_m_name : ", name);
-    console.log("u_m_phone : ", phone);
 
     let data = {};
 
@@ -74,28 +68,22 @@ function Modify() {
 
       api.post("/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data)
           if (response.data === "MemberUserModifySuccess") {
-            console.log('성공');
             navigate('/');
 
           } else if (response.data === "MemberUserModifyFail") {
-            console.log('실패');
+            alert('다시 시도해주세요');
 
           } else if (response.data === -1) {
-            console.log('-1');
+            alert('다시 시도해주세요');
 
-          } else {
-            console.log('fail');
-
-          }
+          } 
         }).catch((error) => {
           // 실패
 
         });
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
 
     }
 
@@ -105,12 +93,10 @@ function Modify() {
 
   const signOut = (e) => {
     e.preventDefault();
-    console.log("click SignOut");
 
     if(window.confirm("정말 탈퇴하시겠습니까?")) {
       api.post("/api/user/member/signout", config,)
         .then((response) => {
-          console.log('response.data ===', response.data);
           if(response.data === "signOutSuccess") {
             //탈퇴 성공
             dispatch(setAccessToken.setAccessToken(''));

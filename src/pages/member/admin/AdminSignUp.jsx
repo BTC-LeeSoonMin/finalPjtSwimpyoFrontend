@@ -52,15 +52,6 @@ function AdminSignUp() {
 
   const createAccountConfirm = (e) => {
     e.preventDefault();
-    console.log("click SignUp");
-    console.log("mail : ", mail);
-    console.log("PW : ", pw);
-    console.log("pwConfirm : ", pwConfirm);
-    console.log("name : ", name);
-    console.log("phone : ", phone);
-    console.log("a_m_oper_yn : ", a_m_oper_yn);
-    console.log("a_m_br_yn : ", a_m_br_yn);
-    console.log("a_m_ar_yn : ", a_m_ar_yn);
 
     let data = {};
 
@@ -80,26 +71,20 @@ function AdminSignUp() {
 
       axios.post("/api/admin/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data)
           if (response.data === "MemberAdminDup") {
             //이메일 중복 실패 
-            console.log('사용중인 이메일입니다.');
             alert("사용중인 이메일입니다.");
 
           } else if (response.data === "MemberAdminSignUpSuccess") { 
             //성공 
-            console.log('성공');
-            //로그인 페이지로 가도록 경로 변경하기
             navigate('/admin/member/signIn');
 
           } else if (response.data === "MemberAdminSignUpFail") {
             //DB 에러
-            console.log('DB 통신 에러');
             alert("통신 에러 다시 시도해주세요.");
 
           } else {
             //실패 
-            console.log('fail');
             alert("통신 에러 다시 시도해주세요.");
 
           }
@@ -109,11 +94,9 @@ function AdminSignUp() {
         });
     } else if (!regExpEmail.test(mail)) {
       alert("메일 형식이 틀립니다.");
-      console.log("메일 형식이 틀립니다.")
 
     } else if (!patternPhone.test(phone)) {
       alert("연락처 형식이 틀립니다.");
-      console.log("연락처 형식이 틀립니다.")
 
     }
 
@@ -122,10 +105,6 @@ function AdminSignUp() {
   const [selectedValue, setSelectedValue] = React.useState('a');
 
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
-  };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>

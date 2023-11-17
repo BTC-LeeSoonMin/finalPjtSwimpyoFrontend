@@ -27,8 +27,6 @@ export default function AdminNav() {
   const [a_m_no, setA_m_no] = useState('');
   const [checkAccm, setCheckAccm] = useState('');
 
-  console.log('AdminNav a_m_no', a_m_no);
-
   const token = useSelector((store) => store.accessToken.value);
 
   useEffect(() => {
@@ -37,7 +35,6 @@ export default function AdminNav() {
       api.post("/api/admin/member/adminInfo",)
         .then((response) => {
           if (response.data != null) {
-            console.log('adminInfo', response.data.a_m_no);
             setA_m_no(response.data.a_m_no);
           }
 
@@ -49,7 +46,6 @@ export default function AdminNav() {
       api.get("/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
         .then((response) => {
           if (response.data != null) {
-            console.log('checkAccm', response.data);
             setCheckAccm(response.data);
           }
 

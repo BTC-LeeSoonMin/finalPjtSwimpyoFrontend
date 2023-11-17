@@ -31,10 +31,6 @@ function AdminChangePw() {
 
   const changePw = (e) => {
     e.preventDefault();
-    console.log("click changePW");
-    console.log("PW : ", pw);
-    console.log("newPw : ", newPw);
-    console.log("pwConfirm : ", pwConfirm);
 
     let data = {};
 
@@ -47,20 +43,15 @@ function AdminChangePw() {
 
       axios.post("/api/admin/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
-          console.log(response.data)
           if (response.data === "AdminChangePwSuccess") {
             //성공
-            console.log('성공');
             navigate('/admin');
 
           } else if (response.data === "AdminChangePwFail") {
             // 기존 비밀번호 틀렸을 경우
             alert('다시 시도해주세요.');
 
-          } else {
-            console.log('fail');
-
-          }
+          } 
         }).catch((error) => {
           // 실패
 

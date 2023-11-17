@@ -15,7 +15,6 @@ function SignIn() {
 
   const dispatch = useDispatch();
   const token = useSelector((store)=> store.accessToken.value);
-  console.log('토큰!', token);
 
   const linkStyle = {
     color: 'black',
@@ -35,10 +34,6 @@ function SignIn() {
   const signInForm = (e) => {
     e.preventDefault();
 
-    console.log("click SignIn");
-    console.log("email : ", email);
-    console.log("pw : ", pw);
-
     let data = {};
 
     data = {
@@ -50,17 +45,12 @@ function SignIn() {
       .then((response) => {
 
         if (response.data === "MemberUserLoginFail") {
-          console.log("================존재하지 않는 정보입니다.", response.data);
           alert("존재하지 않는 정보입니다.");
 
         } else if (response.data === "IncorrectIdOrPw") {
-          console.log("======================아이디 또는 비밀번호가 일치하지 않습니다.", response.data);
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 
         } else {
-          console.log("======================로그인 성공");
-          // 작업 완료 되면 관리자 메인 페이지 이동하도록 변경하기
-          console.log('로그인 성공', response.data); 
           dispatch(setAccessToken.setAccessToken(response.data));
           navigate('/');
 
