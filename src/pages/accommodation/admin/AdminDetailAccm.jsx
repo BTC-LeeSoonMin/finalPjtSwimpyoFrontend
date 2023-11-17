@@ -171,7 +171,7 @@ const AdminDetailAccm = () => {
         return (
 
             <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
-                <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '700px', margin: 'auto' }}>
+                <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '900px', margin: 'auto' }}>
                     <Box sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -250,7 +250,7 @@ const AdminDetailAccm = () => {
                     <Item sx={{ marginTop: '1rem' }}>
 
 
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem' }}>
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem', fontWeight: 'bold' }}>
                             {backEndData.accmData.a_acc_name}
                         </Grid>
 
@@ -258,7 +258,7 @@ const AdminDetailAccm = () => {
 
                     <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5' }}>
                         <Typography variant="h6" gutterBottom sx={{ mb: 2, ml: 1 }} >
-                            숙소정보
+                            숙소 정보
                         </Typography>
 
                         <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
@@ -294,9 +294,9 @@ const AdminDetailAccm = () => {
 
                     <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5', mt: 2 }}>
 
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
-                            업소 정보
-                        </Grid>
+                        <Typography variant="h6" gutterBottom sx={{ ml: 1 }} >
+                            안내사항
+                        </Typography>
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
                             <span dangerouslySetInnerHTML={{ __html: backEndData.accmData.a_acc_intro }}></span>
                         </Grid>

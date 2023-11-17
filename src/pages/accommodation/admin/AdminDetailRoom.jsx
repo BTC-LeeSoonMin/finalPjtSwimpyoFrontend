@@ -180,7 +180,7 @@ const AdminDetailRoom = () => {
 
     return (
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
-            <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+            <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '900px', margin: 'auto' }}>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton aria-label="뒤로 가기" onClick={handleBack}>
@@ -255,7 +255,7 @@ const AdminDetailRoom = () => {
                 <Item sx={{ marginTop: '1rem' }}>
 
 
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem' }}>
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem', fontWeight: 'bold' }}>
                         {backEndData.roomData.a_r_name}
                     </Grid>
 
@@ -296,7 +296,7 @@ const AdminDetailRoom = () => {
 
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                         <Typography variant="h6" gutterBottom sx={{ mb: 1 }} >
-                            숙소정보
+                            방 안내사항
                         </Typography>
 
                         <Grid item xs={12}>

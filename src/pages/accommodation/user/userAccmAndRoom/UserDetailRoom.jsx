@@ -325,7 +325,7 @@ const UserDetailRoom = () => {
 
     return (
         <Container component="main" sx={{ marginBottom: '3rem', marginTop: '3rem' }}>
-            <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '700px', margin: 'auto' }}>
+            <Paper elevation={3} sx={{ padding: '2rem', display: 'flex', flexDirection: 'column', maxWidth: '900px', margin: 'auto' }}>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                     <IconButton aria-label="뒤로 가기" onClick={handleBack} sx={{ order: -1 }} >
@@ -398,7 +398,7 @@ const UserDetailRoom = () => {
 
 
                 <Item sx={{ marginTop: '1rem', mb: '1rem' }}>
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', fontWeight: 'bold' }}>
                         {backEndData.roomData.a_r_name}
                     </Grid>
                 </Item>
