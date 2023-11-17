@@ -79,11 +79,16 @@ function ResLogList(props) {
                 <Grid item xs={3}>
                     <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
-                        {props.u_r_check_in < today && <Button variant="contained" onClick={(e) => resReview(e)}
+                        <Button variant="contained" onClick={(e) => resReview(e)}
                             sx={{
                                 color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
                                 '&:hover': { backgroundColor: '#F7323F' }
-                            }}>리뷰작성</Button>}
+                            }}>리뷰작성</Button>
+                        {/* {props.u_r_check_in < today && <Button variant="contained" onClick={(e) => resReview(e)}
+                            sx={{
+                                color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
+                                '&:hover': { backgroundColor: '#F7323F' }
+                            }}>리뷰작성</Button>} */}
                     </Link>
                 </Grid>
             </Grid>
