@@ -18,9 +18,10 @@ const drawerWidth = 240;
 const linkStyle = {
   color: 'black',
   textDecoration: 'none',
-  fontSize: '15px',
+  fontSize: '25px',
   fontWeight: 'normal',
   padding: '1rem',
+  fontFamily: 'GangwonEdu_OTFBoldA',
 };
 
 export default function ClippedDrawer() {

@@ -14,7 +14,7 @@ import SearchBar from '../../../pages/accommodation/user/searchAccm/SearchBar';
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontSize: '18px',
+  fontSize: '23px',
 };
 
 const separatorStyle = {

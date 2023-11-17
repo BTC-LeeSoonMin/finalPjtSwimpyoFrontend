@@ -40,6 +40,7 @@ const info = {
 const today = dayjs();
 
 function ResLogList(props) {
+
     const navigate = useNavigate();
 
     const resReview = (e) => {
@@ -47,6 +48,8 @@ function ResLogList(props) {
         navigate(`/user/review/regist/${props.a_acc_no}/${props.a_r_no}/${props.u_r_no}/${props.u_m_email}`);
 
     };
+
+    console.log('props.isWrite', props.isWrite);
 
     return (
         <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
@@ -79,16 +82,12 @@ function ResLogList(props) {
                 <Grid item xs={3}>
                     <Link style={{ ...info }} to={`/user/myPage/resLogDetail/${props.u_r_no}`}>상세보기 &gt;</Link>
                     <Link style={{ ...info }}>
-                        <Button variant="contained" onClick={(e) => resReview(e)}
-                            sx={{
-                                color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
-                                '&:hover': { backgroundColor: '#F7323F' }
-                            }}>리뷰작성</Button>
-                        {/* {props.u_r_check_in < today && <Button variant="contained" onClick={(e) => resReview(e)}
-                            sx={{
-                                color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
-                                '&:hover': { backgroundColor: '#F7323F' }
-                            }}>리뷰작성</Button>} */}
+                        {props.isWrite === 0 && props.u_r_check_in <= dayjs(today).format("YYYY-MM-DD") &&
+                            (<Button variant="contained" onClick={(e) => resReview(e)}
+                                sx={{
+                                    color: 'white', bgcolor: '#F7323F', fontWeight: 'bold', mt: '65px',
+                                    '&:hover': { backgroundColor: '#F7323F' }
+                                }}>리뷰작성</Button>)}
                     </Link>
                 </Grid>
             </Grid>

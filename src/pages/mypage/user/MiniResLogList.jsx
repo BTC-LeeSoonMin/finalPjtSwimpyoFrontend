@@ -11,6 +11,8 @@ const textHidden = {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+    fontFamily: 'GangwonEdu_OTFBoldA',
+    fontSize: '18px',
 };
 
 export default function MiniResLogList(props) {
@@ -20,10 +22,10 @@ export default function MiniResLogList(props) {
                 <Grid item xs={4} sx={{ ...textHidden, display: 'flex', alignItems: 'flex-first' }}>
                     {props.a_acc_name}
                 </Grid>
-                <Grid item xs={4} sx={{ ...textHidden, display: 'flex', alignItems: 'flex-first' }}>
+                <Grid item xs={4} sx={{ ...textHidden, display: 'flex', alignItems: 'flex-first', pl: '10px', pr: '10px' }}>
                     {props.a_r_name}
                 </Grid>
-                <Grid item xs={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <Grid item xs={4} sx={{ ...textHidden, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                     {props.u_r_check_in}
                 </Grid>
             </Grid>

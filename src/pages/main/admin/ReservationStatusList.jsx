@@ -9,20 +9,29 @@ const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  }));
+}));
+
+const textHidden = {
+    width: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    alignItems: 'center', 
+    fontSize: '17px'
+};
 
 export default function ReservationStatusList(props) {
 
     return (
         <>
             <Item sx={{ boxShadow: 'none' }}>
-                <Grid container sx={{ alignItems: 'center' }}>
+                <Grid container sx={{ ...textHidden }}>
                     <Grid item xs={1}>{props.u_r_name}</Grid>
-                    <Grid item xs={3}>{props.a_r_name}</Grid>
+                    <Grid item xs={2}>{props.a_r_name}</Grid>
                     <Grid item xs={1}>{props.u_r_stay_yn}</Grid>
                     <Grid item xs={1}>{props.u_r_car_yn}</Grid>
                     <Grid item xs={2}>{props.u_r_phone}</Grid>
-                    <Grid item xs={1}>{props.u_r_check_in_time}{props.a_r_check_in}/{props.u_r_check_out_time}{props.a_r_check_out}</Grid>
+                    <Grid item xs={2}>{props.u_r_check_in_time}{props.a_r_check_in}/{props.u_r_check_out_time}{props.a_r_check_out}</Grid>
                     <Grid item xs={3}>{props.u_r_check_in}~{props.u_r_check_out}</Grid>
                 </Grid>
             </Item>

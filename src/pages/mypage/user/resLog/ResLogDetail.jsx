@@ -150,8 +150,8 @@ export default function ResLogDetail() {
                         <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{((resLog.a_r_price) * stayDay).toLocaleString('ko-KR')}원</Typography>
                     </Box>
                 </Box>
-                {resLog.u_r_check_in < today &&
-                    <Button
+                {resLog.u_r_check_in <= dayjs(today).format("YYYY-MM-DD") && resLog.isWrite === 0 &&
+                    (<Button
                         fullWidth
                         variant="contained"
                         sx={{
@@ -163,7 +163,7 @@ export default function ResLogDetail() {
                         onClick={(e) => resReview(e)}
                     >
                         후기 작성하기
-                    </Button>}
+                    </Button>)}
             </Paper>
         </Container>
     );

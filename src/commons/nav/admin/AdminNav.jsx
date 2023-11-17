@@ -12,7 +12,7 @@ import { useState } from 'react';
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontSize: '16px',
+  fontSize: '22px',
   fontWeight: 'normal',
 };
 

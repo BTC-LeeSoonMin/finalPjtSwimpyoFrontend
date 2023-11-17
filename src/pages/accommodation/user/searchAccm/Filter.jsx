@@ -86,7 +86,7 @@ function Filter({setFilter}) {
                 >
                     <MenuItem value={'all'}>
                         {' '}
-                        <em>None</em>{' '}
+                        <em>지역전체</em>{' '}
                     </MenuItem>
                     <MenuItem value={'부산'}>부산</MenuItem>
                     <MenuItem value={'서울'}>서울</MenuItem>

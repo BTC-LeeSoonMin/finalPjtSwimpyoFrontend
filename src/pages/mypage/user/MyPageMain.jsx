@@ -30,8 +30,14 @@ const list = {
 };
 
 const titleFont = {
-  fontSize: '20px',
+  fontSize: '28px',
   fontWeight: 'bold',
+  fontFamily: 'GangwonEdu_OTFBoldA',
+};
+
+const userInfoFont = {
+  fontSize: '20px',
+  fontFamily: 'GangwonEdu_OTFBoldA',
 };
 
 export default function MyPageMain() {
@@ -80,10 +86,10 @@ export default function MyPageMain() {
         <Grid container>
           <Grid item xs={4}><img src={user_icon} style={{ width: '100%', maxWidth: '100px' }} /></Grid>
           <Grid item xs={8}>
-            <Typography sx={{ fontWeight: 'bold', mt: '1rem', color: 'white' }}>
+            <Typography sx={{ ...userInfoFont, fontWeight: 'bold', mt: '1rem', color: 'white' }}>
               {userNickName}님
             </Typography>
-            <Typography sx={{ color: 'white' }}>
+            <Typography sx={{ ...userInfoFont, color: 'white' }}>
               {userEmail}
             </Typography>
           </Grid>
@@ -100,7 +106,7 @@ export default function MyPageMain() {
 
             {(resLogList.length != 0) && resLogList.slice(0, 4).map((item) => (<MiniResLogList {...item} />))}
             {(resLogList.length == 0) &&
-              <Typography sx={{ mt: '1rem' }}>
+              <Typography sx={{ mt: '1rem', fontFamily: 'GangwonEdu_OTFBoldA', fontSize: '17px' }}>
                 예약 정보가 없습니다.
               </Typography>}
           </Box>
@@ -113,7 +119,7 @@ export default function MyPageMain() {
             <Divider sx={{ width: '100%', mt: '1rem' }} />
             {(reviewList.length != 0) && reviewList.slice(0, 4).map((item) => (<MiniReviewList {...item} />))}
             {(reviewList.length == 0) &&
-              <Typography sx={{ mt: '1rem' }}>
+              <Typography sx={{ mt: '1rem', fontFamily: 'GangwonEdu_OTFBoldA', fontSize: '17px' }}>
                 작성한 리뷰가 없습니다.
               </Typography>}
           </Box>

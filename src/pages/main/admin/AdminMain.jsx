@@ -57,7 +57,7 @@ export default function AdminMain() {
 
   return (
     <Container component="main" sx={{
-      display: { xs: 'none', sm: 'block' },
+      display: { xs: 'xl', sm: 'block' },
       color: 'black',
       width: '100%',
       boxShadow: 'none',

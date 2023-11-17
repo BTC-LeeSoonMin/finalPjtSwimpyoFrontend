@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 const linkStyle = {
   color: 'white',
   textDecoration: 'none',
-  fontSize: '20px',
+  fontSize: '25px',
 };
 
 const separatorStyle = {
