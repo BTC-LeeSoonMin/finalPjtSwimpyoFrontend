@@ -30,8 +30,6 @@ const img = {
 export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_date, a_r_name, r_content, reviewImg }) {
     const [hidden, setHidden] = useState(true);
 
-    console.log('reviewImg', reviewImg);
-
     const moreClick = (e) => {
         e.preventDefault();
         setHidden(false);
@@ -98,25 +96,11 @@ export default function AccmReviewList({ r_no, u_m_email, u_m_nickname, r_reg_da
                     }}
                 >{r_content}</Typography>}
             <Box sx={{ ...imgSlide }}>
-                {/* {reviewImg.map((item, index) => {
-
-                    const imgObj = reviewImg.find((img, index) => img.r_no === r_no);
-
-                    return (
-                        <div key={index}>
-                           {imgObj && <img src={item.r_ri_image} style={img} />}
-                        </div>
-                    )
-                })} */}
-                {reviewImg.forEach( (item) => {
-                   console.log("review foreath",item)
-                   return (
-                    <div key={item.r_no}>
-                       {item && <img src={item.r_ri_image} style={img} />}
-                      
-                    </div>
-                )
-                })}
+                {reviewImg.filter((img, index) => img.r_no === r_no).map(data => (
+                    <dev>
+                        {<img src={data.r_ri_image} style={img} />}
+                    </dev>
+                ))}
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem' }} />
         </Box>
