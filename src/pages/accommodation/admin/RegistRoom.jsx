@@ -357,7 +357,13 @@ const RegistRoom = () => {
 
                         <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
                         <label htmlFor="fileInput">
-                            <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                            <Button variant="contained" color="primary" sx={{
+                                mt: 2, mr: 2, backgroundColor: "black",
+                                borderColor: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                },
+                            }} component="span" startIcon={<CloudUploadIcon />}>
                                 이미지 업로드
                             </Button>
                         </label>
@@ -513,8 +519,13 @@ const RegistRoom = () => {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 3, mb: 2, mr: 2 }}
-                            // disabled={!setSelectedFileNames[0]}
+                                sx={{
+                                    mt: 3, mb: 2, mr: 2, backgroundColor: "black",
+                                    borderColor: 'white',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                    },
+                                }}
                             >
                                 등록
                             </Button>
@@ -524,7 +535,13 @@ const RegistRoom = () => {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{
+                                    mt: 3, mb: 2, backgroundColor: "black",
+                                    borderColor: 'white',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                                    },
+                                }}
                                 onClick={() => navigate(-1)}
                             >
                                 취소

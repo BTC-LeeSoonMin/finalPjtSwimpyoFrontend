@@ -335,7 +335,7 @@ const UserReservation = () => {
                             <Box>
 
                                 <Typography variant="body1" gutterBottom sx={{ textAlign: 'right' }}>
-                                    <span style={{ fontSize: '15px' }}> {location.state.backEndData.a_r_state} / {diffDays}박</span>  <span style={{ fontWeight: 'bold', fontSize: '20px' }}>{a_r_price}</span>원
+                                    <span style={{ fontSize: '15px' }}> {location.state.backEndData.a_r_state} / {diffDays}박</span>  <span style={{ fontWeight: 'bold', fontSize: '20px' }}>{a_r_price.toLocaleString('ko-KR')}</span>원
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" sx={{ color: 'green' }}>
                                     무료취소 ({cancellationDate} 00:00까지)
@@ -467,7 +467,7 @@ const UserReservation = () => {
                                 상품 금액
                             </Typography>
                             <Typography variant="body1">
-                                {a_r_price}원
+                                {a_r_price.toLocaleString('ko-KR')}원
                             </Typography>
                         </Box>
 
@@ -477,7 +477,7 @@ const UserReservation = () => {
                                 총 결제 금액
                             </Typography>
                             <Typography variant="body1" color="secondary">
-                                {a_r_price}원
+                                {a_r_price.toLocaleString('ko-KR')}원
                             </Typography>
                         </Box>
                         <Button

@@ -147,7 +147,7 @@ export default function ResLogDetail() {
                 <Box sx={{ ...box }}>
                     <Box sx={{ display: 'flex', width: '100%' }}>
                         <Typography sx={{ ...left }}>가격</Typography>
-                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{(resLog.a_r_price) * stayDay}원</Typography>
+                        <Typography sx={{ ...right, fontWeight: 'bold', fontSize: '18px', }}>{((resLog.a_r_price) * stayDay).toLocaleString('ko-KR')}원</Typography>
                     </Box>
                 </Box>
                 {resLog.u_r_check_in < today &&

@@ -64,7 +64,7 @@ function SearchAccmList(props) {
                   {props.a_acc_address}
                 </Typography>
                 <Typography sx={{ ...info, mt: '1rem' }} >
-                  {props.a_r_state} {props.a_r_check_in} |  {props.a_r_price}원~
+                  {props.a_r_state} {props.a_r_check_in} |  {props.a_r_price.toLocaleString('ko-KR')}원~
                 </Typography>
               </Box>
             </Grid>
