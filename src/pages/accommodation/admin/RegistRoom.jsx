@@ -27,7 +27,7 @@ const RegistRoom = () => {
     const [a_r_price, setA_r_price] = useState(''); // 방 가격
     const [a_r_check_in, setA_r_check_in] = React.useState(new Date().setHours(14, 0)); // 체크인 시간 상태
     const [a_r_check_out, setA_r_check_out] = React.useState(new Date().setHours(11, 0)); // 체크아웃 시간 상태
-    const [a_r_count, setA_r_count] = useState(''); // 방 개수
+    // const [a_r_count, setA_r_count] = useState(''); // 방 개수
     const [a_r_content, setA_r_content] = useState(''); // 방 안내 설명
     const [r_i_image, setR_i_image] = useState([]); // 방 이미지
 
@@ -152,9 +152,9 @@ const RegistRoom = () => {
             case 'a_r_check_out':
                 setA_r_check_out(value);
                 break;
-            case 'a_r_count':
-                setA_r_count(value);
-                break;
+            // case 'a_r_count':
+            //     setA_r_count(value);
+            //     break;
             case 'a_r_content':
                 setA_r_content(value);
                 break;
@@ -262,7 +262,7 @@ const RegistRoom = () => {
             a_r_price: parseInt(a_r_price.replace(/,/g, ''), 10),
             a_r_check_in: formattedCheckInTime,
             a_r_check_out: formattedCheckOutTime,
-            a_r_count: a_r_count,
+            // a_r_count: a_r_count,
             a_r_content: a_r_content,
         })], { type: "application/json" });
 
