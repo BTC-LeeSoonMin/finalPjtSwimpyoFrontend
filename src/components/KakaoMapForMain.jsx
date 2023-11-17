@@ -5,8 +5,6 @@ import { CircularProgress, Typography } from "@mui/material";
 
 const KakaoMapForMain = ({ accmAddress }) => {
 
-    console.log("카카오맵으로 왔나", accmAddress);
-
 
     useEffect(() => {
 

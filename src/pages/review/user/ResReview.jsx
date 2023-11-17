@@ -66,7 +66,7 @@ const ResReview = () => {
 
         try {
             const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
-            //  res -> 서버에서 받아온 데이터
+
             console.log("detail data success");
 
             setBackEndData({
@@ -406,7 +406,12 @@ const ResReview = () => {
 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={uploadProfile} multiple="multiple" style={{ display: 'none' }} id="fileInput" />
                 <label htmlFor="fileInput">
-                    <Button variant="contained" color="primary" component="span" startIcon={<CloudUploadIcon />}>
+                    <Button variant="contained" sx={{
+                        mt: 1, mr: 2, width: 'auto', backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
+                        '&:hover': {
+                            backgroundColor: '#F7323F',
+                        },
+                    }} component="span" startIcon={<CloudUploadIcon />}>
                         이미지 업로드
                     </Button>
                 </label>
@@ -421,13 +426,13 @@ const ResReview = () => {
                     ))}
                 </List>
                 <Divider sx={{ my: 2 }} />
-                <Rating
+                {/* <Rating
                     name="user-rating"
                     value={rating}
                     onChange={handleRatingChange} // 평점 변경 핸들러
                     size="medium"
                 />
-                <Typography component="legend">숙박업소는 어떠셨나요?</Typography>
+                <Typography component="legend">숙박업소는 어떠셨나요?</Typography> */}
 
                 <TextField
                     variant="outlined"
@@ -443,16 +448,25 @@ const ResReview = () => {
                     rows={5} // 기본적으로 보여줄 행의 수
                 />
 
-
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 3, mb: 2, mr: 2 }}
-                >
-                    등록
-                </Button>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                            mt: 3, mb: 2, mr: 2, width: 'auto', backgroundColor: '#F7323F', color: 'white', fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#F7323F',
+                            },
+                        }}
+                    >
+                        등록
+                    </Button>
+                </Box>
             </form>
         </Paper >
 

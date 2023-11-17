@@ -91,7 +91,6 @@ const UserDetailAccm = () => {
     // 사진 MUI를 위한 코드끝
 
     const handleBackClick = () => {
-        alert("예약페이지에서 벗어납니다");
         navigate(-1); // 현재 페이지에서 뒤로 이동
     };
 
@@ -100,7 +99,7 @@ const UserDetailAccm = () => {
     /* 지도 모달을 위한 함수 시작 */
 
     useEffect(() => {
-        // URL의 해시가 'locationMapModal'일 때 모달을 엽니다.
+        // URL의 해시가 'locationMapModal'일 때 모달을 염
         if (location.hash === '#locationMapModal') {
             setOpen(true);
         } else {
