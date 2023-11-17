@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Carousel from 'react-material-ui-carousel'
@@ -21,6 +21,7 @@ import ConfirmOrClose from '../../../components/ConfirmOrClose';
 import { Modal } from '@mui/base';
 import AdminRoomList from './AdminRoomList';
 import api from '../../../hooks/RefreshTokenAuto';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const AdminDetailRoom = () => {
 
@@ -48,6 +49,26 @@ const AdminDetailRoom = () => {
     const [openDelete, setOpenDelete] = useState(false);
     const [openImg, setOpenImg] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+
+    // 사진 MUI를 위한 코드시작
+    const [activeStep, setActiveStep] = useState(0);
+    const images = backEndData.roomImages; // 여기서는 roomImages 배열이 이미 준비
+
+    const handleThumbnailClick = (index) => {
+        setActiveStep(index);
+    };
+    const thumbnailContainerRef = useRef();
+
+    const scrollLeft = () => {
+        thumbnailContainerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    };
+
+    const scrollRight = () => {
+        thumbnailContainerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    };
+    // 사진 MUI를 위한 코드끝
+
+
 
 
     /* 수정과 삭제를 위한 함수 시작 */
@@ -165,6 +186,9 @@ const AdminDetailRoom = () => {
                     <IconButton aria-label="뒤로 가기" onClick={handleBack}>
                         <ArrowBackIcon />
                     </IconButton>
+                    <Typography component="h1" variant="h5" sx={{ mt: 1, fontWeight: "bold", textAlign: 'center', flexGrow: 1, marginLeft: '-10px' }}>
+                        방 상세 보기
+                    </Typography>
                     <Box>
                         <IconButton aria-label="수정" onClick={() => handleClickOpen('edit')}>
                             <EditIcon />
@@ -178,71 +202,105 @@ const AdminDetailRoom = () => {
                     </Box>
                 </Box>
 
-                <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                    <Carousel>
-                        {backEndData.roomImages.map((imageUrl, index) => (
-                            <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
-                                <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </Paper>
-                        ))}
-                    </Carousel>
-                </Box>
+                <Box sx={{ position: 'relative', width: '100%', height: '100%', mt: 3 }}>
+                    {/* 큰 이미지 */}
+                    <Card>
+                        <CardMedia
+                            component="img"
+                            image={images[activeStep]}
+                            alt={`Image ${activeStep}`}
+                            sx={{ height: 400 }} // 큰 이미지의 높이 설정
+                        />
+                    </Card>
 
+                    {/* <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                    <IconButton onClick={scrollRight} sx={{ position: 'absolute', right: 0, top: '50%', zIndex: 1 }}>
+                        <ArrowForwardIcon />
+                    </IconButton> */}
+
+                    {/* 썸네일 이미지들 */}
+                    <Box
+                        ref={thumbnailContainerRef}
+                        sx={{
+                            display: 'flex',
+                            overflowX: 'scroll',
+                            justifyContent: 'center',
+                            mt: 2,
+                            '&::-webkit-scrollbar': { height: '10px' },
+                            '&::-webkit-scrollbar-thumb': { backgroundColor: 'grey' },
+                            '&::-webkit-scrollbar-track': { backgroundColor: 'white' }
+                        }}
+                    >
+                        {images.map((img, index) => (
+                            <IconButton
+                                key={img}
+                                onClick={() => handleThumbnailClick(index)}
+                                sx={{ ml: index !== 0 ? 1 : 0 }} // 첫 번째 이미지를 제외하고 마진 적용
+                            >
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        src={img}
+                                        alt={`Thumbnail ${index}`}
+                                        sx={{ width: 100, height: 100 }} // 썸네일 이미지의 크기 설정
+                                    />
+                                </Card>
+                            </IconButton>
+                        ))}
+                    </Box>
+                </Box>
 
                 <Item sx={{ marginTop: '1rem' }}>
 
 
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
+                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem' }}>
                         {backEndData.roomData.a_r_name}
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
-                        </Grid>
                     </Grid>
 
                 </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
+
+                <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5' }}>
+                    <Typography variant="h6" gutterBottom sx={{ mb: 2, ml: 1 }} >
+                        방 정보
+                    </Typography>
                     <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                숙박/대실 : {backEndData.roomData.a_r_state}
+                                <span style={{ fontWeight: "bold" }}>숙박/대실</span> : {backEndData.roomData.a_r_state}
                             </Box>
                         </Grid>
 
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                가격 : {backEndData.roomData.a_r_price.toLocaleString('ko-KR')} 원
+                                <span style={{ fontWeight: "bold" }}>가격</span> : {backEndData.roomData.a_r_price.toLocaleString('ko-KR')} 원
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크인 시간 : {backEndData.roomData.a_r_check_in} {convertAMAndPM(backEndData.roomData.a_r_check_in)}
+                                <span style={{ fontWeight: "bold" }}>체크인 시간</span> : {backEndData.roomData.a_r_check_in} {convertAMAndPM(backEndData.roomData.a_r_check_in)}
                             </Box>
                         </Grid>
                         <Grid item xs={12}>
                             <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                체크아웃 시간 : {backEndData.roomData.a_r_check_out} {convertAMAndPM(backEndData.roomData.a_r_check_out)}
+                                <span style={{ fontWeight: "bold" }}>체크아웃 시간</span> : {backEndData.roomData.a_r_check_out} {convertAMAndPM(backEndData.roomData.a_r_check_out)}
                             </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                방 총 개수 : {backEndData.roomData.a_r_count} 개
-                            </Box>
-                        </Grid>
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                            <Grid item xs={10} sx={{ mt: '10px' }}>
-                                <Divider variant="left" sx={{ width: '100%' }} />
-                            </Grid>
                         </Grid>
                     </Grid>
-                </Item>
 
-                <Item sx={{ marginTop: '1rem' }}>
+                </Box>
+
+                <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5', mt: 2 }}>
+
                     <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
-                        업소 정보
+                        <Typography variant="h6" gutterBottom sx={{ mb: 1 }} >
+                            숙소정보
+                        </Typography>
 
                         <Grid item xs={12}>
-                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginTop: 2, marginBottom: 2 }}>
+                            <Box sx={{ fontSize: '15px', textAlign: 'left', marginTop: 1, marginBottom: 2 }}>
                                 <div style={{ whiteSpace: 'pre-line' }}>
                                     <span dangerouslySetInnerHTML={{ __html: backEndData.roomData.a_r_content }}></span>
                                 </div>
@@ -250,19 +308,7 @@ const AdminDetailRoom = () => {
                         </Grid>
                     </Grid>
 
-                    <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                        <Grid item xs={10} sx={{ mt: '10px' }}>
-                            <Divider variant="left" sx={{ width: '100%' }} />
-                        </Grid>
-                    </Grid>
-
-                </Item>
-
-                <Item sx={{ marginTop: '1rem' }}>
-
-
-                </Item>
-
+                </Box>
             </Paper>
         </Container >
     );

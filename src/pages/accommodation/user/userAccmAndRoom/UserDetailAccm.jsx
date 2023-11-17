@@ -210,12 +210,12 @@ const UserDetailAccm = () => {
                         />
                     </Card>
 
-                    <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
+                    {/* <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
                         <ArrowBackIcon />
                     </IconButton>
                     <IconButton onClick={scrollRight} sx={{ position: 'absolute', right: 0, top: '50%', zIndex: 1 }}>
                         <ArrowForwardIcon />
-                    </IconButton>
+                    </IconButton> */}
 
                     {/* 썸네일 이미지들 */}
                     <Box

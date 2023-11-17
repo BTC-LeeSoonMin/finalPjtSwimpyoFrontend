@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
@@ -20,11 +20,11 @@ import ConfirmOrClose from '../../../components/ConfirmOrClose';
 import { Modal } from '@mui/base';
 import AdminRoomList from './AdminRoomList';
 import api from '../../../hooks/RefreshTokenAuto';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 const AdminDetailAccm = () => {
-
-
 
     const Item = styled(MuiPaper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -56,6 +56,26 @@ const AdminDetailAccm = () => {
 
     // 등록에 보내기 위한 Props
     const accomNum = backEndData.accmData;
+
+    // 사진 MUI를 위한 코드시작
+    const [activeStep, setActiveStep] = useState(0);
+    const images = backEndData.accmImages; // 여기서는 accmImages 배열이 이미 준비
+
+    const handleThumbnailClick = (index) => {
+        setActiveStep(index);
+    };
+    const thumbnailContainerRef = useRef();
+
+    const scrollLeft = () => {
+        thumbnailContainerRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    };
+
+    const scrollRight = () => {
+        thumbnailContainerRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    };
+    // 사진 MUI를 위한 코드끝
+
+
 
 
     /* 수정과 삭제를 위한 함수 시작 */
@@ -98,29 +118,30 @@ const AdminDetailAccm = () => {
 
 
 
+
+    const fetchData = async () => {
+        try {
+            const res = await api.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
+            //  res -> 서버에서 받아온 데이터
+            console.log("detail data success");
+            // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
+
+            // setAccmData(res.data.adminAccmDto);
+            setBackEndData({
+                accmData: res.data.adminAccmDto,
+                accmImages: res.data.a_i_images
+            });
+            setDataLoaded(true);
+
+        } catch (error) {
+            setDataLoaded(true);
+            console.error("An error occurred:", error);
+        }
+    };
+
+    console.log("backEndData!!!!!!!!!!", backEndData);
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await api.post(`http://localhost:8090/api/admin/accm/show_accm_detail?a_m_no=${requestData.a_m_no}`);
-                //  res -> 서버에서 받아온 데이터
-                console.log("detail data success");
-                // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
-
-                // setAccmData(res.data.adminAccmDto);
-                setBackEndData({
-                    accmData: res.data.adminAccmDto,
-                    accmImages: res.data.a_i_images
-                });
-                setDataLoaded(true);
-
-
-
-            } catch (error) {
-                setDataLoaded(true);
-                console.error("An error occurred:", error);
-            }
-        };
-
         fetchData(); // 비동기 함수 호출
     }, [requestData]);
 
@@ -172,65 +193,106 @@ const AdminDetailAccm = () => {
                         <ConfirmOrClose open={openDelete} close={() => close('delete')} confirmation={handleDeleteConfirmation} words="삭제" />
                     </Box>
 
-                    <Box sx={{ marginBottom: '1rem', marginTop: '1rem', backgroundColor: 'white', padding: '1rem' }}>
-                        <Carousel>
-                            {backEndData.accmImages.map((imageUrl, index) => (
-                                <Paper key={index} sx={{ height: '180px', overflow: 'hidden' }}>
-                                    <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                                </Paper>
+
+
+                    <Box sx={{ position: 'relative', width: '100%', height: '100%', mt: 3 }}>
+                        {/* 큰 이미지 */}
+                        <Card>
+                            <CardMedia
+                                component="img"
+                                image={images[activeStep]}
+                                alt={`Image ${activeStep}`}
+                                sx={{ height: 400 }} // 큰 이미지의 높이 설정
+                            />
+                        </Card>
+
+                        {/* <IconButton onClick={scrollLeft} sx={{ position: 'absolute', left: 0, top: '50%', zIndex: 1 }}>
+                            <ArrowBackIcon />
+                        </IconButton>
+                        <IconButton onClick={scrollRight} sx={{ position: 'absolute', right: 0, top: '50%', zIndex: 1 }}>
+                            <ArrowForwardIcon />
+                        </IconButton> */}
+
+                        {/* 썸네일 이미지들 */}
+                        <Box
+                            ref={thumbnailContainerRef}
+                            sx={{
+                                display: 'flex',
+                                overflowX: 'scroll',
+                                justifyContent: 'center',
+                                mt: 2,
+                                '&::-webkit-scrollbar': { height: '10px' },
+                                '&::-webkit-scrollbar-thumb': { backgroundColor: 'grey' },
+                                '&::-webkit-scrollbar-track': { backgroundColor: 'white' }
+                            }}
+                        >
+                            {images.map((img, index) => (
+                                <IconButton
+                                    key={img}
+                                    onClick={() => handleThumbnailClick(index)}
+                                    sx={{ ml: index !== 0 ? 1 : 0 }} // 첫 번째 이미지를 제외하고 마진 적용
+                                >
+                                    <Card>
+                                        <CardMedia
+                                            component="img"
+                                            src={img}
+                                            alt={`Thumbnail ${index}`}
+                                            sx={{ width: 100, height: 100 }} // 썸네일 이미지의 크기 설정
+                                        />
+                                    </Card>
+                                </IconButton>
                             ))}
-                        </Carousel>
+                        </Box>
                     </Box>
 
 
+
                     <Item sx={{ marginTop: '1rem' }}>
 
 
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px' }}>
+                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem' }}>
                             {backEndData.accmData.a_acc_name}
-                            <Grid item xs={10} sx={{ mt: '10px' }}>
-                                <Divider variant="left" sx={{ width: '100%' }} />
-                            </Grid>
                         </Grid>
 
                     </Item>
 
-                    <Item sx={{ marginTop: '1rem' }}>
+                    <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5' }}>
+                        <Typography variant="h6" gutterBottom sx={{ mb: 2, ml: 1 }} >
+                            숙소정보
+                        </Typography>
+
                         <Grid container sx={{ marginTop: '8px', paddingLeft: '10px', paddingRight: '10px' }}>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                    주소 : {backEndData.accmData.a_acc_address}
+                                    <span style={{ fontWeight: "bold" }}>주소</span> : {backEndData.accmData.a_acc_address}
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                    연락처 : {backEndData.accmData.a_acc_phone}
+                                    <span style={{ fontWeight: "bold" }}>연락처</span> : {backEndData.accmData.a_acc_phone}
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                    이메일 : {backEndData.accmData.a_m_email}
+                                    <span style={{ fontWeight: "bold" }}>이메일</span> : {backEndData.accmData.a_m_email}
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                    사업자 번호 : {backEndData.accmData.a_acc_bn}
+                                    <span style={{ fontWeight: "bold" }}>사업자 번호</span> : {backEndData.accmData.a_acc_bn}
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
                                 <Box sx={{ fontSize: '15px', textAlign: 'left', marginBottom: 2 }}>
-                                    대표자 명 : {backEndData.accmData.a_m_name}
+                                    <span style={{ fontWeight: "bold" }}>대표자 명</span> : {backEndData.accmData.a_m_name}
                                 </Box>
-                            </Grid>
-                            <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                                <Grid item xs={10} sx={{ mt: '10px' }}>
-                                    <Divider variant="left" sx={{ width: '100%' }} />
-                                </Grid>
                             </Grid>
                         </Grid>
-                    </Item>
 
-                    <Item sx={{ marginTop: '1rem' }}>
+                    </Box>
+
+
+                    <Box sx={{ p: 2, borderRadius: '4px', backgroundColor: '#f5f5f5', mt: 2 }}>
 
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px' }}>
                             업소 정보
@@ -238,18 +300,11 @@ const AdminDetailAccm = () => {
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
                             <span dangerouslySetInnerHTML={{ __html: backEndData.accmData.a_acc_intro }}></span>
                         </Grid>
+                    </Box>
 
-                        <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
-                            <Grid item xs={10} sx={{ mt: '10px' }}>
-                                <Divider variant="left" sx={{ width: '100%' }} />
-                            </Grid>
-                        </Grid>
-
-                    </Item>
-
-                    <Item sx={{ marginTop: '1rem' }}>
+                    <Item sx={{ marginTop: '2rem' }}>
                         <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '20px', mb: 3 }}>
-                            객실
+                            <span style={{ fontWeight: 'bold' }}>객실</span>
                         </Grid>
                         <AdminRoomList accomNum={accomNum} requestData={requestData} />
                     </Item>
