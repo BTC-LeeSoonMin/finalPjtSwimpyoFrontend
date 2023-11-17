@@ -314,7 +314,7 @@ const UserDetailAccm = () => {
                 </Box>
 
 
-                <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem' }}>
+                <Grid container alignItems="center" sx={{ paddingLeft: '10px', paddingRight: '10px', fontSize: '30px', mb: '1rem', fontWeight: 'bold' }}>
                     {backEndData.accmData.a_acc_name}
 
                 </Grid>

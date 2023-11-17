@@ -326,7 +326,6 @@ const ResReview = () => {
         console.log("data", data);
 
         try {
-            console.log("들어가지나");
             const response = await api.post('/api/user/review/registConfirm',
                 data, {
                 headers: {
@@ -350,12 +349,13 @@ const ResReview = () => {
 
         <Paper elevation={3} sx={{
             width: '800px',
-            padding: 2,
+            padding: '2rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             margin: 'auto', // This centers the Paper component
             marginTop: 3,
+
         }}>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
                 <IconButton aria-label="뒤로 가기" onClick={handleBack}>
@@ -374,7 +374,7 @@ const ResReview = () => {
                         width: "800px",
                         height: "400px",
                         borderRadius: '10px', // 모서리 둥글게
-                        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' // 그림자 효과 (선택적)
+                        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자 효과 (선택적)
                     }}></div>
 
                 </div>
