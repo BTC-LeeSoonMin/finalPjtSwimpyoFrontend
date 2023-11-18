@@ -69,7 +69,7 @@ function Modify() {
       api.post("/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberUserModifySuccess") {
-            navigate('/');
+            navigate('/user/myPage');
 
           } else if (response.data === "MemberUserModifyFail") {
             alert('다시 시도해주세요');
