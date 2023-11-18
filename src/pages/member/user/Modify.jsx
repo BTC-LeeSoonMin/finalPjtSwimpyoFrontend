@@ -153,7 +153,7 @@ function Modify() {
           <Link to="/user/member/changePw" style={linkStyle}>
             <Button
               variant="contained"
-              sx={{ ml: 2, mt: 3, backgroundColor: '#F7323F', color: 'white', '&:hover': { backgroundColor: 'skyblue' } }}
+              sx={{ ml: 2, mt: 3, backgroundColor: '#F7323F', color: 'white', '&:hover': { backgroundColor: '#F7323F' } }}
             >
               비밀번호 변경
             </Button>
