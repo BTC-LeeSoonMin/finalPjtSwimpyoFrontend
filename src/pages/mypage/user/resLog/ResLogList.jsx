@@ -12,21 +12,21 @@ const list = {
     height: '10rem',
     mt: '1rem',
     padding: '1rem',
-    width: '62rem'
+    boxShadow: 'inherit'
 };
 
 const font = {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 'normal',
 };
 
 const titleFont = {
-    fontSize: '16px',
+    fontSize: '17px',
     fontWeight: 'bold',
 };
 
 const info = {
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: 'normal',
     textDecoration: 'none',
     fontSize: '16px',
@@ -50,8 +50,7 @@ function ResLogList(props) {
     };
 
     return (
-        <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
-
+        <Box sx={{ ...list, borderRadius: '10px' }}>
             <Grid container>
                 <Grid item xs={3}>
                     <div style={{ width: '220px', height: '125px', overflow: 'hidden' }}>
