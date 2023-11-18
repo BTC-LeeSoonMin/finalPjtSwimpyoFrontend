@@ -30,7 +30,7 @@ const linkStyle = {
 };
 
 function CategoryFilter({setFilter}) {
-    const [area, setArea] = useState('서울');
+    const [area, setArea] = useState('all');
     const [price, setPrice] = useState('０');
     const [stay, setStay] = useState('숙박');
     const [able, setAble] = useState('all');
@@ -66,7 +66,7 @@ function CategoryFilter({setFilter}) {
                 >
                     <MenuItem value={'all'}>
                         {' '}
-                        <em>지역전체</em>{' '}
+                        <em>전체</em>{' '}
                     </MenuItem>
                     <MenuItem value={'부산'}>부산</MenuItem>
                     <MenuItem value={'서울'}>서울</MenuItem>

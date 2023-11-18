@@ -30,8 +30,8 @@ const linkStyle = {
 };
 
 function Filter({setFilter}) {
-    const [category, setCategory] = useState('호텔/리조트');
-    const [area, setArea] = useState('서울');
+    const [category, setCategory] = useState('all');
+    const [area, setArea] = useState('all');
     const [price, setPrice] = useState('０');
     const [stay, setStay] = useState('숙박');
     const [able, setAble] = useState('all');
@@ -58,7 +58,7 @@ function Filter({setFilter}) {
             </Typography>
 
             <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
-                <InputLabel id="demo-select-small-label">카테고리</InputLabel>
+                <InputLabel id="demo-select-small-label">숙소유형</InputLabel>
                 <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
@@ -66,7 +66,7 @@ function Filter({setFilter}) {
                     label="Category"
                     onChange={(e) => setCategory(e.target.value)}
                 >
-                    <MenuItem value={'all'}>{' '}<em>카테고리전체</em>{' '}</MenuItem>
+                    <MenuItem value={'all'}>{' '}<em>전체</em>{' '}</MenuItem>
                     <MenuItem value={'호텔/리조트'}>호텔/리조트</MenuItem>
                     <MenuItem value={'펜션/풀빌라'}>펜션/풀빌라</MenuItem>
                     <MenuItem value={'모텔'}>모텔</MenuItem>
@@ -86,7 +86,7 @@ function Filter({setFilter}) {
                 >
                     <MenuItem value={'all'}>
                         {' '}
-                        <em>지역전체</em>{' '}
+                        <em>전체</em>{' '}
                     </MenuItem>
                     <MenuItem value={'부산'}>부산</MenuItem>
                     <MenuItem value={'서울'}>서울</MenuItem>
