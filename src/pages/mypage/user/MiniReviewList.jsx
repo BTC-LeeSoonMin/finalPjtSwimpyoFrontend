@@ -34,7 +34,7 @@ export default function MiniReviewList(props) {
       }, []);
 
     return (
-        <Link style={linkStyle} to={`/user/review/detail/${props.r_no}/${email}`}>
+        <Link style={linkStyle} to={`/user/review/detail/${email}/${props.r_no}`}>
             <Grid container sx={{ mt: '1rem', mb: '1rem' }}>
                 <Grid item xs={4} sx={{ ...textHidden, display: 'flex', alignItems: 'flex-first' }}>
                 {props.a_acc_name}
