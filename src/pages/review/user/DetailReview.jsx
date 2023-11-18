@@ -32,12 +32,14 @@ const imgStyle = {
 
 const DetailReview = () => {
 
+
+    const [dataLoaded, setDataLoaded] = useState(false);
+
     const token = useSelector((store) => store.accessToken.value);
     console.log('토큰 값', token);
     const params = useParams();
     const navigate = useNavigate();
 
-    const [dataLoaded, setDataLoaded] = useState(false);
     console.log("params", params);
 
     const [openDelete, setOpenDelete] = useState(false);
@@ -110,11 +112,11 @@ const DetailReview = () => {
                 r_ri_images: res.data.r_ri_images,
                 r_xy_address: res.data.r_xy_address
             });
-            // setDataLoaded(true);
+            setDataLoaded(true);
 
         } catch (error) {
             console.error("An error occurred:", error);
-            // setDataLoaded(true);
+            setDataLoaded(true);
         }
     }
 
@@ -130,50 +132,54 @@ const DetailReview = () => {
 
     useEffect(() => {
 
-        let container = document.getElementById('map');
-        let options = { //지도를 생성할 때 필요한 기본 옵션
-            center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-            level: 3 //지도의 레벨(확대, 축소 정도)
-        };
+        if (dataLoaded == true) {
+            let x = reviewInfoFromBackEnd.reviewDto.r_xy_latitude;
+            let y = reviewInfoFromBackEnd.reviewDto.r_xy_longitude;
 
-        let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+            let container = document.getElementById('map');
+            let options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
 
-        new window.kakao.maps.services.Geocoder().addressSearch(reviewInfoFromBackEnd.reviewDto.a_acc_address, function (result, status) {
-            if (status === window.kakao.maps.services.Status.OK) {
-                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+            let map = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
-                let imageSrc = markerImage; // 마커 이미지 경로
-                let imageSize = new window.kakao.maps.Size(50, 50);
-                let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
-                let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-                let marker = new window.kakao.maps.Marker({
-                    map: map,
-                    position: coords,
-                    image: markerComplete // 커스텀 마커 이미지 사용
-                });
-
-                map.setCenter(coords);
-
-                marker.setMap(map);
-
-            }
-        });
-
-
-        reviewInfoFromBackEnd.r_xy_address.forEach(addressObj => {
-            new window.kakao.maps.services.Geocoder().addressSearch(addressObj.r_xy_address, function (result, status) {
+            new window.kakao.maps.services.Geocoder().addressSearch(reviewInfoFromBackEnd.reviewDto.a_acc_address, function (result, status) {
                 if (status === window.kakao.maps.services.Status.OK) {
                     const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
-                    const marker = new window.kakao.maps.Marker({
+                    let imageSrc = markerImage; // 마커 이미지 경로
+                    let imageSize = new window.kakao.maps.Size(50, 50);
+                    let imageOption = { offset: new window.kakao.maps.Point(27, 50) };
+                    let markerComplete = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
+                    let marker = new window.kakao.maps.Marker({
                         map: map,
                         position: coords,
+                        image: markerComplete // 커스텀 마커 이미지 사용
                     });
 
+                    map.setCenter(coords);
 
-                    // 커스텀 오버레이에 표시될 내용
-                    const content = `
+                    marker.setMap(map);
+
+                }
+            });
+
+
+            reviewInfoFromBackEnd.r_xy_address.forEach(addressObj => {
+                new window.kakao.maps.services.Geocoder().addressSearch(addressObj.r_xy_address, function (result, status) {
+                    if (status === window.kakao.maps.services.Status.OK) {
+                        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+
+                        const marker = new window.kakao.maps.Marker({
+                            map: map,
+                            position: coords,
+                        });
+
+
+                        // 커스텀 오버레이에 표시될 내용
+                        const content = `
                     <div class="customoverlay" style="background-color: white; border: 1px solid black; border-radius: 5px; padding: 5px; display: inline-block; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                         <span style="text-decoration: none; color: black; font-size: 18px; white-space: nowrap; font-weight: Bold;">
                             ${addressObj.r_xy_comment}
@@ -181,52 +187,53 @@ const DetailReview = () => {
                     </div>
                 `;
 
-                    // 커스텀 오버레이 생성
-                    const customOverlay = new window.kakao.maps.CustomOverlay({
-                        map: map,
-                        position: coords,
-                        content: content,
-                        yAnchor: 2 // 마커의 위쪽으로 커스텀 오버레이를 표시하도록 y축 앵커 설정
-                    });
+                        // 커스텀 오버레이 생성
+                        const customOverlay = new window.kakao.maps.CustomOverlay({
+                            map: map,
+                            position: coords,
+                            content: content,
+                            yAnchor: 2 // 마커의 위쪽으로 커스텀 오버레이를 표시하도록 y축 앵커 설정
+                        });
 
-                    // // 마커에 mouseover 이벤트를 등록하여 커스텀 오버레이를 표시
-                    // window.kakao.maps.event.addListener(marker, 'mouseover', function () {
-                    //     customOverlay.setMap(map);
-                    // });
+                        // // 마커에 mouseover 이벤트를 등록하여 커스텀 오버레이를 표시
+                        // window.kakao.maps.event.addListener(marker, 'mouseover', function () {
+                        //     customOverlay.setMap(map);
+                        // });
 
-                    // // 마커에 mouseout 이벤트를 등록하여 커스텀 오버레이를 숨김
-                    // window.kakao.maps.event.addListener(marker, 'mouseout', function () {
-                    //     customOverlay.setMap(null);
-                    // });
-                    marker.setMap(map);
-                    customOverlay.setMap(map)
-                }
+                        // // 마커에 mouseout 이벤트를 등록하여 커스텀 오버레이를 숨김
+                        // window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+                        //     customOverlay.setMap(null);
+                        // });
+                        marker.setMap(map);
+                        customOverlay.setMap(map);
+                    }
+                });
             });
-        });
+        }
     }, [reviewInfoFromBackEnd]);
 
 
-    // if (!dataLoaded) {
+    if (!dataLoaded) {
 
-    //     return (
-    //         <Box
-    //             display="flex"
-    //             justifyContent="center"
-    //             alignItems="center"
-    //             minHeight="100vh"
-    //             sx={{
-    //                 backgroundColor: 'background.default',
-    //                 color: 'text.primary',
-    //             }}
-    //         >
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="100vh"
+                sx={{
+                    backgroundColor: 'background.default',
+                    color: 'text.primary',
+                }}
+            >
 
-    //             <CircularProgress color="inherit" />
-    //             <Typography variant="h3" component="h1">
-    //                 Loading...
-    //             </Typography>
-    //         </Box>
-    //     );
-    // }
+                <CircularProgress color="inherit" />
+                <Typography variant="h3" component="h1">
+                    Loading...
+                </Typography>
+            </Box>
+        );
+    }
 
     return (
 
@@ -336,9 +343,12 @@ const DetailReview = () => {
                         mb: '1rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'normal'
                     }}
-                >"{reviewInfoFromBackEnd.reviewDto.r_content}"</Typography>
+                >&quot;{reviewInfoFromBackEnd.reviewDto.r_content}&quot;</Typography>
+
+                {/* >&quot;<span dangerouslySetInnerHTML={{ __html: reviewInfoFromBackEnd.reviewDto.r_content }}></span>&quot;</Typography> */}
+
             </Box>
             <Divider sx={{ width: '100%', mt: '1rem', mb: '1rem' }} />
 

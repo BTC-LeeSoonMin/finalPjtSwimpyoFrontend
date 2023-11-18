@@ -171,7 +171,7 @@ const UserDetailRoom = () => {
     console.log("roomNum", roomNum);
 
     const handleBack = () => {
-        navigate(`/user/accommodation/detailAccm/${backEndData.roomData.a_acc_no}`)
+        navigate(-1)
     }
 
     /* 수정과 삭제 상세페이지 가기를 위한 함수 끝 */
