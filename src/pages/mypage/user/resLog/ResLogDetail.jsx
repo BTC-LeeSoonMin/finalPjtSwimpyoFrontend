@@ -64,17 +64,13 @@ export default function ResLogDetail() {
             .then((response) => {
 
                 if (response.data != null) {
-                    console.log('resLogDetail', response.data[0]);
                     setResLog(response.data[0]);
                     setStayDay(response.data.length);
-                    if (response.data.u_r_check_in > dayjs(today).format("YYYY-MM-DD")) {
-                        console.log('이용전', response.data.u_r_check_in);
+                    if (dayjs(response.data[0].u_r_check_in).format("YYYY-MM-DD") > dayjs(today).format("YYYY-MM-DD")) {
                         setUse('이용전');
-                    } else if (response.data.u_r_check_in == dayjs(today).format("YYYY-MM-DD")) {
-                        console.log('이용일', response.data.u_r_check_in);
+                    } else if (dayjs(response.data[0].u_r_check_in).format("YYYY-MM-DD") == dayjs(today).format("YYYY-MM-DD")) {
                         setUse('이용일');
-                    } else if (response.data.u_r_check_in < dayjs(today).format("YYYY-MM-DD")) {
-                        console.log('이용완료', response.data.u_r_check_in);
+                    } else if (dayjs(response.data[0].u_r_check_in).format("YYYY-MM-DD") < dayjs(today).format("YYYY-MM-DD")) {
                         setUse('이용완료');
                     }
                 }

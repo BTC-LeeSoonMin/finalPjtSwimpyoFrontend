@@ -49,8 +49,6 @@ function ResLogList(props) {
 
     };
 
-    console.log('props.isWrite', props.isWrite);
-
     return (
         <Box sx={{ ...list, borderRadius: '10px', mr: '1rem' }}>
 

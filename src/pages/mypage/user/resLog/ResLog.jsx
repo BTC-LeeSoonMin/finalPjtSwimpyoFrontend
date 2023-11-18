@@ -26,7 +26,6 @@ function ResLog() {
     
         api.get("/api/user/mypage/GetRezList", JSON.stringify(period), config,)
           .then((response) => {
-            console.log('setResLogList', response.data);
             if(response.data != null) {
                 setResLogList(response.data);
             } 
