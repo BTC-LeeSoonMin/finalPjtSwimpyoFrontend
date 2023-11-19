@@ -96,15 +96,14 @@ const AdminRoomList = ({ accomNum, requestData }) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            // justifyContent: 'center',
-            // height: '100vh', // 전체 화면 높이를 사용합니다.
+
         }}>
 
             <Grid container spacing={0} >
                 {backEndData.roomData.map((room) => {
-                    // 해당 객실에 대응하는 이미지 객체를 찾습니다.
+                    // 해당 객실에 대응하는 이미지 객체를 찾음
                     const imageObj = backEndData.roomImages.find((image, index) => image.a_r_no === room.a_r_no);
-                    // 이미지 객체가 존재하지 않는 경우 기본 이미지 경로를 사용합니다.
+                    // 이미지 객체가 존재하지 않는 경우 기본 이미지 경로를 사용
                     const imageUrl = imageObj ? imageObj.r_i_image : 'defaultImagePath'; // 'defaultImagePath'를 기본 이미지 경로로 교체하세요.
 
                     return (
@@ -112,6 +111,7 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                             display: 'flex', justifyContent: 'center', border: 1,
                             borderColor: 'grey.500',
                             borderRadius: 'borderRadius',
+                            mb: 2,
                         }}>
                             <Box sx={{
                                 maxWidth: 400,
@@ -119,14 +119,13 @@ const AdminRoomList = ({ accomNum, requestData }) => {
                                 m: 3
                             }}>
                                 <Card sx={{ maxWidth: 400, elevation: 3 }}>
-                                    <Carousel>
-                                        <CardMedia
-                                            component="img"
-                                            height="300"
-                                            image={imageUrl} // imageUrl을 src 속성에 사용합니다.
 
-                                        />
-                                    </Carousel>
+                                    <CardMedia
+                                        component="img"
+                                        height="250"
+                                        image={imageUrl} // imageUrl을 src 속성에 사용
+                                    />
+
 
                                     <CardContent
                                         sx={{
