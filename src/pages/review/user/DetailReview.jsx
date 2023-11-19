@@ -204,6 +204,15 @@ const DetailReview = () => {
                         // window.kakao.maps.event.addListener(marker, 'mouseout', function () {
                         //     customOverlay.setMap(null);
                         // });
+
+                        window.kakao.maps.event.addListener(marker, 'click', function () {
+                            // 네이버 검색 결과 페이지를 새 탭에서 열기
+                            const searchQuery = addressObj.r_xy_comment;
+                            const naverSearchUrl = `https://search.naver.com/search.naver?query=${encodeURIComponent(searchQuery)}`;
+                            window.open(naverSearchUrl, '_blank');
+                        });
+
+
                         marker.setMap(map);
                         customOverlay.setMap(map);
                     }
