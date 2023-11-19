@@ -9,18 +9,15 @@ import api from '../../../../hooks/RefreshTokenAuto';
 export default function AccmReview() {
     const [reviewData, setReviewData] = useState([]);
     const [reviewImg, setReviewImg] = useState([]);
-
     const {a_acc_no} = useParams();
-    console.log('AccmReview a_acc_no', a_acc_no);
 
     useEffect(() => {
         if(parseInt(a_acc_no) > 0) {
             api.get("/api/user/review/showReviewList",{ params: { "a_acc_no": parseInt(a_acc_no) } })
             .then((response) => {
-                console.log('AccmReview', response.data);
                 if (response.data != null) {
                     setReviewData(response.data.userReviewDto);
-                    setReviewImg(response.data.r_ri_images);
+                    setReviewImg(response.data.userReviewImgList);
                 }
             }).catch((error) => {
                 console.error('Error ', error);
