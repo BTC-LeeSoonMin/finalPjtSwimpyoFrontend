@@ -31,9 +31,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker
-        run: sudo docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy .
+        run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy .
       - name: Push Docker
-        run: sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy:latest
         
   deploy:
     needs: build
