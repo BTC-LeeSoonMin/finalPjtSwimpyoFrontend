@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'

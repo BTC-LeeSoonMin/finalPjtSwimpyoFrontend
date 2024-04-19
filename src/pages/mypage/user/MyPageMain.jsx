@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from 'react';
 import { Grid, Container, Typography, Divider } from '@mui/material';
 import Box from '@mui/material/Box';

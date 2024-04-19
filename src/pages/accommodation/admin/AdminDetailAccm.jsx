@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Backdrop, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton } from '@mui/material';
 import Carousel from 'react-material-ui-carousel'

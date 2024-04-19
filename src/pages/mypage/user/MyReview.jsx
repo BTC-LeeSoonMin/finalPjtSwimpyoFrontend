@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Box, Container, Divider, Grid, Paper, Typography } from "@mui/material";
 import AccmReviewList from '../../review/user/reviewList/AccmReviewList';

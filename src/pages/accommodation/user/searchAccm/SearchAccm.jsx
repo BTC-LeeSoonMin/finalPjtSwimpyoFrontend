@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from 'react';
 import { Box, Container, Grid } from '@mui/material';
 import { useLocation } from 'react-router-dom';

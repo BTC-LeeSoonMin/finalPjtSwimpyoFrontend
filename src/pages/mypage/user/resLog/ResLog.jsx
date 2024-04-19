@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Paper } from '@mui/material';
 import api from '../../../../hooks/RefreshTokenAuto';

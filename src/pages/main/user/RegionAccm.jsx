@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Box, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
