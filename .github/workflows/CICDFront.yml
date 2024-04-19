@@ -46,7 +46,7 @@ jobs:
           host: ${{ secrets.LIVE_SERVER_IP }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
-          script: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy:latest
+          script: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/react_deploy:latest
 
       - name: Copy React build files to running Nginx container
         uses: appleboy/ssh-action@master
@@ -56,5 +56,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            docker cp /var/lib/docker/. nginxserver:/usr/share/nginx/html/
-            docker restart nginxserver
+            sudo docker cp /var/lib/docker/. nginxserver:/usr/share/nginx/html/docker-files/
+            sudo docker restart nginxserver
