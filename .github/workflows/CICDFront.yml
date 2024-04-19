@@ -56,5 +56,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo docker cp /var/lib/docker/. nginxserver:/usr/share/nginx/html/
+            sudo docker cp /var/lib/docker/. nginxserver:/usr/share/nginx/html/docker-files/
             sudo docker restart nginxserver
