@@ -24,12 +24,28 @@ jobs:
           npm install
           npm run build
 
-      - name: copy react build files to ec2
-        uses: appleboy/ssh-action@master
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
         with:
-          username: ubuntu
-          host: ${{ secrets.LIVE_SERVER_IP }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script_stop: true
-          script: |
-            sudo scp -r ./build /home/frontbuild/
+          name: react-build-files
+          path: build/libs/
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: trelloServer
+        path: build/libs/
+        
+    - name: copy react build files to ec2
+      uses: appleboy/ssh-action@master
+      with:
+        username: ubuntu
+        host: ${{ secrets.LIVE_SERVER_IP }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script_stop: true
+        script: |
+          ls /build/libs/
+          sudo scp -r /build/libs/ ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
