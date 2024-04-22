@@ -31,5 +31,5 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -o StrictHostKeyChecking=no ./build/* ubuntu@ ${{ secrets.LIVE_SERVER_IP }}}:/home/frontbuild/
+          scp -i private_key.pem -o StrictHostKeyChecking=no ./build/* ubuntu@ ${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
           rm -f private_key.pem
