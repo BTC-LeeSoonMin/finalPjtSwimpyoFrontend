@@ -23,12 +23,19 @@ jobs:
         run: |
           npm install
           npm run build
-
+          
+      - name: List downloaded files1
+        run: ls -l ./build
+        
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: react-build-files
+          name: reactBuildFiles
           path: build/libs/
+          
+      - name: List downloaded files2
+        run: ls -l build/libs/
+          
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -36,7 +43,7 @@ jobs:
     - name: Download build artifact
       uses: actions/download-artifact@v2
       with:
-        name: react-build-files
+        name: reactBuildFiles
         path: build/libs/
         
     - name: copy react build files to ec2
