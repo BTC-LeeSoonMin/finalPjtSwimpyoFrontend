@@ -37,35 +37,5 @@ jobs:
           script: |
             echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
             chmod 600 private_key.pem
-            scp -o StrictHostKeyChecking=no -r ./build/* ubuntu@43.203.71.198:/home/frontbuild/
+            scp -i private_key.pem -o StrictHostKeyChecking=no -r ./build/* ubuntu@43.203.71.198:/home/frontbuild/
             rm -f private_key.pem
-
-      # scp -i ${{ secrets.EC2_SSH_KEY }} -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
-      
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: reactBuildFiles
-      #     path: build/libs/
-        
-          
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Download build artifact
-  #     uses: actions/download-artifact@v2
-  #     with:
-  #       name: reactBuildFiles
-  #       path: build/libs/
-        
-  #   - name: copy react build files to ec2
-  #     uses: appleboy/ssh-action@master
-  #     with:
-  #       username: ubuntu
-  #       host: ${{ secrets.LIVE_SERVER_IP }}
-  #       key: ${{ secrets.EC2_SSH_KEY }}
-  #       script_stop: true
-  #       script: |
-  #         ls /build/libs/
-  #         sudo scp -r /build/libs/ ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
