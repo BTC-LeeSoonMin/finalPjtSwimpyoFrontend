@@ -32,7 +32,10 @@ jobs:
         with:
           script_stop: true
           script: |
-            scp -i "${{ secrets.EC2_SSH_KEY }}" -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
+            echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
+            chmod 600 private_key.pem
+            scp -i private_key.pem -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
+            rm -f private_key.pem
         
       # - name: Upload build artifact
       #   uses: actions/upload-artifact@v2
