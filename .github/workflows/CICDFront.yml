@@ -62,5 +62,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo rm -rf /home/fontbuild/build
+            sudo rm -rf /home/frontbuild/build
             sudo docker restart nginxdeploy
