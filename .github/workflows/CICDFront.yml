@@ -35,7 +35,4 @@ jobs:
           host: ${{ secrets.LIVE_SERVER_IP }}
           script_stop: true
           script: |
-            echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
-            chmod 600 private_key.pem
-            scp -i private_key.pem -o StrictHostKeyChecking=no -r ./build/* ubuntu@43.203.71.198:/home/frontbuild/
-            rm -f private_key.pem
+            sudo scp -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
