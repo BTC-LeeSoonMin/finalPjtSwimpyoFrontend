@@ -25,3 +25,4 @@ jobs:
             sudo cp -r tmp/* /home/frontbuild/
             sudo ls -al
             sudo rm -rf tmp
+            sudo docker restart nginxdeploy
