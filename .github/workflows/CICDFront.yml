@@ -36,7 +36,6 @@ jobs:
           script_stop: true
           script: |
             whoami
-            ls -l ./build
             # scp -i ${{ secrets.EC2_SSH_KEY }} -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
         
       # - name: Upload build artifact
