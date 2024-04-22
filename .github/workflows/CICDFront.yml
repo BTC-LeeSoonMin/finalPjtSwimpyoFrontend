@@ -29,5 +29,5 @@ jobs:
 
       - name: copy react build files to ec2
         run: |
-          sudo scp -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
+          scp -i ${{ secrets.EC2_SSH_KEY }} ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
 
