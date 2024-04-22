@@ -24,6 +24,16 @@ jobs:
           
       - name: List downloaded files1
         run: ls -l ./build
+
+      - name: Delete the existing build directory
+        uses:  appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            sudo rm -rf /home/frontbuild/build
   
       - name: Transfer files to EC2
         uses: appleboy/scp-action@master
@@ -33,3 +43,14 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: 'build/*'
           target: '/home/frontbuild/'
+
+      - name: Transfer files to EC2
+        uses:  appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            sudo mv /home/frontbuild/build/* /home/frontbuild/
+          
