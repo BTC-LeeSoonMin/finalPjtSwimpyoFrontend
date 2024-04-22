@@ -33,3 +33,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: 'build/'
           target: '/home/frontbuild/'
+          args: '-r'
