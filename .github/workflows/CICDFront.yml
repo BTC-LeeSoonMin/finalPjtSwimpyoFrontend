@@ -44,7 +44,7 @@ jobs:
           source: 'build/*'
           target: '/home/frontbuild/'
 
-      - name: Transfer files to EC2
+      - name: Deconstructing build files
         uses:  appleboy/ssh-action@master
         with:
           username: ubuntu
@@ -53,4 +53,13 @@ jobs:
           script_stop: true
           script: |
             sudo mv /home/frontbuild/build/* /home/frontbuild/
-          
+
+      - name: nginx restart
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script_stop: true
+          script: |
+            sudo docker restart nginxdeploy
