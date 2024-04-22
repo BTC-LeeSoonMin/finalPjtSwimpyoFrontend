@@ -54,7 +54,7 @@ jobs:
           script: |
             sudo mv /home/frontbuild/build/* /home/frontbuild/
 
-      - name: nginx restart
+      - name: clean build file and nginx restart
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
@@ -62,4 +62,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            sudo rm -rf /home/fontbuild/build
             sudo docker restart nginxdeploy
