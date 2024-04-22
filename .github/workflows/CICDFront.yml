@@ -31,6 +31,6 @@ jobs:
           username: ubuntu
           host: ${{ secrets.LIVE_SERVER_IP }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: 'build/'
+          source: 'build/*'
           target: '/home/frontbuild/'
           args: '-r'
