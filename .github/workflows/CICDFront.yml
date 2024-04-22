@@ -10,24 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build
-          
-      - name: List downloaded files1
-        run: ls -l ./build
-
-      - name: copy react build files to ec2
+      - name: deploy
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu       
@@ -35,7 +21,7 @@ jobs:
           host: ${{ secrets.LIVE_SERVER_IP }}
           script_stop: true
           script: |
-            sudo cp -r ./build/* home/frontbuild/
+            sudo git clone https://github.com/BTC-LeeSoonMin/finalPjtSwimpyoFrontend.git
+            sudo cp -r tmp/* home/frontbuild/
             sudo ls -al
-
-
+            sudo rm -rf tmp
