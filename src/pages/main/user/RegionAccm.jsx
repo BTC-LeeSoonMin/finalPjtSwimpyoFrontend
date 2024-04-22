@@ -66,6 +66,22 @@ export default function RegionAccm() {
       });
   }, [region]);
 
+  useEffect(() => {
+    api.get("/api/hc", config,)
+      .then((response) => {
+        console.log('hc:', response.data);
+        if (response.data === 'emptyMapInfo') {
+          console.log('실패: emptyMapInfo');
+
+        } else {
+
+          console.log('성공');
+          setAccmAddress(response.data);
+          setDataLoaded(true);
+        }
+      });
+  }, [region]);
+
 
   console.log("accmAddress", accmAddress);
 
