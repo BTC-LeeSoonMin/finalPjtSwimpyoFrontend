@@ -28,6 +28,14 @@ jobs:
         run: ls -l ./build
 
       - name: copy react build files to ec2
-        run: |
-          scp -i ${{ secrets.EC2_SSH_KEY }} ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu       
+          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          script_stop: true
+          script: |
+            sudo cp -r ./build/* home/frontbuild/
+            sudo ls -al
+
 
