@@ -30,12 +30,8 @@ jobs:
       - name: copy react build files to ec2
         uses: appleboy/ssh-action@master
         with:
-          username: ubuntu
-          host: ${{ secrets.LIVE_SERVER_IP }}
-          key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo scp -r /build/libs/ ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
             scp -i "${{ secrets.EC2_SSH_KEY }}" -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
         
       # - name: Upload build artifact
