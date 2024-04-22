@@ -35,4 +35,4 @@ jobs:
           host: ${{ secrets.LIVE_SERVER_IP }}
           script_stop: true
           script: |
-            sudo scp -i ${{ secrets.EC2_SSH_KEY }} -o StrictHostKeyChecking=no -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
+            sudo scp -r ./build/* ubuntu@${{ secrets.LIVE_SERVER_IP }}:/home/frontbuild/
