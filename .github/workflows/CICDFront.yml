@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.LIVE_SERVER_IP }}
           script_stop: true
           script: |
-            sudo git clone https://github.com/BTC-LeeSoonMin/finalPjtSwimpyoFrontend.git
+            sudo git clone https://github.com/BTC-LeeSoonMin/finalPjtSwimpyoFrontend.git tmp
             sudo cp -r tmp/* home/frontbuild/
             sudo ls -al
             sudo rm -rf tmp
