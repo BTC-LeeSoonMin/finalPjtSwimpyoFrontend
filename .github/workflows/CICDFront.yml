@@ -33,7 +33,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo rm -rf /home/frontbuild/build
+            sudo rm -rf /home/frontbuild/*
   
       - name: Transfer files to EC2
         uses: appleboy/scp-action@master
