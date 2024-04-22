@@ -10,19 +10,26 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: deploy
-        uses: appleboy/ssh-action@master
+  build:
+      runs-on: ubuntu-latest
+  
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
+          
+      - name: List downloaded files1
+        run: ls -l ./build
+  
+      - name: Transfer files to EC2
+        uses: appleboy/scp-action@master
         with:
-          username: ubuntu       
-          key: ${{ secrets.EC2_SSH_KEY }}
+          username: ubuntu
           host: ${{ secrets.LIVE_SERVER_IP }}
-          script_stop: true
-          script: |
-            sudo git clone https://github.com/BTC-LeeSoonMin/finalPjtSwimpyoFrontend.git tmp
-            sudo cp -r tmp/* /home/frontbuild/
-            sudo ls -al
-            sudo rm -rf tmp
-            sudo docker restart nginxdeploy
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: 'build/*'
+          target: '/home/frontbuild/'
