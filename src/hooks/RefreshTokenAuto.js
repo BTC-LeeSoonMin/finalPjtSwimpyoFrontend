@@ -16,25 +16,21 @@ api.interceptors.request.use(
     // const token = useSelector((store)=> store.accessToken.value);
     const token = store.getState().accessToken.value;
 
-    console.log('token : ', token);
-
     //요청시 AccessToken 계속 보내주기
     if (!token) {
-      console.log("tp1");
       config.headers.accessToken = null;
       return config;
     }
     
     //요청 헤더가 존재하고 토큰이 있는 경우
     if (config.headers && token) {
-      console.log("tp2");
       //HTTP 요청 헤더 중 하나인 "Authorization" 헤더를 설정 
       //"Bearer"라는 인증 스키마와 사용자의 토큰 값을 조합하여 "Authorization" 헤더의 값을 설정 
       config.headers.authorization = `Bearer ${token}`;
       return config;
     }
     // 요청 시작 
-    console.log("request start", config);
+    // console.log("request start", config);
   },
   function (error) {
     // 요청 중 오류 발생. 오류를 처리하고 오류를 반환
@@ -49,7 +45,6 @@ api.interceptors.response.use(
     //응답 인터셉터의 첫 번째 매개변수인 response는 서버로부터 받은 응답 데이터 
   function (response) {
     // 받은 응답 
-    console.log("get response", response);
     return response;
   },
   //응답 중 오류가 발생한 경우 실행되는 비동기 함수. 오류를 처리하고 처리된 오류를 반환. 
