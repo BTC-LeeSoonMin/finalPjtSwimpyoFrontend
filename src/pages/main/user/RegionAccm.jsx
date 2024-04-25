@@ -36,8 +36,6 @@ export default function RegionAccm() {
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  console.log('region', region);
-
   const config = {
     headers: {
       'Content-Type': 'application/json; charset=utf-8'
@@ -53,7 +51,7 @@ export default function RegionAccm() {
   useEffect(() => {
     api.get("/api/user/accm/mapInfoList", { params: { "region": region } }, config,)
       .then((response) => {
-        console.log('MainMap', response.data);
+        // console.log('MainMap', response.data);
         if (response.data === 'emptyMapInfo') {
           console.log('실패: emptyMapInfo');
 
@@ -65,9 +63,6 @@ export default function RegionAccm() {
         }
       });
   }, [region]);
-
-
-  console.log("accmAddress", accmAddress);
 
   return (
 
