@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 // import { Cookies } from "react-cookie";
 // import cookie from 'react-cookies';
 
-axios.defaults.withCredentials = true;
-api.defaults.withCredentials = true;
 // url 호출 시 기본 값 셋팅 
 const api = axios.create({
   headers: { "Content-type": "application/json" }, // data type
 });
+api.defaults.withCredentials = true;
 
 // Axios 요청 인터셉터를 추가(요청이 보내기 전에 실행) 
 api.interceptors.request.use(
