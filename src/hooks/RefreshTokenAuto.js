@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // import { Cookies } from "react-cookie";
 // import cookie from 'react-cookies';
 
-
+axios.defaults.withCredentials = true;
 // url 호출 시 기본 값 셋팅 
 const api = axios.create({
   headers: { "Content-type": "application/json" }, // data type
