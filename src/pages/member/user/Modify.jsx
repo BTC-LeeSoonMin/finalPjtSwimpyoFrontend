@@ -36,7 +36,7 @@ function Modify() {
 
   useEffect(() => {
 
-    api.post("/api/user/member/userInfo",
+    api.post("http://43.203.71.198/api/user/member/userInfo",
       config,
     )
       .then(response => {
@@ -67,7 +67,7 @@ function Modify() {
         "nickname": nickname,
       }
 
-      api.post("/api/user/member/modify", JSON.stringify(data), config,)
+      api.post("http://43.203.71.198/api/user/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberUserModifySuccess") {
             navigate('/user/myPage');
@@ -96,7 +96,7 @@ function Modify() {
     e.preventDefault();
 
     if(window.confirm("정말 탈퇴하시겠습니까?")) {
-      api.post("/api/user/member/signout", config,)
+      api.post("http://43.203.71.198/api/user/member/signout", config,)
         .then((response) => {
           if(response.data === "signOutSuccess") {
             //탈퇴 성공

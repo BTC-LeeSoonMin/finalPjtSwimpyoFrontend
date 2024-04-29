@@ -72,7 +72,7 @@ api.interceptors.response.use(
         let url = window.location.href
 
         if (url.includes("user")) {
-          await axios.post("/api/user/member/refreshToken", config,)
+          await axios.post("http://43.203.71.198/api/user/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 
@@ -98,7 +98,7 @@ api.interceptors.response.use(
         })
         .catch();
         } else {
-          await axios.post("/api/admin/member/refreshToken", config,)
+          await axios.post("http://43.203.71.198/api/admin/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 

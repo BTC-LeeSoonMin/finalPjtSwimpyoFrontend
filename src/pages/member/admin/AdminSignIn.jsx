@@ -40,7 +40,7 @@ function AdminSignIn() {
       "pw": pw,
     }
 
-    api.post("/api/admin/member/signIn", JSON.stringify(data), config,)
+    api.post("http://43.203.71.198/api/admin/member/signIn", JSON.stringify(data), config,)
       .then((response) => {
 
         if (response.data === "MemberAdminLoginFail") {

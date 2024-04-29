@@ -66,7 +66,7 @@ const ResReview = () => {
 
 
         try {
-            const res = await api.post(`/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
+            const res = await api.post(`http://43.203.71.198/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
 
             console.log("detail data success");
 
@@ -327,7 +327,7 @@ const ResReview = () => {
         console.log("data", data);
 
         try {
-            const response = await api.post('/api/user/review/registConfirm',
+            const response = await api.post('http://43.203.71.198/api/user/review/registConfirm',
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

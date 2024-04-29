@@ -25,7 +25,7 @@ function ResLog() {
 
   useEffect(() => {
 
-    api.get("/api/user/mypage/GetRezList", JSON.stringify(period), config,)
+    api.get("http://43.203.71.198/api/user/mypage/GetRezList", JSON.stringify(period), config,)
       .then((response) => {
         if (response.data != null) {
           setResLogList(response.data);

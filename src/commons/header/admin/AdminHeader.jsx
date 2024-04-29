@@ -39,7 +39,7 @@ export default function AdminHeader() {
 
   const logout = (e) => {
 
-    api.post("/api/admin/member/logout", config,)
+    api.post("http://43.203.71.198/api/admin/member/logout", config,)
       .then((response) => {
         if(response.data !== null) {
           dispatch(setAccessToken.setAccessToken(''));

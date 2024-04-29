@@ -41,7 +41,7 @@ function AdminChangePw() {
         "afterPw": newPw,
       }
 
-      axios.post("/api/admin/member/changePw", JSON.stringify(data), config,)
+      axios.post("http://43.203.71.198/api/admin/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "AdminChangePwSuccess") {
             //성공

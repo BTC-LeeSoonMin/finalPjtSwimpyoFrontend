@@ -378,7 +378,7 @@ const ModifyRoom = () => {
         data.append("adminRoomDto", jsonBlob);
 
         try {
-            const response = await api.post("/api/admin/room/modifyConfirm",
+            const response = await api.post("http://43.203.71.198/api/admin/room/modifyConfirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

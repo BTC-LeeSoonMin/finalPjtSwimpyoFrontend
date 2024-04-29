@@ -57,7 +57,7 @@ export default function ReservationStatus({ a_m_no }) {
 
   useEffect(() => {
 
-    api.get("/api/admin/accm/rezList", { params: { "a_m_no": parseInt(a_m_no), "date": date } },)
+    api.get("http://43.203.71.198/api/admin/accm/rezList", { params: { "a_m_no": parseInt(a_m_no), "date": date } },)
       .then((response) => {
         if (response.data != null) {
           console.log('resList', response.data);

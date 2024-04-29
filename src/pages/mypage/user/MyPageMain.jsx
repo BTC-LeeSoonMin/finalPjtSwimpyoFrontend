@@ -50,7 +50,7 @@ export default function MyPageMain() {
 
   useEffect(() => {
 
-    api.post("/api/user/member/userInfo",)
+    api.post("http://43.203.71.198/api/user/member/userInfo",)
       .then((response) => {
         if (response.data != null) {
           setUserName(response.data.u_m_name);
@@ -59,14 +59,14 @@ export default function MyPageMain() {
         }
       });
 
-    api.get("/api/user/mypage/GetRezList", { params: { "period": '24' } })
+    api.get("http://43.203.71.198/api/user/mypage/GetRezList", { params: { "period": '24' } })
       .then((response) => {;
         if (response.data != null) {
           setResLogList(response.data);
         }
       });
 
-    api.post("/api/user/mypage/getReviewList",)
+    api.post("http://43.203.71.198/api/user/mypage/getReviewList",)
       .then((response) => {
         if (response.data != null) {
           setReviewList(response.data.userReviewList);

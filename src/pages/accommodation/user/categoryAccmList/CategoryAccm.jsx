@@ -67,7 +67,7 @@ function CategoryAccm() {
 
     console.log('data', data);
 
-    api.post("/api/user/accm/search", JSON.stringify(data), config,)
+    api.post("http://43.203.71.198/api/user/accm/search", JSON.stringify(data), config,)
       .then((response) => {
         console.log('searchAccm', response.data);
         if(response.data != null) {

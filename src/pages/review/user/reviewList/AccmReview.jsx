@@ -13,7 +13,7 @@ export default function AccmReview() {
 
     useEffect(() => {
         if(parseInt(a_acc_no) > 0) {
-            api.get("/api/user/review/showReviewList",{ params: { "a_acc_no": parseInt(a_acc_no) } })
+            api.get("http://43.203.71.198/api/user/review/showReviewList",{ params: { "a_acc_no": parseInt(a_acc_no) } })
             .then((response) => {
                 if (response.data != null) {
                     setReviewData(response.data.userReviewDto);

@@ -117,7 +117,7 @@ const UserReservation = () => {
 
     const fetchData = async () => {
         try {
-            const res = await api.post("/api/user/member/userInfo");
+            const res = await api.post("http://43.203.71.198/api/user/member/userInfo");
 
             console.log(res.data);
             setUserMemberInfo({
@@ -239,7 +239,7 @@ const UserReservation = () => {
         })], { type: "application/json" });
         data.append("reservationDto", jsonBlob);
 
-        const response = await api.post('/api/user/reservation', data, {
+        const response = await api.post('http://43.203.71.198/api/user/reservation', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

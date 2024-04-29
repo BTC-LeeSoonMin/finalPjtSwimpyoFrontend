@@ -41,7 +41,7 @@ function SignIn() {
       "pw": pw,
     }
 
-    api.post("/api/user/member/signIn", JSON.stringify(data), config,)
+    api.post("http://43.203.71.198/api/user/member/signIn", JSON.stringify(data), config,)
       .then((response) => {
 
         if (response.data === "MemberUserLoginFail") {

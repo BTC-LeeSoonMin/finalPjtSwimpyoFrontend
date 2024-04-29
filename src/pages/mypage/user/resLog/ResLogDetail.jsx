@@ -61,7 +61,7 @@ export default function ResLogDetail() {
     };
 
     useEffect(() => {
-        api.get("/api/user/mypage/GetRezDetail", { params: { "u_r_no": u_r_no } },)
+        api.get("http://43.203.71.198/api/user/mypage/GetRezDetail", { params: { "u_r_no": u_r_no } },)
             .then((response) => {
 
                 if (response.data != null) {

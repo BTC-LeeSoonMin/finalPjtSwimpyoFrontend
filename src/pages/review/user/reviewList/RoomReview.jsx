@@ -16,7 +16,7 @@ export default function RoomReview() {
 
     useEffect(() => {
         if (parseInt(a_acc_no) > 0 && parseInt(a_r_no) > 0) {
-            api.get("/api/user/review/showReviewListRoom", { params: { "a_r_no": parseInt(a_r_no), "a_acc_no": parseInt(a_acc_no) } })
+            api.get("http://43.203.71.198/api/user/review/showReviewListRoom", { params: { "a_r_no": parseInt(a_r_no), "a_acc_no": parseInt(a_acc_no) } })
                 .then((response) => {
                     console.log('RoomReview', response.data);
                     if (response.data != null) {

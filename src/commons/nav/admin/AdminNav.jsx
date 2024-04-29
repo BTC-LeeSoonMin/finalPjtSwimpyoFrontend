@@ -34,7 +34,7 @@ export default function AdminNav() {
   useEffect(() => {
     if (token) {
 
-      api.post("/api/admin/member/adminInfo",)
+      api.post("http://43.203.71.198/api/admin/member/adminInfo",)
         .then((response) => {
           if (response.data != null) {
             setA_m_no(response.data.a_m_no);
@@ -45,7 +45,7 @@ export default function AdminNav() {
     }
 
     if (a_m_no > 0) {
-      api.get("/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
+      api.get("http://43.203.71.198/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
         .then((response) => {
           if (response.data != null) {
             setCheckAccm(response.data);

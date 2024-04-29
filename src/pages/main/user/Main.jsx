@@ -47,7 +47,7 @@ function Main() {
 
   useEffect(() => {
 
-    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '호텔/리조트' } },)
+    api.get("http://43.203.71.198/api/user/accm/rankAccmList", { params: { "accmValue": '호텔/리조트' } },)
       .then((response) => {
         console.log('bestHotel', response.data);
         if (response.data != null) {
@@ -55,7 +55,7 @@ function Main() {
         }
       });
 
-    api.get("/api/user/accm/rankAccmList", { params: { "accmValue": '펜션/풀빌라' } },)
+    api.get("http://43.203.71.198/api/user/accm/rankAccmList", { params: { "accmValue": '펜션/풀빌라' } },)
       .then((response) => {
         if (response.data != null) {
           setBestPension(response.data);

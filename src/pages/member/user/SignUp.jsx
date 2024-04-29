@@ -70,7 +70,7 @@ function SignUp() {;
         "nickname": nickname,
       }
 
-      axios.post("/api/user/member/signUp", JSON.stringify(data), config,)
+      axios.post("http://43.203.71.198/api/user/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberUserDup") {
             alert("사용중인 아이디입니다. 다른 아이디를 입력하세요.");

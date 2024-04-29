@@ -131,7 +131,7 @@ const RegistAccm = () => {
 
     const fetchData = async () => {
         try {
-            const response = await api.post(`/api/admin/member/adminInfo`,
+            const response = await api.post(`http://43.203.71.198/api/admin/member/adminInfo`,
                 {
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
@@ -234,7 +234,7 @@ const RegistAccm = () => {
         data.append("adminAccmDto", jsonBlob);
 
         try {
-            const response = await api.post("/api/admin/accm/regist_confirm",
+            const response = await api.post("http://43.203.71.198/api/admin/accm/regist_confirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
