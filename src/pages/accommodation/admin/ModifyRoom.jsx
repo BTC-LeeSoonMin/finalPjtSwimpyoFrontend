@@ -271,7 +271,7 @@ const ModifyRoom = () => {
 
     const fetchData = async () => {
         try {
-            const response = await api.post(`http://localhost:8090/api/admin/room/showRoomDetail?a_r_no=${paramsData.a_r_no}`);
+            const response = await api.post(`http://43.203.71.198/api/admin/room/showRoomDetail?a_r_no=${paramsData.a_r_no}`);
             //  res -> 서버에서 받아온 데이터
             if (response.status === 200) {
                 console.log("detail data success");
