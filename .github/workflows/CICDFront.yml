@@ -63,4 +63,4 @@ jobs:
           script_stop: true
           script: |
             sudo rm -rf /home/frontbuild/build
-            sudo docker restart nginxdeploy
+            sudo docker restart nginxserver
