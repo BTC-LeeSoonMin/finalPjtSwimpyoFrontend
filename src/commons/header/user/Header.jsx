@@ -40,7 +40,7 @@ export default function Header() {
 
   const logout = (e) => {
 
-    api.post("http://43.203.71.198/api/user/member/logout", config,)
+    api.post("soonmin.info/api/user/member/logout", config,)
       .then((response) => {
         if (response.data !== null) {
           dispatch(setAccessToken.setAccessToken(''));

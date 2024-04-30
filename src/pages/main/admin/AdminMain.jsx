@@ -29,7 +29,7 @@ export default function AdminMain() {
     console.log('AdminMain');
     if (token) {
 
-      api.post("http://43.203.71.198/api/admin/member/adminInfo",)
+      api.post("soonmin.info/api/admin/member/adminInfo",)
         .then((response) => {
           if (response.data != null) {
             console.log('adminInfo', response.data.a_m_no);
@@ -41,7 +41,7 @@ export default function AdminMain() {
     }
 
     if (a_m_no > 0) {
-      api.get("http://43.203.71.198/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
+      api.get("soonmin.info/api/admin/accm/checkAccm", { params: { "a_m_no": parseInt(a_m_no) } },)
         .then((response) => {
           if (response.data != null) {
             console.log('[AdminMain] checkAccm', response.data);

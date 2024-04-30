@@ -41,7 +41,7 @@ function ChangePw() {
         "afterPw": newPw,
       }
 
-      axios.post("http://43.203.71.198/api/user/member/changePw", JSON.stringify(data), config,)
+      axios.post("soonmin.info/api/user/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "UserChangePwSuccess") {
             //성공

@@ -19,7 +19,7 @@ export default function MyReview() {
     const [reviewImg, setReviewImg] = useState([]);
 
     useEffect(() => {
-        api.post("http://43.203.71.198/api/user/mypage/getReviewList",)
+        api.post("soonmin.info/api/user/mypage/getReviewList",)
             .then((response) => {
                 if (response.data != null) {
                     setReviewData(response.data.userReviewList);

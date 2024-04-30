@@ -35,7 +35,7 @@ function AdminModify() {
 
   useEffect(() => {
 
-    api.post("http://43.203.71.198/api/admin/member/adminInfo",
+    api.post("soonmin.info/api/admin/member/adminInfo",
       config,
     )
       .then(response => {
@@ -64,7 +64,7 @@ function AdminModify() {
         "email": email,
       }
 
-      api.post("http://43.203.71.198/api/admin/member/modify", JSON.stringify(data), config,)
+      api.post("soonmin.info/api/admin/member/modify", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberAdminModifySuccess") {
             navigate('/admin');
@@ -88,7 +88,7 @@ function AdminModify() {
     e.preventDefault();
 
     if (window.confirm("정말 탈퇴하시겠습니까?")) {
-      api.post("http://43.203.71.198/api/admin/member/signout", config,)
+      api.post("soonmin.info/api/admin/member/signout", config,)
         .then((response) => {
           if (response.data === "signOutSuccess") {
             //탈퇴 성공
