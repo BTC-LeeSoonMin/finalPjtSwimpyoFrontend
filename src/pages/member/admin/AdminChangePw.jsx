@@ -41,7 +41,7 @@ function AdminChangePw() {
         "afterPw": newPw,
       }
 
-      axios.post("soonmin.info/api/admin/member/changePw", JSON.stringify(data), config,)
+      axios.post("https://soonmin.info/api/admin/member/changePw", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "AdminChangePwSuccess") {
             //성공

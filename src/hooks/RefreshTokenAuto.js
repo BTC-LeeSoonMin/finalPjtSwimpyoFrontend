@@ -72,7 +72,7 @@ api.interceptors.response.use(
         let url = window.location.href
 
         if (url.includes("user")) {
-          await axios.post("soonmin.info/api/user/member/refreshToken", config,)
+          await axios.post("https://soonmin.info/api/user/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 
@@ -98,7 +98,7 @@ api.interceptors.response.use(
         })
         .catch();
         } else {
-          await axios.post("soonmin.info/api/admin/member/refreshToken", config,)
+          await axios.post("https://soonmin.info/api/admin/member/refreshToken", config,)
         .then((response) => {
           console.log('response--', response.data);
 

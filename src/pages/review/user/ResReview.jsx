@@ -66,7 +66,7 @@ const ResReview = () => {
 
 
         try {
-            const res = await api.post(`soonmin.info/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
+            const res = await api.post(`https://soonmin.info/api/user/accm/showAccmDetail?a_acc_no=${a_acc_no}`);
 
             console.log("detail data success");
 
@@ -327,7 +327,7 @@ const ResReview = () => {
         console.log("data", data);
 
         try {
-            const response = await api.post('soonmin.info/api/user/review/registConfirm',
+            const response = await api.post('https://soonmin.info/api/user/review/registConfirm',
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

@@ -70,7 +70,7 @@ function SignUp() {;
         "nickname": nickname,
       }
 
-      axios.post("soonmin.info/api/user/member/signUp", JSON.stringify(data), config,)
+      axios.post("https://soonmin.info/api/user/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberUserDup") {
             alert("사용중인 아이디입니다. 다른 아이디를 입력하세요.");

@@ -70,7 +70,7 @@ const ModifyAccm = () => {
 
     const fetchData = async () => {
         try {
-            const response = await api.post(`soonmin.info/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
+            const response = await api.post(`https://soonmin.info/api/admin/accm/show_accm_detail?a_m_no=${a_m_no}`);
 
             console.log(response.data); // 이제 응답을 기다린 후에 로그를 출력합니다.
 

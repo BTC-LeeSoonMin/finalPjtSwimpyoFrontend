@@ -49,7 +49,7 @@ export default function RegionAccm() {
   };
 
   useEffect(() => {
-    api.get("soonmin.info/api/user/accm/mapInfoList", { params: { "region": region } }, config,)
+    api.get("https://soonmin.info/api/user/accm/mapInfoList", { params: { "region": region } }, config,)
       .then((response) => {
         // console.log('MainMap', response.data);
         if (response.data === 'emptyMapInfo') {

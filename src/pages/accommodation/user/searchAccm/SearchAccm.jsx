@@ -69,7 +69,7 @@ function SearchAccm() {
 
     console.log('data', data);
 
-    api.post("soonmin.info/api/user/accm/search", JSON.stringify(data), config,)
+    api.post("https://soonmin.info/api/user/accm/search", JSON.stringify(data), config,)
       .then((response) => {
         console.log('searchAccm', response.data);
         if(response.data != null) {

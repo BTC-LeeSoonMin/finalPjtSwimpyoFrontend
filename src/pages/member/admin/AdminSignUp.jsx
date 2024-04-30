@@ -70,7 +70,7 @@ function AdminSignUp() {
 
       
 
-      axios.post("soonmin.info/api/admin/member/signUp", JSON.stringify(data), config,)
+      axios.post("https://soonmin.info/api/admin/member/signUp", JSON.stringify(data), config,)
         .then((response) => {
           if (response.data === "MemberAdminDup") {
             //이메일 중복 실패 

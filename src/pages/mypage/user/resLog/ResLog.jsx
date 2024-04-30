@@ -25,7 +25,7 @@ function ResLog() {
 
   useEffect(() => {
 
-    api.get("soonmin.info/api/user/mypage/GetRezList", JSON.stringify(period), config,)
+    api.get("https://soonmin.info/api/user/mypage/GetRezList", JSON.stringify(period), config,)
       .then((response) => {
         if (response.data != null) {
           setResLogList(response.data);

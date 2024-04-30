@@ -93,7 +93,7 @@ const DetailReview = () => {
     const userInfoEmail = async () => {
         if (token) {
             try {
-                const res = await api.post(`soonmin.info/api/user/member/userInfo`);
+                const res = await api.post(`https://soonmin.info/api/user/member/userInfo`);
 
                 console.log(res.data);
                 setUserMemberEmail(res.data.u_m_email);
@@ -106,7 +106,7 @@ const DetailReview = () => {
 
     const reviewInfo = async () => {
         try {
-            const res = await api.get("soonmin.info/api/user/review/showDetail", { params: { "r_no": params.r_no } },)
+            const res = await api.get("https://soonmin.info/api/user/review/showDetail", { params: { "r_no": params.r_no } },)
             console.log(res.data);
             setReviewInfoFromBackEnd({
                 reviewDto: res.data.reviewDto,

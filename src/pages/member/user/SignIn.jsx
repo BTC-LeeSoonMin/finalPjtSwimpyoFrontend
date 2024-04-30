@@ -41,7 +41,7 @@ function SignIn() {
       "pw": pw,
     }
 
-    api.post("soonmin.info/api/user/member/signIn", JSON.stringify(data), config,)
+    api.post("https://soonmin.info/api/user/member/signIn", JSON.stringify(data), config,)
       .then((response) => {
 
         if (response.data === "MemberUserLoginFail") {

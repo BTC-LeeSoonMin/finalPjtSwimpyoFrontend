@@ -61,7 +61,7 @@ export default function ResLogDetail() {
     };
 
     useEffect(() => {
-        api.get("soonmin.info/api/user/mypage/GetRezDetail", { params: { "u_r_no": u_r_no } },)
+        api.get("https://soonmin.info/api/user/mypage/GetRezDetail", { params: { "u_r_no": u_r_no } },)
             .then((response) => {
 
                 if (response.data != null) {

@@ -24,7 +24,7 @@ export default function MiniReviewList(props) {
 
     useEffect(() => {
 
-        api.post("soonmin.info/api/user/member/userInfo",)
+        api.post("https://soonmin.info/api/user/member/userInfo",)
           .then((response) => {
             if (response.data != null) {
                 setEmail(response.data.u_m_email);

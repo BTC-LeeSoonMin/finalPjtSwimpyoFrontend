@@ -133,7 +133,7 @@ const UserDetailAccm = () => {
 
     const fetchData = async () => {
         try {
-            const res = await api.post(`soonmin.info/api/user/accm/showAccmDetail?a_acc_no=${accmNum.a_acc_no}`);
+            const res = await api.post(`https://soonmin.info/api/user/accm/showAccmDetail?a_acc_no=${accmNum.a_acc_no}`);
             //  res -> 서버에서 받아온 데이터
             console.log("detail data success");
 

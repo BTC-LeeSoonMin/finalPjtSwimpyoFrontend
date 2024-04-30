@@ -210,7 +210,7 @@ const UserDetailRoom = () => {
         const fetchData = async () => {
             console.log("sendToResData!!!", sendToResData);
             try {
-                const res = await api.post(`soonmin.info/api/user/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
+                const res = await api.post(`https://soonmin.info/api/user/room/showRoomDetail?a_r_no=${roomNum.a_r_no}`);
                 //  res -> 서버에서 받아온 데이터
                 console.log("detail data success");
                 // res.data에서 얻은 데이터를 화면에 업데이트 하기 위해 data상태에 설정한다. data 상태를 업데이트 하면 화면이 새로 렌더링 된다.
@@ -270,7 +270,7 @@ const UserDetailRoom = () => {
             data.append("reservationDto", jsonBlob);
 
 
-            const res = await api.post(`soonmin.info/api/user/reservation/ready`, data, {
+            const res = await api.post(`https://soonmin.info/api/user/reservation/ready`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

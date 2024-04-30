@@ -40,7 +40,7 @@ function AdminSignIn() {
       "pw": pw,
     }
 
-    api.post("soonmin.info/api/admin/member/signIn", JSON.stringify(data), config,)
+    api.post("https://soonmin.info/api/admin/member/signIn", JSON.stringify(data), config,)
       .then((response) => {
 
         if (response.data === "MemberAdminLoginFail") {

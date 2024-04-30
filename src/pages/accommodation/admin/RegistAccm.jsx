@@ -131,7 +131,7 @@ const RegistAccm = () => {
 
     const fetchData = async () => {
         try {
-            const response = await api.post(`soonmin.info/api/admin/member/adminInfo`,
+            const response = await api.post(`https://soonmin.info/api/admin/member/adminInfo`,
                 {
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
@@ -234,7 +234,7 @@ const RegistAccm = () => {
         data.append("adminAccmDto", jsonBlob);
 
         try {
-            const response = await api.post("soonmin.info/api/admin/accm/regist_confirm",
+            const response = await api.post("https://soonmin.info/api/admin/accm/regist_confirm",
                 data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
